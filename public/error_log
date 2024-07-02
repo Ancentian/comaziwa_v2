@@ -1,0 +1,552 @@
+[15-Aug-2023 07:10:02 UTC] PHP Warning:  PHP Request Startup: POST Content-Length of 10485761 bytes exceeds the limit of 8388608 bytes in Unknown on line 0
+[31-Aug-2023 12:19:14 Africa/Nairobi] PHP Fatal error:  Cannot use App\Models\Employee as Employee because the name is already in use in /home/ghpayroll/base/app/Http/Controllers/LeavesController.php on line 12
+[31-Aug-2023 12:19:39 Africa/Nairobi] PHP Fatal error:  Cannot use App\Models\Employee as Employee because the name is already in use in /home/ghpayroll/base/app/Http/Controllers/LeavesController.php on line 12
+[31-Aug-2023 12:20:11 Africa/Nairobi] PHP Fatal error:  Cannot use App\Models\Employee as Employee because the name is already in use in /home/ghpayroll/base/app/Http/Controllers/LeavesController.php on line 12
+[06-Sep-2023 07:03:54 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:03:54 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:03:54 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:03:54 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:03:59 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:03:59 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:00 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:00 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:02 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:02 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:08 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:08 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:09 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:10 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:11 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:11 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:11 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:11 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:11 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:11 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:11 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:11 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:11 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:11 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:11 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:11 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:11 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:11 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:11 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:11 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:11 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:11 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:11 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:11 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:12 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:12 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:12 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:12 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:12 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:12 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:12 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:12 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:12 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:12 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:12 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:12 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:12 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:12 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:12 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:12 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:12 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:12 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:12 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:12 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:12 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:12 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:12 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:12 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:12 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:12 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:13 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:13 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:13 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:13 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:13 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:13 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:13 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:13 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:13 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:13 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:13 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:13 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:13 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:13 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:13 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:13 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:13 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:13 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:13 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:13 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:13 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:13 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:15 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:15 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:19 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:19 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:19 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:19 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:19 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:19 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:19 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:19 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:19 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:19 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:19 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:19 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:19 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:19 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:19 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:19 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:19 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:19 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:19 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:19 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:19 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:19 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:20 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:20 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:20 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:20 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:21 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:21 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:22 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:22 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:22 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:22 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:22 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:22 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:22 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:22 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:23 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:23 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:24 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:24 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:25 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:25 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:26 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:26 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:26 UTC] PHP Warning:  require(/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Sep-2023 07:04:26 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ghpayroll/public_html/app.ghpayroll.net/../base/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/ghpayroll/public_html/app.ghpayroll.net/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ghpayroll/public_html/app.ghpayroll.net/index.php on line 34
+[06-Feb-2024 11:49:53 UTC] PHP Warning:  POST Content-Length of 19699284 bytes exceeds the limit of 8388608 bytes in Unknown on line 0
+[06-Feb-2024 11:49:59 UTC] PHP Warning:  POST Content-Length of 19699284 bytes exceeds the limit of 8388608 bytes in Unknown on line 0
+[06-Feb-2024 11:50:02 UTC] PHP Warning:  POST Content-Length of 19699284 bytes exceeds the limit of 8388608 bytes in Unknown on line 0
+[06-Feb-2024 11:50:03 UTC] PHP Warning:  POST Content-Length of 19699284 bytes exceeds the limit of 8388608 bytes in Unknown on line 0
+[06-Feb-2024 11:50:07 UTC] PHP Warning:  POST Content-Length of 19699284 bytes exceeds the limit of 8388608 bytes in Unknown on line 0
+[06-Feb-2024 11:50:09 UTC] PHP Warning:  POST Content-Length of 19699284 bytes exceeds the limit of 8388608 bytes in Unknown on line 0
+[06-Feb-2024 11:50:24 UTC] PHP Warning:  POST Content-Length of 19699284 bytes exceeds the limit of 8388608 bytes in Unknown on line 0
+[19-Feb-2024 17:15:14 UTC] PHP Parse error:  syntax error, unexpected token "if" in /home/ghpayroll/base/app/helpers.php on line 37

@@ -1,0 +1,80 @@
+@extends('layout.app')
+
+@section('content')
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Settings</a></li>
+                <li class="breadcrumb-item active">Cooperative Settings</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- /Page Header -->
+
+<div class="row">
+    <div class="container">
+        <div class="row">
+          <div class="col-md-3">
+            <!-- Vertical Tabs -->
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+
+              <a class="nav-link" id="v-pills-centers-tab" data-toggle="pill" 
+                href="#v-pills-centers" role="tab" aria-controls="v-pills-centers"
+                 aria-selected="false">Collection Centers</a>
+
+                 <a class="nav-link" id="v-pills-coop-banks-tab" data-toggle="pill"
+                 href="#v-pills-coop-banks" role="tab" aria-controls="v-pills-coop-banks"
+                  aria-selected="false">Banks</a>
+
+                  <a class="nav-link" id="v-pills-expense-type-tab" data-toggle="pill"
+                 href="#v-pills-expense-type" role="tab" aria-controls="v-pills-expense-type"
+                  aria-selected="false">Expense Types</a>  
+                  
+                  <a class="nav-link" id="v-pills-departments-tab" data-toggle="pill"
+                 href="#v-pills-departments" role="tab" aria-controls="v-pills-departments"
+                  aria-selected="false">Departments</a> 
+                  
+                <a class="nav-link" id="v-pills-leave-types-tab" data-toggle="pill"
+                 href="#v-pills-leave-types" role="tab" aria-controls="v-pills-leave-types"
+                  aria-selected="false">Leave Types</a> 
+
+            </div>
+          </div>
+          <div class="col-md-9">
+            <!-- Tab Content -->
+            <div class="tab-content" id="v-pills-tabContent">
+              
+              
+
+              <div class="tab-pane fade show active" id="v-pills-centers" role="tabpanel" aria-labelledby="v-pills-allowances-tab">
+                    @include('companies.partials.centers.index')
+              </div>
+
+              <div class="tab-pane fade" id="v-pills-coop-banks" role="tabpanel" aria-labelledby="v-pills-coop-banks-tab">
+                @include('companies.partials.banks.index')
+              </div>
+
+              <div class="tab-pane fade" id="v-pills-expense-type" role="tabpanel" aria-labelledby="v-pills-expense-type-tab">
+                @include('companies.partials.expenses.expense_types')
+              </div>
+
+              <div class="tab-pane fade" id="v-pills-departments" role="tabpanel" aria-labelledby="v-pills-departments-tab">
+                @include('companies.partials.contracts.index')
+              </div>
+
+            <div class="tab-pane fade" id="v-pills-leave-types" role="tabpanel" aria-labelledby="v-pills-leave-types-tab">
+                @include('companies.partials.leave_types.index')
+              </div>
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      
+</div>
+
+@endsection
