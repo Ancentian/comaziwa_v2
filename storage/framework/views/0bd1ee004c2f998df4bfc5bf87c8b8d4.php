@@ -49,8 +49,8 @@
             <div class="card-body">
                 <span class="dash-widget-icon"><i class="fa fa-diamond"></i></span>
                 <div class="dash-widget-info">
-                    <h3><?php echo e(App\Models\Task::where('tenant_id',auth()->user()->id)->count()); ?></h3>
-                    <span>Tasks</span>
+                    <h3><?php echo e(App\Models\Farmer::where('tenant_id',auth()->user()->id)->count()); ?></h3>
+                    <span>Farmers</span>
                 </div>
             </div>
         </div>

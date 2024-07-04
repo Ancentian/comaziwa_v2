@@ -79,9 +79,11 @@ class MilkCollectionController extends Controller
     public function center_farmers($id)
     {
         $data = CollectionCenter::findorFail($id);
+        $tenant_id = $data->tenant_id;
 
         $farmers = Farmer::leftJoin('collection_centers', 'collection_centers.id', 'farmers.center_id')
                             ->where('farmers.center_id', $id)
+                            ->where('collection_centers.tenant_id', $tenant_id)
                             ->select([
                                 'farmers.fname',
                                 'farmers.lname',
@@ -152,10 +154,10 @@ class MilkCollectionController extends Controller
                 MilkCollection::create($milkCollection);
             }
 
-            return redirect()->back()->with('success', 'Milk Added Successfully');
+            return redirect()->back()->with('message', 'Milk Added Successfully');
         } catch (\Exception $e) {
             logger($e);
-            return redirect()->back()->with('error', 'Err! Failed Try Again');
+            return redirect()->back()->with('message', 'Err! Failed Try Again');
         }
     }
 

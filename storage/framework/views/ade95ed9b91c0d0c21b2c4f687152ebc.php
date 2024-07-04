@@ -87,7 +87,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label>Gender <span class="text-danger">*</span></label>
-                            <select class="select form-control" name="gender" required>
+                            <select class=" form-control" name="gender" required>
                                 <option value="">Select</option>
                                 <option value="male" <?php if($farmer->gender == 'male'): ?> selected <?php endif; ?>>Male</option>
                                 <option value="female" <?php if($farmer->gender == 'female'): ?> selected <?php endif; ?>>Female</option>
@@ -273,4 +273,4 @@
             });
         });
     });
-    </script><?php /**PATH C:\laragon\www\comaziwa\resources\views/companies/cooperatives/edit_farmer.blade.php ENDPATH**/ ?>
+</script><?php /**PATH C:\laragon\www\comaziwa\resources\views/companies/cooperatives/edit_farmer.blade.php ENDPATH**/ ?>
