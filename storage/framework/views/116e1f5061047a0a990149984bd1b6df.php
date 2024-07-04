@@ -134,6 +134,17 @@
                     </li>
 
                     <li class="submenu">
+                        <a href="#"><i class="la la-cubes"></i> <span> Store </span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+                            <li><a href="<?php echo e(url('sales/add-sales')); ?>">Add Sales</a></li>
+                            <li><a href="<?php echo e(url('sales/index')); ?>">All Sales</a></li>
+                            <li><a href="<?php echo e(url('inventory/all-inventory')); ?>">Inventory List</a></li> 
+                            <li><a href="<?php echo e(url('inventory/categories')); ?>">Categories</a></li> 
+                            <li><a href="<?php echo e(url('inventory/units')); ?>">Units</a></li>                          
+                        </ul>
+                    </li>
+
+                    <li class="submenu">
                         <a href="#"><i class="la la-cog"></i> <span> Settings </span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li><a href="<?php echo e(url('company/profile')); ?>"> Collection Centers </a></li>

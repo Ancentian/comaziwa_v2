@@ -1484,6 +1484,12 @@ $('#staff_create_template_form').on('submit', function (e) {
                 if ($('#collected_milk_table').length > 0) {
                     collected_milk_table.ajax.reload();
                 }
+                if ($('#categories_table').length > 0) {
+                    categories_table.ajax.reload();
+                }
+                if ($('#units_table').length > 0) {
+                    units_table.ajax.reload();
+                }
                 if ($('#allowances_table').length > 0) {
                     allowances_table.ajax.reload();
                 }

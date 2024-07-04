@@ -7,7 +7,7 @@
         <div class="col">
             <ul class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                <li class="breadcrumb-item active"> Farmers</li>
+                <li class="breadcrumb-item active"> Sales</li>
             </ul>
         </div>
         <div class="col-auto float-right ml-auto">
@@ -21,17 +21,18 @@
 <div class="row">
     <div class="col-md-12">
         <div class="table-responsive">	
-            <table class="table table-striped custom-table" id="collected_milk_table">
+            <table class="table table-striped custom-table" id="all_sales_table">
                 <thead>
                     <tr>
                         <th class="text-left no-sort">Action</th>
-                        <th class="text-center">Code</th>
+                        {{-- <th class="text-center">Code</th> --}}
+                        <th>Name</th>
                         <th>Center</th>
-                        <th>Col. Date</th>
-                        <th>Morning</th>
-                        <th>Evening</th>
-                        <th>Rejected</th>
-                        <th>Total</th>					
+                        <th>Product</th>
+                        <th>Qty</th>
+                        <th>Cost</th>
+                        <th>Total Cost</th>
+                        <th>Date</th>					
                         {{-- <th>Recorded By</th> --}}
                         <th>Created at</th>
                     </tr> 
@@ -78,40 +79,6 @@
                     </form>
                 
             </div>
-        </div>
-    </div>
-</div>
-
-
-<!-- Add Allowance Modal -->
-<div id="bulk_generate" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title">Generate Payslip</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <form id="bulk_payslip_form" action="{{url('/employees/bulk-generate-monthly-payslip')}}" method="POST">
-                @csrf
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label>Pay Period <span class="text-danger">*</span></label>
-                            <input class="form-control" type="month" name="pay_period" required>
-                        </div>
-                    </div>
-                    
-    
-                    <div class="col-sm-6">
-                        <br><button class="btn btn-primary submit-btn">Submit</button>
-                        <div class="alert alert-warning warning">Please wait... Based on the number of staff in your database, this operation might take time<br> Please DO NOT close this window.</div>
-                    </div>
-                </div>
-                
-            </form>
         </div>
     </div>
 </div>
@@ -176,66 +143,14 @@ $(document).ready(function(){
     });
 });
 
-//Save Cooperative Farmers
-$(document).ready(function(){
-    
-    $('#add_farmer_form').on('submit', function (e) {
-        e.preventDefault();
-
-        $(".submit-btn").html("Please wait...").prop('disabled', true);
-        var form = this;
-        var formData = $(this).serialize();
-
-        $.ajax({
-            url: '{{ url('cooperative/store-farmers') }}',
-            method: 'POST',
-            data: formData,
-            success: function (response) {
-                // Handle success response
-                form.reset();
-                collected_milk_table.ajax.reload();
-                
-                // Close the modal
-                $('#add_farmer').modal('hide');
-                toastr.success(response.message, 'Success');
-                $(".submit-btn").prop('disabled', false); 
-                $(".submit-btn").html("Submit");
-            },
-            error: function (xhr, status, error) {
-            // Handle error response
-            var responseJSON = xhr.responseJSON;
-            if (responseJSON && responseJSON.errors) {
-                // Display validation errors
-                var errors = responseJSON.errors;
-                Object.keys(errors).forEach(function (field) {
-                    var errorMessage = errors[field][0];
-                    var fieldElement = $('[name="' + field + '"]');
-                    var errorElement = fieldElement.next('.modal-error');
-                    fieldElement.addClass('is-invalid');
-                    errorElement.text(errorMessage).show();
-                    toastr.error(errorMessage,'Error');
-                });
-                // Prevent modal closure if there are errors
-                return false;
-            }else{
-                
-                toastr.error('Something Went Wrong!, Try again!','Error');
-            }
-            $(".submit-btn").prop('disabled', false); 
-            $(".submit-btn").html("Submit");
-        }
-        });
-    });
-
-});
 
 $(document).ready(function(){
-        collected_milk_table = $('#collected_milk_table').DataTable({
+    all_sales_table = $('#all_sales_table').DataTable({
             @include('layout.export_buttons')
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('milkCollection/all-milk-collection')}}",
+                url : "{{url('sales/index')}}",
                 data: function(d){
                     
                 }
@@ -248,13 +163,14 @@ $(document).ready(function(){
                 
             columns: [
                 {data: 'action', name: 'action',className: 'text-left'}, 
+                // {data: 'farmerID', name: 'farmerID'},
                 {data: 'fullname', name: 'fullname'},
                 {data: 'center_name', name: 'center_name'},
-                {data: 'collection_date', name: 'collection_date'},
-                {data: 'morning', name: 'morning'},
-                {data: 'evening', name: 'evening'},
-                {data: 'rejected', name: 'rejected'},
-                {data: 'total', name: 'total'},
+                {data: 'product_name', name: 'product_name'},
+                {data: 'qty', name: 'qty'},
+                {data: 'unit_cost', name: 'unit_cost'},
+                {data: 'total_cost', name: 'total_cost'},
+                {data: 'order_date', name: 'order_date'},
                 // {data: 'userName', name: 'userName'},
                 {data: 'created_on', name: 'created_on'},            
             ],

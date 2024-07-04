@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Subscription;
 use App\Models\Package;
 use Yajra\DataTables\Facades\DataTables;
-use App\Models\StatutoryDeduction;
 
 class DashboardController extends Controller
 {
@@ -19,9 +18,6 @@ class DashboardController extends Controller
         if(empty($company)){
             return redirect('company/profile');
         }
-        
-        // create SSF if not existing
-        StatutoryDeduction::updateOrCreate(['tenant_id' => auth()->user()->id,'name' => 'SSF - Employee'],['tenant_id' => auth()->user()->id,'name' => 'SSF - Employee','type' => 'percentage','value' => 5.50]);
         return view('dashboard.index', compact('data'));
     }
 

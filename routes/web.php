@@ -9,10 +9,7 @@ use App\Http\Controllers\SuperAdminReportsController;
 use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\ContractsController;
 use App\Http\Controllers\SalariesController;
-use App\Http\Controllers\AllowancesController;
-use App\Http\Controllers\TaxbandsController;
 use App\Http\Controllers\DeductionsController;
-use App\Http\Controllers\BenefitsController;
 use App\Http\Controllers\LeaveTypesController;
 use App\Http\Controllers\EmployeesController;
 use App\Http\Controllers\AuthController;
@@ -20,10 +17,7 @@ use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\PackageController;
-use App\Http\Controllers\ProjectsController;
-use App\Http\Controllers\TasksController;
 use App\Http\Controllers\LeavesController;
-use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\CommunicationsController;
 use App\Http\Controllers\EmailsController;
 use App\Http\Controllers\PayslipExports;
@@ -31,10 +25,11 @@ use App\Http\Controllers\PayslipsReports;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\ProfilesController;
 use App\Http\Controllers\ExpensesController;
-use App\Http\Controllers\TrainingsController;
 use App\Http\Controllers\CooperativeController;
 use App\Http\Controllers\FarmersController;
 use App\Http\Controllers\MilkCollectionController;
+use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\SalesController;
 use App\Http\Controllers\Crons;
 
 
@@ -167,10 +162,47 @@ Route::prefix('milkCollection')->middleware(['auth:web,employee'])->group(functi
     Route::get('/edit-milk-collection/{id}', [MilkCollectionController::class, 'edit_milkCollection']);
     Route::post('/update-milk-collection/{id}', [MilkCollectionController::class, 'update_milkCollection']);
     Route::delete('/delete-milk-collection/{id}', [MilkCollectionController::class, 'delete_milkCollection']);
-
     //Center
     Route::get('/center-farmers/{id}', [MilkCollectionController::class, 'center_farmers']);
     
+});
+
+Route::prefix('inventory')->middleware(['auth:web,employee'])->group(function () {
+    //Inventory
+    Route::get('/index', [InventoryController::class, 'index']);
+    Route::get('/all-inventory', [InventoryController::class, 'all_inventory']);
+    Route::post('store-inventory', [InventoryController::class, 'store_inventory']);
+    Route::get('/edit-inventory/{id}', [InventoryController::class, 'edit_inventory'])->name('inventory.edit');
+    Route::post('/update-inventory/{id}', [InventoryController::class, 'update_inventory']);
+    Route::get('/add-stock/{id}', [InventoryController::class, 'add_stock']);
+    Route::post('/update-inventory-stock/{id}', [InventoryController::class, 'update_inventory_stock']);
+    Route::delete('/delete-inventory/{id}', [InventoryController::class, 'delete_inventory']);
+
+    //Category
+    Route::get('/categories', [InventoryController::class, 'categories']);
+    Route::post('/store-category', [InventoryController::class, 'store_category']);
+    Route::get('/edit-category/{id}', [InventoryController::class, 'edit_category']);
+    Route::post('/update-category/{id}', [InventoryController::class, 'update_category']);
+    Route::delete('/delete-category/{id}', [InventoryController::class, 'delete_category']);
+    //Center
+    Route::get('/center-farmers/{id}', [MilkCollectionController::class, 'center_farmers']); 
+    //Unit
+    Route::get('/units', [InventoryController::class, 'units']);
+    Route::post('/store-unit', [InventoryController::class, 'store_unit']);
+    Route::get('/edit-unit/{id}', [InventoryController::class, 'edit_unit']);
+    Route::post('/update-unit/{id}', [InventoryController::class, 'update_unit']);
+    Route::delete('/delete-unit/{id}', [InventoryController::class, 'delete_unit']);
+});
+
+Route::prefix('sales')->middleware(['auth:web,employee'])->group(function () {
+    Route::get('/index', [SalesController::class, 'index'])->name('sales.index');
+    Route::get('/add-sales', [SalesController::class, 'add_sales']);
+    Route::get('/getFarmersByCenter/{centerId}', [SalesController::class, 'getFarmersByCenter']);
+    Route::get('/getFarmerDetails/{farmerId}', [SalesController::class, 'getFarmerDetails']);
+    Route::get('/getProductsByCategory/{categoryId}', [SalesController::class, 'getProductsByCategory']);
+    Route::get('/get-product-details/{itemId}', [SalesController::class, 'getproductdetails']);
+
+    Route::post('store-sales', [SalesController::class, 'store_sales']);
 });
 
 Route::prefix('profile')->middleware(['auth:web,employee'])->group(function () {
@@ -204,22 +236,6 @@ Route::prefix('salaries')->middleware(['auth:web,employee'])->group(function () 
     Route::delete('/delete_salaryType/{id}', [SalariesController::class, 'delete_salaryType']);
 });
 
-Route::prefix('allowances')->middleware(['auth:web,employee'])->group(function () {
-    Route::get('/list', [AllowancesController::class, 'index']);
-    Route::POST('/store_allowance', [AllowancesController::class, 'storeAllowance']);
-    Route::get('/editAllowance/{id}', [AllowancesController::class, 'edit']);
-    Route::post('/updateAllowance/{id}', [AllowancesController::class, 'update']);
-    Route::delete('/delete_allowance/{id}', [AllowancesController::class, 'delete_allowance']);
-});
-
-Route::prefix('taxbands')->middleware(['auth:web,employee'])->group(function () {
-    Route::get('/list', [TaxbandsController::class, 'index']);
-    Route::POST('/store_taxbands', [TaxbandsController::class, 'storeTaxband']);
-    Route::get('/editTaxband/{id}', [TaxbandsController::class, 'edit']);
-    Route::post('/updateTaxband/{id}', [TaxbandsController::class, 'update']);
-    Route::delete('/delete_taxbands/{id}', [TaxbandsController::class, 'deleteTaxband']);
-});
-
 
 Route::prefix('leave-types')->middleware(['auth:web,employee'])->group(function () {
     Route::get('/list', [LeaveTypesController::class, 'index']);
@@ -230,12 +246,6 @@ Route::prefix('leave-types')->middleware(['auth:web,employee'])->group(function 
 });
 
 Route::prefix('payslip-reports')->middleware(['auth:web,employee'])->group(function () {
-    Route::get('/tier-one',[PayslipsReports::class, 'tier_one']);
-    Route::get('/tier-two',[PayslipsReports::class, 'tier_two']);
-    Route::get('/allowances',[PayslipsReports::class, 'allowances']);
-    Route::get('/benefits',[PayslipsReports::class, 'benefits']);
-    Route::get('/statutory',[PayslipsReports::class, 'statutory']);
-    Route::get('/non-statutory',[PayslipsReports::class, 'non_statutory']);
     Route::get('/paye',[PayslipsReports::class, 'paye']);
     Route::get('/paye-tax', [PayslipsReports::class, 'paye_tax']); 
     Route::get('/bank-net-pay', [PayslipsReports::class, 'bank_net_pay']); 
@@ -252,14 +262,9 @@ Route::prefix('payslip-exports')->middleware(['auth:web,employee'])->group(funct
     Route::get('/download-pdfs/{id}/{zip?}', [PayslipExports::class, 'downloadPdfExports']);
     Route::post('/print-tier-one', [PayslipExports::class, 'print_tierOne']);
     Route::post('/print-tier-two', [PayslipExports::class, 'print_tierTwo']);
-    // Route::post('/print-paye', [PayslipExports::class, 'print_paye']);
     Route::post('/generate-payee-report', [PayslipExports::class, 'generate_payee_report']);
     Route::post('/print-paye-tax', [PayslipExports::class, 'print_paye_tax']);
     Route::post('/print-bank-net-pay', [PayslipExports::class, 'print_bank_net_pay']);
-    Route::post('/print-allowances', [PayslipExports::class, 'print_allowances']);
-    Route::post('/print-benefits', [PayslipExports::class, 'print_benefits']);
-    Route::post('/print-statutory', [PayslipExports::class, 'print_statutory']);
-    Route::post('/print-non-statutory', [PayslipExports::class, 'print_non_statutory']);
 });
 
 Route::prefix('employees')->middleware(['auth:web,employee'])->group(function () {
@@ -300,23 +305,6 @@ Route::prefix('packages')->middleware(['auth:web,employee'])->group(function () 
     Route::delete('/delete/{id}', [PackageController::class, 'delete']);
 });
 
-Route::prefix('projects')->middleware(['auth:web,employee'])->group(function () {
-    Route::get('/list', [ProjectsController::class, 'index']);
-    Route::POST('/store', [ProjectsController::class, 'store']);
-    Route::get('/editProject/{id}', [ProjectsController::class, 'edit']);
-    Route::post('/updateProject/{id}', [ProjectsController::class, 'update']);
-    Route::delete('/deleteProject/{id}', [ProjectsController::class, 'deleteProject']);
-
-    Route::post('/print-project', [ProjectsController::class, 'print_project']);
-});
-
-Route::prefix('tasks')->middleware(['auth:web,employee'])->group(function () {
-    Route::get('/list', [TasksController::class, 'index']);
-    Route::POST('/store', [TasksController::class, 'store']);
-    Route::get('/edit/{id}', [TasksController::class, 'edit']);
-    Route::post('/update/{id}', [TasksController::class, 'update']);
-    Route::delete('/delete/{id}', [TasksController::class, 'delete']);
-});
 
 Route::prefix('exports')->middleware(['auth:web,employee'])->group(function () {
     Route::get('/paye/{id}', [PayslipExports::class, 'paye']);
@@ -338,13 +326,6 @@ Route::prefix('leaves')->middleware(['auth:web,employee'])->group(function () {
     Route::get('/remaining-days/{id}', [LeavesController::class, 'remaining_leave_days']);
 });
 
-Route::prefix('attendance')->middleware(['auth:web,employee'])->group(function () {
-    Route::get('/list', [AttendanceController::class, 'index']);
-    Route::get('/staffAttendance', [AttendanceController::class, 'staffAttendance']);
-    Route::post('/store_punchIn', [AttendanceController::class, 'store_punchIn']);
-    Route::post('/store_punchOut', [AttendanceController::class, 'store_punchOut']);
-    Route::get('/checkPunchStatus', [AttendanceController::class, 'checkPunchStatus']);
-});
 
 Route::prefix('communications')->middleware(['auth:web,employee'])->group(function () {
     Route::get('/list', [CommunicationsController::class, 'index']);
@@ -374,12 +355,6 @@ Route::prefix('staff')->middleware(['auth:web,employee'])->group(function () {
     Route::get('/payslip',  [StaffController::class, 'payslip']);
     Route::get('/allLeaves',   [StaffController::class, 'allLeaves']);
     Route::POST('/storeLeave', [StaffController::class, 'storeLeave']);
-    Route::get('/tasks',    [StaffController::class, 'tasks']);
-    Route::get('/projects', [StaffController::class, 'projects']);
-    Route::get('/editProject/{id}', [StaffController::class, 'edit']);
-    Route::post('/updateProject/{id}', [StaffController::class, 'update']);
-    Route::get('/editTask/{id}', [StaffController::class, 'editTask']);
-    Route::post('/updateTask/{id}', [StaffController::class, 'updateTask']);
     Route::get('/paye', [StaffController::class, 'paye']);
 
     Route::get('/print-payslip/{id}/{action}', [StaffController::class, 'printPayslip']);
@@ -392,8 +367,6 @@ Route::prefix('staff')->middleware(['auth:web,employee'])->group(function () {
 
     Route::get('/staff-contracts', [ContractsController::class, 'staff_contracts']);
     Route::post('/storeContract', [ContractsController::class, 'storeContract']);
-
-    Route::get('/staff-attendances', [AttendanceController::class, 'staff_attendances']);
 
     Route::get('/all-staff', [EmployeesController::class, 'all_staff']);
     Route::get('/edit-staff/{id}', [EmployeesController::class, 'edit_staff']);
@@ -411,10 +384,6 @@ Route::prefix('staff')->middleware(['auth:web,employee'])->group(function () {
 
     Route::get('/tier-one',[PayslipsReports::class, 'staff_tier_one']);
     Route::get('/tier-two',[PayslipsReports::class, 'staff_tier_two']);
-    Route::get('/allowances',[PayslipsReports::class, 'staff_allowances']);
-    Route::get('/benefits',[PayslipsReports::class, 'staff_benefits']);
-    Route::get('/statutory',[PayslipsReports::class, 'staff_statutory']);
-    Route::get('/non-statutory',[PayslipsReports::class, 'staff_non_statutory']);
     Route::get('/all-staff-paye',[PayslipsReports::class, 'staff_paye']);
     Route::get('/paye-tax', [PayslipsReports::class, 'staff_paye_tax']); 
     Route::get('/bank-net-pay', [PayslipsReports::class, 'staff_bank_net_pay']); 
@@ -423,8 +392,6 @@ Route::prefix('staff')->middleware(['auth:web,employee'])->group(function () {
     Route::get('/set-as-admin',[AuthController::class, 'set_as_admin']);
     Route::get('/set-as-staff',[AuthController::class, 'set_as_staff']);
     
-    
-
     Route::post('/post-assign-permissions/{id}', [EmployeesController::class, 'post_assign_permissions']);
 });
 
@@ -450,38 +417,6 @@ Route::prefix('expenses')->middleware(['auth:web,employee'])->group(function () 
     Route::delete('/delete-expense-type/{id}', [ExpensesController::class, 'delete_expense_type']);
     Route::delete('/delete-expense/{id}', [ExpensesController::class, 'delete_expense']);
     Route::delete('/delete-staff-expense/{id}', [ExpensesController::class, 'delete_staff_expense']);
-});
-
-Route::prefix('trainings')->middleware(['auth:web,employee'])->group(function () {
-    Route::get('/list', [TrainingsController::class, 'index']);
-    Route::get('/list-pending', [TrainingsController::class, 'pendingTrainings']);
-    Route::get('/list-requests', [TrainingsController::class, 'listRequests']);
-
-    Route::post('/store-training', [TrainingsController::class, 'store_training']);
-    Route::get('/edit-training/{id}', [TrainingsController::class, 'edit_training']);
-    Route::post('/update-training/{id}', [TrainingsController::class, 'update_training']);
-
-    Route::get('/edit-status/{id}', [TrainingsController::class, 'edit_status']);
-    Route::get('/edit-complete-status/{id}', [TrainingsController::class, 'edit_complete_status']);
-
-    Route::post('/update-status/{id}', [TrainingsController::class, 'update_status']);
-    Route::post('/update-complete-status/{id}', [TrainingsController::class, 'update_complete_status']);
-
-    Route::delete('/delete-training/{id}', [TrainingsController::class, 'delete_training']);
-
-    Route::delete('/delete-request/{id}', [TrainingsController::class, 'delete_request']);
-
-    Route::get('/invite-staff/{id}', [TrainingsController::class, 'add_staff']);
-    Route::post('/post-invite-staff/{id}', [TrainingsController::class, 'post_add_staff']);
-
-    Route::get('/invite-departments/{id}', [TrainingsController::class, 'add_by_department']);
-    Route::post('/post-invite-by-department/{id}', [TrainingsController::class, 'post_add_by_department']);
-
-    Route::get('/upload-certificate/{id}', [TrainingsController::class, 'upload_certificate']);
-    Route::post('/update-certificate/{id}', [TrainingsController::class, 'update_certificate']);
-    Route::get('/view-certificate/{id}', [TrainingsController::class, 'view_certificate']);
-
-    
 });
 
 Route::get('/staff/login', [StaffController::class, 'login']);
