@@ -1499,6 +1499,11 @@ $('#staff_create_template_form').on('submit', function (e) {
                 if ($('#deductions_table').length > 0) {
                     deductions_table.ajax.reload();
                 }
+
+                
+                if ($('#deduction_types_table').length > 0) {
+                    deduction_types_table.ajax.reload();
+                }
                 if ($('#benefits_in_kind_table').length > 0) {
                     benefits_in_kind_table.ajax.reload();
                 }
@@ -1507,12 +1512,7 @@ $('#staff_create_template_form').on('submit', function (e) {
                     leave_types_table.ajax.reload();
                 }
                 
-                if ($('#statutory_table').length > 0) {
-                    statutory_table.ajax.reload();
-                }
-                if ($('#non_statutory_table').length > 0) {
-                    non_statutory_table.ajax.reload();
-                }
+               
                 if ($('#employees_group_table').length > 0) {
                     employees_group_table.ajax.reload();
                 }

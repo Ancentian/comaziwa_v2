@@ -205,6 +205,19 @@ Route::prefix('sales')->middleware(['auth:web,employee'])->group(function () {
     Route::post('store-sales', [SalesController::class, 'store_sales']);
 });
 
+Route::prefix('deductions')->middleware(['auth:web,employee'])->group(function () {
+    Route::get('/index', [DeductionsController::class, 'index']);
+    Route::get('/add-deduction', [DeductionsController::class, 'add_deduction']);
+    Route::get('/deduction-types', [DeductionsController::class, 'deduction_types']);
+    Route::post('/store-deduction-type', [DeductionsController::class, 'store_deduction_type']);
+    Route::get('/edit-deduction/{id}', [DeductionsController::class, 'edit_deduction']);
+    Route::get('/edit-deduction-type/{id}', [DeductionsController::class, 'edit_deduction_type']);
+    Route::post('/update-deduction/{id}', [DeductionsController::class, 'update_deduction']);
+    Route::post('/update-deduction-type/{id}', [DeductionsController::class, 'update_deduction_type']);
+    Route::delete('/delete-deduction/{id}', [DeductionsController::class, 'delete_deduction']);
+    Route::delete('/delete-deduction-type/{id}', [DeductionsController::class, 'delete_deduction_type']);
+});
+
 Route::prefix('profile')->middleware(['auth:web,employee'])->group(function () {
     Route::get('/my-profile', [ProfilesController::class, 'myProfile']);
     Route::get('/staff-profile', [ProfilesController::class, 'staffProfile']);
