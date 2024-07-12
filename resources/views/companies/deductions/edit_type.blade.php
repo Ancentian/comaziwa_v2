@@ -1,0 +1,77 @@
+<div class="modal-dialog modal-dialog-centered modal-md" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Update Deduction Type</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="edit_deduction_type" action="{{ url('deductions/update-deduction-type', $deduction->id) }}" method="POST">
+                @csrf
+                <div class="row">
+                    <div class="col-sm-12">  
+                        <div class="form-group">
+                            <label class="col-form-label">Deduction Name <span class="text-danger">*</span></label>
+                            <input class="form-control date" name="name" value="{{$deduction->name}}" required>
+                        </div>
+                    </div> 
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label>Deduction Type <span class="text-danger">*</span></label>
+                            <select class="form-control select" id="deduction_type" name="type" required>
+                                <option value="">--Choose Here--</option>
+                                <option value="individual" @if($deduction->type == 'individual') selected @endif>Individual</option>
+                                <option value="general" @if($deduction->type == 'general') selected @endif>General</option>
+                            </select>
+                            <span class="modal-error invalid-feedback" role="alert"></span>
+                        </div>
+                    </div> 
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label>Amount <span class="text-danger">*</span></label>
+                            <input class="form-control" type="number" name="amount" value="{{$deduction->amount}}" required>
+                            <span class="modal-error invalid-feedback" role="alert"></span>
+                        </div>
+                    </div>  
+                </div>
+                <div class="submit-section">
+                    <button type="submit" class="btn btn-primary submit-btn">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+            
+        $('#edit_deduction_type').on('submit', function (e) {
+            e.preventDefault();
+    
+            var form = $(this);
+            var frm = this;
+            var formData = form.serialize();
+            var url = form.attr('action');
+    
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: formData,
+                success: function (response) {
+                    // Handle success response
+                    frm.reset();
+                    
+                    // Close the modal
+                    $('#edit_modal').modal('hide');
+                    deduction_types_table.ajax.reload();
+                    toastr.success(response.message, 'Success');
+                },
+                error: function (xhr, status, error) {
+                    // Handle error response
+                    toastr.error('Something Went Wrong!, Try again!','Error');
+                }
+            });
+        });
+    });
+</script>

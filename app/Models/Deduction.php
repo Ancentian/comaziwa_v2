@@ -9,10 +9,6 @@ class Deduction extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'tenant_id',
-        'name',
-        'type',
-        'value'
-    ];
+    protected $table = 'deductions';
+    protected $guarded = ['id'];
 }

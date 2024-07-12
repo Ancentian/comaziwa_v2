@@ -145,6 +145,15 @@
                     </li>
 
                     <li class="submenu">
+                        <a href="#"><i class="la la-cubes"></i> <span> Deductions </span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+                            <li><a href="{{url('deductions/index')}}">List</a></li>
+                            <li><a href="{{url('deductions/add-deduction')}}">Add Deduction</a></li>
+                            <li><a href="{{url('deductions/deduction-types')}}"> Deduction Types</a></li>                          
+                        </ul>
+                    </li>
+
+                    <li class="submenu">
                         <a href="#"><i class="la la-cog"></i> <span> Settings </span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li><a href="{{url('company/profile')}}"> Collection Centers </a></li>
