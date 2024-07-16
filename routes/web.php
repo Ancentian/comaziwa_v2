@@ -30,6 +30,8 @@ use App\Http\Controllers\FarmersController;
 use App\Http\Controllers\MilkCollectionController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\SalesController;
+use App\Http\Controllers\SharesController;
+use App\Http\Controllers\AssetsController;
 use App\Http\Controllers\Crons;
 
 
@@ -150,7 +152,8 @@ Route::prefix('cooperative')->middleware(['auth:web,employee'])->group(function 
     Route::post('/update-farmer/{id}', [FarmersController::class, 'update_farmer']);
     Route::delete('/delete-farmer/{id}', [FarmersController::class, 'delete_farmer']);
 
-    //Milk Collection
+    Route::get('/getFarmersByCenter/{centerId}', [FarmersController::class, 'getFarmersByCenter']);
+
 });
 
 Route::prefix('milkCollection')->middleware(['auth:web,employee'])->group(function () {
@@ -164,6 +167,10 @@ Route::prefix('milkCollection')->middleware(['auth:web,employee'])->group(functi
     Route::delete('/delete-milk-collection/{id}', [MilkCollectionController::class, 'delete_milkCollection']);
     //Center
     Route::get('/center-farmers/{id}', [MilkCollectionController::class, 'center_farmers']);
+
+    //Import Milk
+    Route::get('/import-milk/{id}', [MilkCollectionController::class, 'import_milk']);
+    Route::post('/store-import-milk', [MilkCollectionController::class, 'store_import_milk']);
     
 });
 
@@ -206,16 +213,52 @@ Route::prefix('sales')->middleware(['auth:web,employee'])->group(function () {
 });
 
 Route::prefix('deductions')->middleware(['auth:web,employee'])->group(function () {
-    Route::get('/index', [DeductionsController::class, 'index']);
-    Route::get('/add-deduction', [DeductionsController::class, 'add_deduction']);
+    Route::get('/index', [DeductionsController::class, 'index'])->name('deductions.index');
+    Route::get('/add-deduction', [DeductionsController::class, 'add_deduction'])->name('deductions.add-deduction');
+    Route::get('/get-deduction-details/{id}', [DeductionsController::class, 'getdeductiondetails']);
+    Route::post('/store-deduction', [DeductionsController::class, 'store_deduction']);
+    Route::post('/store-general-deduction', [DeductionsController::class, 'store_general_deduction']);
+
     Route::get('/deduction-types', [DeductionsController::class, 'deduction_types']);
     Route::post('/store-deduction-type', [DeductionsController::class, 'store_deduction_type']);
+
     Route::get('/edit-deduction/{id}', [DeductionsController::class, 'edit_deduction']);
     Route::get('/edit-deduction-type/{id}', [DeductionsController::class, 'edit_deduction_type']);
+
     Route::post('/update-deduction/{id}', [DeductionsController::class, 'update_deduction']);
     Route::post('/update-deduction-type/{id}', [DeductionsController::class, 'update_deduction_type']);
+
     Route::delete('/delete-deduction/{id}', [DeductionsController::class, 'delete_deduction']);
     Route::delete('/delete-deduction-type/{id}', [DeductionsController::class, 'delete_deduction_type']);
+});
+
+Route::prefix('shares')->middleware(['auth:web,employee'])->group(function () {
+    Route::get('/index', [SharesController::class, 'index'])->name('shares.index');
+    Route::get('/all-shares', [SharesController::class, 'all_shares']);
+    Route::post('/store-shares', [SharesController::class, 'store_shares']); 
+    Route::get('/edit-shares/{id}', [SharesController::class, 'edit_shares']);
+    Route::post('/update-shares/{id}', [SharesController::class, 'update_shares']);
+    Route::delete('/delete-shares/{id}', [SharesController::class, 'delete_shares']);   
+});
+
+Route::prefix('assets')->middleware(['auth:web,employee'])->group(function () {
+    Route::get('/index', [AssetsController::class, 'index'])->name('assets.index');
+    Route::get('/all-assets', [AssetsController::class, 'all_assets']);
+
+    Route::get('/categories', [AssetsController::class, 'categories']);
+    Route::get('/asset-categories', [AssetsController::class, 'asset_categories']);
+
+    Route::post('/store-asset-category', [AssetsController::class, 'store_asset_category']);
+    Route::post('/store-assets', [AssetsController::class, 'store_assets']);
+
+    Route::get('/edit-asset-category/{id}', [AssetsController::class, 'edit_asset_category']);
+    Route::get('/edit-asset/{id}', [AssetsController::class, 'edit_asset']);
+
+    Route::post('/update-asset-category/{id}', [AssetsController::class, 'update_asset_category']);
+    Route::post('/update-asset/{id}', [AssetsController::class, 'update_assets']);
+
+    Route::delete('/delete-asset-category/{id}', [AssetsController::class, 'delete_asset_category']);
+    Route::delete('/delete-asset/{id}', [AssetsController::class, 'delete_asset']);   
 });
 
 Route::prefix('profile')->middleware(['auth:web,employee'])->group(function () {

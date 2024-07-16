@@ -136,8 +136,9 @@
                                 <label>Gender <span class="text-danger">*</span></label>
                                 <select class="select form-control" name="gender" required>
                                     <option value="">Select</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
                                 </select>
                                 <span class="modal-error invalid-feedback" role="alert"></span>
                             </div>

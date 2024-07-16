@@ -66,6 +66,15 @@ class FarmersController extends Controller
         return view('companies.cooperatives.index', compact('centers', 'banks'));
     }
 
+    public function getFarmersByCenter($centerId)
+    {
+        $tenant_id = auth()->user()->id;
+        $farmers = Farmer::where('center_id', $centerId)
+                ->where('tenant_id', $tenant_id)
+                ->get();
+        return response()->json($farmers);
+    }
+
     protected function store_cooperativeFarmers(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -150,10 +159,10 @@ class FarmersController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'fname' => 'required|string|max:255',
-            'mname' => '',
+            'mname' => 'nullable|string|max:255',
             'lname' => 'required|string|max:255',
-            'id_number' => 'required|string|max:255|unique:farmers,id_number',
-            'farmerID' => 'required|string|max:255|unique:farmers,farmerID',
+            'id_number' => 'required|string|max:255|unique:farmers,id_number,' . $id,
+            'farmerID' => 'required|string|max:255|unique:farmers,farmerID,' . $id,
             'contact1' => 'nullable|string|max:255',
             'contact2' => 'nullable|string|max:255',
             'gender' => 'required|string|max:255',
@@ -173,10 +182,11 @@ class FarmersController extends Controller
             'nok_phone' => 'nullable|string|max:255', // Kin Phone
             'relationship' => 'nullable|string|max:255' // Kin Relationship
         ]);
-
+        
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
+        
 
         DB::beginTransaction();
         try {

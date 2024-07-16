@@ -107,6 +107,51 @@ INSERT INTO `annual_tax_rates` (`id`, `year`, `band_1`, `band_2`, `band_3`, `ban
 	(1, 2023, '["402","0"]', '["110","5"]', '["130","10"]', '["3000","17.5"]', '["16395","25"]', '["20000","30"]', '["50000","35"]', '2024-03-26 00:16:17', '2024-03-26 00:16:17'),
 	(2, 2024, '["490","0"]', '["110","5"]', '["130","10"]', '["3166.67","17.5"]', '["16000","25"]', '["30520","30"]', '["50000","35"]', '2024-03-25 23:49:22', '2024-03-25 23:49:22');
 
+-- Dumping structure for table comaziwa.assets
+CREATE TABLE IF NOT EXISTS `assets` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `tenant_id` bigint unsigned NOT NULL,
+  `category_id` bigint unsigned NOT NULL,
+  `asset_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `purchase_date` date NOT NULL,
+  `purchase_price` decimal(15,2) NOT NULL,
+  `current_value` decimal(15,2) NOT NULL,
+  `location` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `file` text COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `assets_asset_name_unique` (`asset_name`),
+  KEY `assets_tenant_id_foreign` (`tenant_id`),
+  KEY `assets_category_id_foreign` (`category_id`),
+  CONSTRAINT `assets_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `asset_categories` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `assets_tenant_id_foreign` FOREIGN KEY (`tenant_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table comaziwa.assets: ~1 rows (approximately)
+INSERT INTO `assets` (`id`, `tenant_id`, `category_id`, `asset_name`, `purchase_date`, `purchase_price`, `current_value`, `location`, `status`, `description`, `file`, `created_at`, `updated_at`) VALUES
+	(1, 239, 1, 'Super bike', '2024-07-03', 45000.00, 36000.00, 'Nairobi County', '1', 'ffffffffff', '1721132007_4-days-naro-moru-route-hiking-gallery-4.jpg', '2024-07-16 12:13:27', '2024-07-16 12:43:00');
+
+-- Dumping structure for table comaziwa.asset_categories
+CREATE TABLE IF NOT EXISTS `asset_categories` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `tenant_id` bigint unsigned NOT NULL,
+  `category_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `asset_categories_category_name_unique` (`category_name`),
+  KEY `asset_categories_tenant_id_foreign` (`tenant_id`),
+  CONSTRAINT `asset_categories_tenant_id_foreign` FOREIGN KEY (`tenant_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table comaziwa.asset_categories: ~2 rows (approximately)
+INSERT INTO `asset_categories` (`id`, `tenant_id`, `category_name`, `description`, `created_at`, `updated_at`) VALUES
+	(1, 239, 'Super Bike', 'Test', '2024-07-16 11:35:32', '2024-07-16 13:06:17');
+
 -- Dumping structure for table comaziwa.attendances
 CREATE TABLE IF NOT EXISTS `attendances` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
@@ -334,17 +379,61 @@ INSERT INTO `contract_types` (`id`, `tenant_id`, `name`, `created_at`, `updated_
 CREATE TABLE IF NOT EXISTS `deductions` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `tenant_id` bigint unsigned NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `value` double(8,2) NOT NULL,
+  `farmer_id` bigint unsigned DEFAULT NULL,
+  `deduction_id` bigint unsigned DEFAULT NULL,
+  `center_id` bigint unsigned DEFAULT NULL,
+  `deduction_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `amount` double(8,2) NOT NULL,
+  `date` date NOT NULL,
+  `user_id` bigint unsigned NOT NULL,
+  `user_role` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `deductions_tenant_id_foreign` (`tenant_id`),
+  KEY `deductions_farmer_id_foreign` (`farmer_id`),
+  KEY `deductions_deduction_id_foreign` (`deduction_id`),
+  KEY `deductions_center_id_foreign` (`center_id`),
+  CONSTRAINT `deductions_center_id_foreign` FOREIGN KEY (`center_id`) REFERENCES `collection_centers` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `deductions_deduction_id_foreign` FOREIGN KEY (`deduction_id`) REFERENCES `deduction_types` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `deductions_farmer_id_foreign` FOREIGN KEY (`farmer_id`) REFERENCES `farmers` (`id`) ON DELETE CASCADE,
   CONSTRAINT `deductions_tenant_id_foreign` FOREIGN KEY (`tenant_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table comaziwa.deductions: ~0 rows (approximately)
+-- Dumping data for table comaziwa.deductions: ~8 rows (approximately)
+INSERT INTO `deductions` (`id`, `tenant_id`, `farmer_id`, `deduction_id`, `center_id`, `deduction_type`, `amount`, `date`, `user_id`, `user_role`, `created_at`, `updated_at`) VALUES
+	(1, 239, 1, 1, 1, 'individual', 1000.00, '2024-07-11', 239, NULL, '2024-07-13 15:27:11', '2024-07-13 15:27:11'),
+	(2, 239, 1, 4, 1, 'individual', 2500.00, '2024-07-11', 239, NULL, '2024-07-13 15:27:11', '2024-07-13 15:27:11'),
+	(3, 239, 2, 4, 2, 'individual', 2500.00, '2024-07-10', 239, NULL, '2024-07-13 15:35:03', '2024-07-13 15:35:03'),
+	(4, 239, NULL, 5, NULL, 'general', 200.00, '2024-07-04', 239, NULL, '2024-07-13 17:46:53', '2024-07-13 17:46:53'),
+	(5, 239, NULL, 6, NULL, 'general', 20.00, '2024-07-04', 239, NULL, '2024-07-13 17:46:53', '2024-07-13 17:46:53'),
+	(6, 239, NULL, 5, NULL, 'general', 200.00, '2024-07-12', 239, NULL, '2024-07-13 17:49:37', '2024-07-13 17:49:37'),
+	(7, 239, NULL, 6, NULL, 'general', 20.00, '2024-07-12', 239, NULL, '2024-07-13 17:49:37', '2024-07-13 17:49:37'),
+	(8, 239, NULL, 5, NULL, 'general', 200.00, '2024-07-03', 239, NULL, '2024-07-13 17:50:27', '2024-07-13 17:50:27'),
+	(9, 239, NULL, 6, NULL, 'general', 20.00, '2024-07-03', 239, NULL, '2024-07-13 17:50:27', '2024-07-13 17:50:27');
+
+-- Dumping structure for table comaziwa.deduction_types
+CREATE TABLE IF NOT EXISTS `deduction_types` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `tenant_id` bigint unsigned NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `amount` double(8,2) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `deduction_types_name_unique` (`name`),
+  KEY `deduction_types_tenant_id_foreign` (`tenant_id`),
+  CONSTRAINT `deduction_types_tenant_id_foreign` FOREIGN KEY (`tenant_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table comaziwa.deduction_types: ~4 rows (approximately)
+INSERT INTO `deduction_types` (`id`, `tenant_id`, `name`, `type`, `amount`, `created_at`, `updated_at`) VALUES
+	(1, 239, 'Ai Science', 'individual', 1000.00, '2024-07-12 06:55:36', '2024-07-12 07:22:47'),
+	(4, 239, 'Test', 'individual', 2500.00, '2024-07-12 12:38:43', '2024-07-12 12:38:43'),
+	(5, 239, 'Office Ded', 'general', 200.00, '2024-07-13 16:20:11', '2024-07-13 16:20:11'),
+	(6, 239, 'Fine', 'general', 20.00, '2024-07-13 16:20:31', '2024-07-13 16:20:31'),
+	(7, 239, 'Credit Card', 'general', 350.00, '2024-07-13 17:59:24', '2024-07-13 17:59:24');
 
 -- Dumping structure for table comaziwa.emails
 CREATE TABLE IF NOT EXISTS `emails` (
@@ -756,7 +845,7 @@ CREATE TABLE IF NOT EXISTS `farmers` (
 -- Dumping data for table comaziwa.farmers: ~0 rows (approximately)
 INSERT INTO `farmers` (`id`, `tenant_id`, `fname`, `mname`, `lname`, `id_number`, `farmerID`, `contact1`, `contact2`, `gender`, `join_date`, `dob`, `center_id`, `location`, `marital_status`, `status`, `education_level`, `bank_id`, `bank_branch`, `acc_name`, `acc_number`, `mpesa_number`, `nok_name`, `nok_phone`, `relationship`, `created_at`, `updated_at`) VALUES
 	(1, 239, 'Ancent', 'Njoki', 'Mutuma', '33366869', 'MDC/002', '099877788', '888888', 'male', '2024-06-03', '2024-05-27', 1, 'TRM', 'single', '1', '4', 1, 'Meru', 'Alice Nkatha', '44444444', '4444444444', 'Majesty', '0747954284', 'brother', '2024-06-29 14:02:10', '2024-07-01 02:57:09'),
-	(2, 239, 'Philemon', NULL, 'Makori', '33366878', 'MDC/0023', '07869996886', NULL, 'Male', '2024-07-02', '2024-06-30', 1, 'MERU', 'single', '1', '4', 1, 'Embu', 'Alice Nkatha', '444444444454', '4444444444', 'Majesty', '0729303852', 'mother', '2024-07-01 02:54:40', '2024-07-01 02:54:40');
+	(2, 239, 'Philemon', NULL, 'Makori', '33366878', 'MDC/0023', '07869996886', NULL, 'male', '2024-07-02', '2024-06-30', 1, 'MERU', 'single', '1', '4', 1, 'Embu', 'Alice Nkatha', '444444444454', '4444444444', 'Majesty', '0729303852', 'mother', '2024-07-01 02:54:40', '2024-07-15 18:26:15');
 
 -- Dumping structure for table comaziwa.inventories
 CREATE TABLE IF NOT EXISTS `inventories` (
@@ -888,9 +977,9 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table comaziwa.migrations: ~65 rows (approximately)
+-- Dumping data for table comaziwa.migrations: ~62 rows (approximately)
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(1, '2014_10_12_000000_create_users_table', 1),
 	(2, '2014_10_12_100000_create_password_reset_tokens_table', 1),
@@ -973,7 +1062,15 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(79, '2024_07_03_132315_create_store_sales_table', 42),
 	(80, '2024_07_03_134637_create_store_sales_table', 43),
 	(81, '2024_07_03_140142_create_store_sales_table', 44),
-	(82, '2024_07_03_185602_add_field_to_inventories_table', 45);
+	(82, '2024_07_03_185602_add_field_to_inventories_table', 45),
+	(83, '2024_07_12_055310_create_deduction_types_table', 46),
+	(84, '2024_07_12_055829_create_deductions_table', 47),
+	(85, '2024_07_12_084042_create_deduction_types_table', 48),
+	(86, '2024_07_12_084222_create_deductions_table', 48),
+	(87, '2024_07_13_182326_create_deductions_table', 49),
+	(88, '2024_07_16_051739_create_share_contributions_table', 50),
+	(89, '2024_07_16_125829_create_asset_categories_table', 51),
+	(90, '2024_07_16_130056_create_assets_table', 51);
 
 -- Dumping structure for table comaziwa.milk_collections
 CREATE TABLE IF NOT EXISTS `milk_collections` (
@@ -998,13 +1095,15 @@ CREATE TABLE IF NOT EXISTS `milk_collections` (
   CONSTRAINT `milk_collections_farmer_id_foreign` FOREIGN KEY (`farmer_id`) REFERENCES `farmers` (`id`) ON DELETE CASCADE,
   CONSTRAINT `milk_collections_tenant_id_foreign` FOREIGN KEY (`tenant_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   CONSTRAINT `milk_collections_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `employees` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table comaziwa.milk_collections: ~2 rows (approximately)
 INSERT INTO `milk_collections` (`id`, `tenant_id`, `farmer_id`, `center_id`, `collection_date`, `morning`, `evening`, `rejected`, `total`, `user_id`, `created_at`, `updated_at`) VALUES
 	(1, 239, 1, 1, '2024-06-04', 45.00, 40.00, 10.00, 75.00, 180, NULL, '2024-07-02 01:46:53'),
 	(5, 239, 1, 1, '2024-07-01', 45.00, 0.00, 0.00, 45.00, 180, '2024-07-02 01:47:18', '2024-07-02 01:47:18'),
-	(6, 239, 2, 1, '2024-07-01', 34.00, 0.00, 0.00, 34.00, 180, '2024-07-02 01:47:18', '2024-07-02 01:47:18');
+	(6, 239, 2, 1, '2024-07-01', 34.00, 0.00, 0.00, 34.00, 180, '2024-07-02 01:47:18', '2024-07-02 01:47:18'),
+	(14, 239, 1, 1, '2024-07-16', 45.00, 45.00, 10.00, 80.00, 180, '2024-07-16 02:09:43', '2024-07-16 02:09:43'),
+	(15, 239, 2, 1, '2024-07-16', 36.00, 45.00, 3.00, 78.00, 180, '2024-07-16 02:09:43', '2024-07-16 02:09:43');
 
 -- Dumping structure for table comaziwa.model_has_permissions
 CREATE TABLE IF NOT EXISTS `model_has_permissions` (
@@ -1326,6 +1425,32 @@ CREATE TABLE IF NOT EXISTS `salary_types` (
 
 -- Dumping data for table comaziwa.salary_types: ~0 rows (approximately)
 
+-- Dumping structure for table comaziwa.share_contributions
+CREATE TABLE IF NOT EXISTS `share_contributions` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `tenant_id` bigint unsigned NOT NULL,
+  `center_id` bigint unsigned NOT NULL,
+  `farmer_id` bigint unsigned NOT NULL,
+  `share_value` double(8,2) NOT NULL,
+  `issue_date` date NOT NULL,
+  `mode_of_contribution` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_id` bigint unsigned DEFAULT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `share_contributions_tenant_id_foreign` (`tenant_id`),
+  KEY `share_contributions_farmer_id_foreign` (`farmer_id`),
+  KEY `share_contributions_center_id_foreign` (`center_id`),
+  CONSTRAINT `share_contributions_center_id_foreign` FOREIGN KEY (`center_id`) REFERENCES `collection_centers` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `share_contributions_farmer_id_foreign` FOREIGN KEY (`farmer_id`) REFERENCES `farmers` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `share_contributions_tenant_id_foreign` FOREIGN KEY (`tenant_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table comaziwa.share_contributions: ~1 rows (approximately)
+INSERT INTO `share_contributions` (`id`, `tenant_id`, `center_id`, `farmer_id`, `share_value`, `issue_date`, `mode_of_contribution`, `user_id`, `description`, `created_at`, `updated_at`) VALUES
+	(1, 239, 1, 1, 2998.00, '2024-07-01', 'cash', NULL, 'fffffffffffffff', '2024-07-16 03:28:00', '2024-07-16 06:11:37');
+
 -- Dumping structure for table comaziwa.statutory_deductions
 CREATE TABLE IF NOT EXISTS `statutory_deductions` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
@@ -1393,7 +1518,7 @@ CREATE TABLE IF NOT EXISTS `store_sales` (
   CONSTRAINT `store_sales_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table comaziwa.store_sales: ~0 rows (approximately)
+-- Dumping data for table comaziwa.store_sales: ~6 rows (approximately)
 INSERT INTO `store_sales` (`id`, `tenant_id`, `center_id`, `farmer_id`, `category_id`, `item_id`, `order_date`, `qty`, `unit_cost`, `total_cost`, `payment_mode`, `description`, `user_id`, `status`, `created_at`, `updated_at`) VALUES
 	(1, 239, 1, 2, 4, 2, '2024-07-03', 4, 5000.00, 20000.00, '1', NULL, 239, 0, '2024-07-03 12:15:01', '2024-07-03 12:15:01'),
 	(2, 239, 1, 2, 3, 1, '2024-07-03', 4, 300.00, 1200.00, '1', NULL, 239, 0, '2024-07-03 12:15:01', '2024-07-03 12:15:01'),

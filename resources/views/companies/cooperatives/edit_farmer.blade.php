@@ -91,6 +91,7 @@
                                 <option value="">Select</option>
                                 <option value="male" @if($farmer->gender == 'male') selected @endif>Male</option>
                                 <option value="female" @if($farmer->gender == 'female') selected @endif>Female</option>
+                                <option value="other" @if($farmer->gender == 'other') selected @endif>Other</option>
                             </select>
                             <span class="modal-error invalid-feedback" role="alert"></span>
                         </div>

@@ -22,7 +22,6 @@ class InventoryController extends Controller
 {
     public function index()
     {
-        //Sales
         return view('companies.inventory.index');
     }
 

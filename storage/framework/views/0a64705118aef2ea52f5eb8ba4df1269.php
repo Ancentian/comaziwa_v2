@@ -1051,16 +1051,16 @@ $('#staff_send_mail_form').on('submit', function (e) {
         });
     });
     
-    $('#import_employee_form').on('submit', function (e) {
+    $('#import_milk_form').on('submit', function (e) {
         e.preventDefault();
     
-        $("#btn_employee_import").html("Please wait...");
+        $("#btn_milk_import").html("Please wait...");
     
         var form = this;
         var formData = new FormData(form);
     
         $.ajax({
-            url: '<?php echo e(url('employees/imports')); ?>',
+            url: '<?php echo e(url('milkCollection/store-import-milk')); ?>',
             method: 'POST',
             data: formData,
             contentType: false, 
@@ -1068,7 +1068,7 @@ $('#staff_send_mail_form').on('submit', function (e) {
             success: function (response) {
                 form.reset();
                 employees_table.ajax.reload();
-                $("#btn_employee_import").html("Import");
+                $("#btn_milk_import").html("Import");
                 $('#import').modal('hide');
                 toastr.success(response.message, 'Success');
             },
@@ -1490,29 +1490,27 @@ $('#staff_create_template_form').on('submit', function (e) {
                 if ($('#units_table').length > 0) {
                     units_table.ajax.reload();
                 }
-                if ($('#allowances_table').length > 0) {
-                    allowances_table.ajax.reload();
-                }
-                if ($('#tax_bands_table').length > 0) {
-                    tax_bands_table.ajax.reload();
-                }
                 if ($('#deductions_table').length > 0) {
                     deductions_table.ajax.reload();
                 }
 
-                
                 if ($('#deduction_types_table').length > 0) {
                     deduction_types_table.ajax.reload();
                 }
-                if ($('#benefits_in_kind_table').length > 0) {
-                    benefits_in_kind_table.ajax.reload();
+                if ($('#shares_table').length > 0) {
+                    shares_table.ajax.reload();
+                }
+                if ($('#asset_categories_table').length > 0) {
+                    asset_categories_table.ajax.reload();
+                }
+                if ($('#assets_table').length > 0) {
+                    assets_table.ajax.reload();
                 }
                 
                 if ($('#leave_types_table').length > 0) {
                     leave_types_table.ajax.reload();
                 }
                 
-               
                 if ($('#employees_group_table').length > 0) {
                     employees_group_table.ajax.reload();
                 }
@@ -1605,13 +1603,7 @@ $('#staff_create_template_form').on('submit', function (e) {
                     staff_templates_table.ajax.reload();
                 }
                 
-                if ($('#staff_invited_trainings_table').length > 0) {
-                    staff_invited_trainings_table.ajax.reload();
-                }
-                
-                if ($('#staff_list_trainings_table').length > 0) {
-                    staff_list_trainings_table.ajax.reload();
-                }
+               
               
                 // Close the modal
                 $("#delete_modal").modal('hide');

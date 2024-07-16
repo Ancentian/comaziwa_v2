@@ -4,18 +4,33 @@ namespace App\Http\Controllers;
 
 use App\Models\Deduction;
 use App\Models\DeductionType;
+use App\Models\Farmer;
+use App\Models\CollectionCenter;
+
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class DeductionsController extends Controller
 {
     public function index()
     {
         if (request()->ajax()) {
-            
-            $deduction = Deduction::where('tenant_id',$tenant_id)->get();
+            $tenant_id = Auth::user()->id;
+            $deduction = Deduction::join('deduction_types', 'deduction_types.id', '=', 'deductions.deduction_id')
+                    ->leftJoin('farmers', 'farmers.id', '=', 'deductions.farmer_id')
+                    ->leftJoin('collection_centers', 'collection_centers.id', '=', 'deductions.center_id')
+                    ->where('deductions.tenant_id', $tenant_id)
+                    ->select([
+                        'deductions.*',
+                        'farmers.fname', 
+                        'farmers.lname', 
+                        'farmers.farmerID',
+                        'collection_centers.center_name',
+                        'deduction_types.name as deduction_name'
+                    ])->get();
 
             return DataTables::of($deduction)
             ->addColumn(
@@ -32,10 +47,39 @@ class DeductionsController extends Controller
                   return $html;
                 }
             )
-            ->rawColumns(['action'])
+            ->editColumn('fullname', function ($row) {
+                if ($row->farmer_id == '') {	
+                    $html = "All Farmers";
+                }else{
+                    $html = $row->farmerID.' - '.$row->fname.' '.$row->lname;
+                }
+                return $html;
+            })
+            ->editColumn('date', function ($row) {
+                $html = format_date($row->date);
+                return $html;
+            })
+            ->editColumn('amount', function ($row) {
+                $html = num_format($row->amount);
+                return $html;
+            })
+            
+            ->editColumn('center_name', function ($row) {
+                if ($row->center_id == null) {	
+                    $html = "All Centers";
+                }else{
+                    $html = $row->center_name;
+                }
+                return $html;
+            })
+            ->editColumn('created_on', function ($row) {
+                $html = format_date($row->created_at);
+                return $html;
+            })
+            ->rawColumns(['action', 'fullname', 'date', 'amount', 'created_on', 'center_name'])
             ->make(true);
         }
-        return view('companies.deductions.index',  compact('data'));
+        return view('companies.deductions.index');
     }
 
     public function deduction_types()
@@ -75,6 +119,48 @@ class DeductionsController extends Controller
         return view('companies.deductions.deduction_types');
     }
 
+    public function add_deduction()
+    {
+        $tenant_id = auth()->user()->id;
+        $individual_deductions = DeductionType::where('tenant_id', $tenant_id)->where('type', 'individual')->get();
+        $general_deductions = DeductionType::where('tenant_id', $tenant_id)->where('type', 'general')->get();
+        $centers = CollectionCenter::where('tenant_id', $tenant_id)->get();
+        $farmers = Farmer::where('tenant_id', $tenant_id)->get();
+        return view('companies.deductions.add-deduction', compact('individual_deductions', 'general_deductions', 'centers', 'farmers'));
+    }
+
+    public function getFarmersByCenter($centerId)
+    {
+        $center = CollectionCenter::findorFail($centerId);
+        $tenant_id = $center->tenant_id;
+        $farmers = Farmer::where('center_id', $centerId)
+                        ->where('tenant_id', $tenant_id)
+                        ->get();
+        return response()->json($farmers);
+    }
+
+    public function getFarmerDetails($farmerId)
+    {
+        $farmer = Farmer::findorFail($farmerId);
+        return response()->json($farmer);
+    }
+
+    public function getProductsByCategory($categoryId)
+    {
+        $category = Category::findorFail($categoryId);
+        $tenant_id = $category->tenant_id;
+        $products = Inventory::where('category_id', $categoryId)
+                        ->where('tenant_id', $tenant_id)
+                        ->get();
+        return response()->json($products);
+    }
+
+    public function getdeductiondetails($dedId)
+    {
+        $deduction = DeductionType::findorFail($dedId);
+        return response()->json($deduction);
+    }
+
     public function store_deduction_type(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -82,7 +168,6 @@ class DeductionsController extends Controller
             'type'       => 'required',
             'amount'     => 'required',
         ]);
-        logger($request);
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
@@ -99,7 +184,6 @@ class DeductionsController extends Controller
         DB::commit();
         return response()->json(['message' => 'Deduction Type Added Successfully']);
         } catch (\Exception $e) {
-            logger($e);
             DB::rollback();
             return response()->json(['message' => 'Data saving failed. Please try again.'], 500);
         }
@@ -108,25 +192,84 @@ class DeductionsController extends Controller
     public function store_deduction(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name'       => 'required|unique:deductions,name',
-            'type'       => 'required',
+            'farmer_id'  => 'required',
+            'deduction_id'  => 'required',
+            'center_id'  => 'required',
+            'deduction_type'  => 'required',
             'amount'     => 'required',
+            'date'       => 'required',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
+
         DB::beginTransaction();
         try {
         $tenant_id = auth()->user()->id;
-        DeductionType::create([
-            'tenant_id' => $tenant_id,
-            'name'       => $request->name,
-            'type'       => $request->type,    
-        ]);
+        $user_id = auth()->user()->id;
+        foreach($request->deduction_id as $key => $ded)
+        {
+            $deduction['tenant_id'] = $tenant_id;
+            $deduction['farmer_id'] = $request->farmer_id;
+            $deduction['center_id'] = $request->center_id;	
+            $deduction['deduction_id'] = $ded;
+            $deduction['deduction_type'] = $request->deduction_type;
+            $deduction['amount'] = $request->amount[$key];
+            $deduction['date'] = $request->date;
+            $deduction['user_id'] = $user_id;
+            //$deduction['user_role'] = $request->user_role;
+            Deduction::create($deduction);
+        }
 
         DB::commit();
-        return response()->json(['message' => 'Deduction Type Added Successfully']);
+        return response()->json(['message' => 'Deduction Added Successfully']);
+        return redirect()->route('deductions.index');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => 'Data saving failed. Please try again.'], 500);
+        }
+    }
+
+    public function store_general_deduction(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'farmer_id'  => '',
+            'deduction_id'  => 'required',
+            'center_id'  => '',
+            'deduction_type'  => 'required',
+            'amount'     => 'required',
+            'date'       => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+        logger($request->all());
+        DB::beginTransaction();
+        try {
+        $tenant_id = auth()->user()->id;
+        $user_id = auth()->user()->id;
+        
+        foreach($request->deduction_id as $key => $ded) {
+            if ($request->deduction_checkbox[$key] == 1) {
+                $deduction['tenant_id'] = $tenant_id;
+                $deduction['farmer_id'] = $request->farmer_id;
+                $deduction['center_id'] = $request->center_id;	
+                $deduction['deduction_id'] = $ded;
+                $deduction['deduction_type'] = $request->deduction_type;
+                $deduction['amount'] = $request->amount[$key];
+                $deduction['date'] = $request->date;
+                $deduction['user_id'] = $user_id;
+                //$deduction['user_role'] = $request->user_role;
+        
+                Deduction::create($deduction);
+            }
+        }
+
+        DB::commit();
+        return response()->json(['message' => 'Deduction Added Successfully']);
+        return redirect()->route('deductions.index');
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['message' => 'Data saving failed. Please try again.'], 500);
@@ -174,7 +317,7 @@ class DeductionsController extends Controller
     public function update_deduction_type(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required||unique:deduction_types,name,' . $id,
+            'name' => 'required|unique:deduction_types,name,' . $id,
             'type' => 'required',
             'amount' => 'required',
         ]);
@@ -199,8 +342,6 @@ class DeductionsController extends Controller
             return response()->json(['message' => 'Failed to update data. Please try again.'], 500);
         }
     }
-
-
 
     public function deleteDeduction($id)
     {

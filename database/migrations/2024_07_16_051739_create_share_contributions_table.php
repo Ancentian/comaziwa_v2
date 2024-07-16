@@ -11,21 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('deductions', function (Blueprint $table) {
+        Schema::create('share_contributions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('tenant_id');
-            $table->unsignedBigInteger('farmer_id')->nullable();
-            $table->unsignedBigInteger('deduction_id')->nullable();
-            $table->string('deduction_type');
-            $table->float('amount');
-            $table->date('date');
-            $table->unsignedBigInteger('user_id');
-            $table->string('user_role')->nullable();
+            $table->unsignedBigInteger('center_id');
+            $table->unsignedBigInteger('farmer_id');
+            $table->float('share_value');
+            $table->date('issue_date');
+            $table->string('mode_of_contribution')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
 
             $table->foreign('tenant_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('farmer_id')->references('id')->on('farmers')->onDelete('cascade');
-            $table->foreign('deduction_id')->references('id')->on('deduction_types')->onDelete('cascade');
+            $table->foreign('center_id')->references('id')->on('collection_centers')->onDelete('cascade');
         });
     }
 
@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('deductions');
+        Schema::dropIfExists('share_contributions');
     }
 };
