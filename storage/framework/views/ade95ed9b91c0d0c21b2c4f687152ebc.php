@@ -87,10 +87,11 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label>Gender <span class="text-danger">*</span></label>
-                            <select class=" form-control" name="gender" required>
+                            <select class="select form-control" name="gender" required>
                                 <option value="">Select</option>
                                 <option value="male" <?php if($farmer->gender == 'male'): ?> selected <?php endif; ?>>Male</option>
                                 <option value="female" <?php if($farmer->gender == 'female'): ?> selected <?php endif; ?>>Female</option>
+                                <option value="other" <?php if($farmer->gender == 'other'): ?> selected <?php endif; ?>>Other</option>
                             </select>
                             <span class="modal-error invalid-feedback" role="alert"></span>
                         </div>

@@ -1,6 +1,6 @@
-@extends('layout.app')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 <!-- Page Header -->
 <div class="page-header">
     <div class="row align-items-center">
@@ -11,7 +11,7 @@
             </ul>
         </div>
         <div class="col-auto float-right ml-auto">
-            <a href="{{ route('deductions.add-deduction') }}" class="btn btn-info"><i class="fa fa-plus"></i> Add Deduction</a> &nbsp;
+            <a href="<?php echo e(route('deductions.add-deduction')); ?>" class="btn btn-info"><i class="fa fa-plus"></i> Add Deduction</a> &nbsp;
             <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#import" hidden><i class="fa fa-download"></i> Import</a> &nbsp;
         </div>
     </div>
@@ -56,11 +56,11 @@
                    
                     <div class="row" style="margin-bottom: 10px">
                         <div class="col-sm-4 pull-right">
-                            <a href="{{ asset('files/employee-import.xlsx') }}" class="btn btn-primary" download><i class="fa fa-download"></i> Download Template</a>
+                            <a href="<?php echo e(asset('files/employee-import.xlsx')); ?>" class="btn btn-primary" download><i class="fa fa-download"></i> Download Template</a>
                         </div>
                     </div>
                     <form id="import_employee_form"  enctype="multipart/form-data">
-                        @csrf
+                        <?php echo csrf_field(); ?>
                         
                         <div class="form-group">
                             <input type="file" name="csv_file" class="form-control" required>
@@ -90,8 +90,8 @@
             </button>
         </div>
         <div class="modal-body">
-            <form id="bulk_payslip_form" action="{{url('/employees/bulk-generate-monthly-payslip')}}" method="POST">
-                @csrf
+            <form id="bulk_payslip_form" action="<?php echo e(url('/employees/bulk-generate-monthly-payslip')); ?>" method="POST">
+                <?php echo csrf_field(); ?>
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
@@ -114,16 +114,16 @@
 
 </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('javascript')
+<?php $__env->startSection('javascript'); ?>
 <script>
 $(document).ready(function(){
     $(".warning").hide();
     $(".submit-btn").show();
     
     $(document).on('click', '#add_employee_btn', function () {
-        var actionuRL = "{{url('/employees/create')}}";
+        var actionuRL = "<?php echo e(url('/employees/create')); ?>";
         $('#add_employee').load(actionuRL, function() {
             $(this).modal('show');
         });
@@ -183,7 +183,7 @@ $(document).ready(function(){
         var formData = $(this).serialize();
 
         $.ajax({
-            url: '{{ url('cooperative/store-farmers') }}',
+            url: '<?php echo e(url('cooperative/store-farmers')); ?>',
             method: 'POST',
             data: formData,
             success: function (response) {
@@ -227,11 +227,11 @@ $(document).ready(function(){
 
 $(document).ready(function(){
         deductions_table = $('#deductions_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('deductions/index')}}",
+                url : "<?php echo e(url('deductions/index')); ?>",
                 data: function(d){
                     
                 }
@@ -262,4 +262,5 @@ $(document).ready(function(){
     
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\comaziwa\resources\views/companies/deductions/index.blade.php ENDPATH**/ ?>

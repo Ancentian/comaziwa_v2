@@ -122,7 +122,7 @@
                                             <div class="form-group">
                                                 <label>Payment Mode <span class="text-danger"></span></label>
                                                 <select name="payment_mode" class="select" required>
-                                                    <option>Select Payment Mode</option>
+                                                    <option value="">Select Payment Mode</option>
                                                     <option value="1">Pay by Milk</option>
                                                     <option value="2">Pay Cash/Mpesa</option>
                                                 </select>
@@ -147,69 +147,6 @@
 
 <?php $__env->startSection('javascript'); ?>
 <script>
-    // $(document).on('change','#training_id',function(){
-    //    $("#course_details").hide();
-    //     var id = $(this).val();
-    //     console.log(id);
-    //     if(id){
-    //         $("#milk_collection_table tbody").empty();
-            
-    //         $.ajax({
-    //             url: "/milkCollection/center-farmers/"+id,
-    //             method: 'GET',
-    //             data: {},
-    //             dataType: 'json',
-    //             success: function(response) {
-    //                 console.log(response)
-    //                 $("#course_details").show();
-                    
-    //                 $("#course_id").val(response.training.course_id).trigger('change');
-    //                 $("#venue_id").val(response.training.venue_id).trigger('change');
-    //                 $("#facilitator_id").val(response.training.facilitator_id).trigger('change');
-    //                 $("#room_id").val(response.training.room_id).trigger('change');
-                    
-    //                 if(response.parts){                           
-    //                     $.each(response.parts, function( index, value ) {
-                            
-    //                       var tr = `
-    //                             <tr>
-    //                                 <td>` + value.farmerCode + ` - ` + value.fname + `</td>
-    //                                 <td hidden><input type="text" class="form-control" name="farmer_id[]" value="`+value.farmer_id+`"></td>
-    //                                 <td><input type="number" class="form-control morning" step="any" name="morning[]" value="0" id="farmerid" ></td>
-    //                                 <td><input type="number" class="form-control evening" step="any" name="evening[]" value="0" id="evening" ></td>
-    //                                 <td><input type="number" step="any" class="form-control rejected" name="rejected[]" value="0" id="reject" ></td>
-    //                                 <td><input type="number" step="any" class="form-control total" name="total[]" id="total" readonly></td>
-    //                             </tr>
-    //                         `;
-                            
-    //                         $("#milk_collection_table tbody").append(tr);
-                            
-    //                         $("#confirmed_"+index).val(value.confirmed_status).trigger('change');
-    //                         $("#agent_"+index).val(value.agent).trigger('change');
-    //                     });
-    //                 }
-                    
-                                        
-    //             },
-    //             error: function(xhr, status, error) {
-    //                 toastr.error('Something Went Wrong!, Try again!','Error');
-    //                 console.error(error);
-    //             }
-    //         });
-    //     }
-
-
-    //     $("#milk_collection_table tbody").on("input", ".morning, .evening, .rejected", function () {
-    //         var $row = $(this).closest("tr");
-    //         var morning = parseFloat($row.find(".morning").val()) || 0;
-    //         var evening = parseFloat($row.find(".evening").val()) || 0;
-    //         var rejected = parseFloat($row.find(".rejected").val()) || 0;
-    //         var total = $row.find(".total");
-    //         total.val((morning + evening) - rejected);
-    //         //calc_total();
-    //     });
-       
-    // });
     
     // Start Add Multiple Shop Items
     $(document).ready(function() {
@@ -373,10 +310,6 @@ $("#add_sales_table").on("click", ".remove", function() {
         }
     });
 });
-
-
-
-
     //Add Sales
     $(document).ready(function(){       
         $('#add_store_sales').on('submit', function (e) {

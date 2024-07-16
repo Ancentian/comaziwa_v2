@@ -12,6 +12,10 @@
                 <li class="breadcrumb-item active">Milk Collection</li>
             </ul>
         </div>
+        <div class="col-auto float-right ml-auto">
+            <a href="#" class="btn btn-primary" id="downloadFarmersButton"><i class="fa fa-download"></i> Download Template</a>
+            <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#import"><i class="fa fa-download"></i> Import Milk</a> &nbsp;
+        </div>
         
     </div>
 </div>
@@ -24,7 +28,7 @@
             <div class="row">
                 <div class="form-group col-sm-4">
                     <label>Select Center</label>
-                    <select class="form-control select" name="center_id" id="training_id" required>
+                    <select class="form-control select" name="center_id" id="center_id" required>
                         <option value="">Choose one</option>
                         <?php $__currentLoopData = $centers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <option value="<?php echo e($key->id); ?>"><?php echo e($key->center_name); ?></option>
@@ -40,7 +44,7 @@
                     </div>
                 </div>   
             </div>
-            <div id="course_details">            
+            <div id="milk_details">            
                 <div class="row">
                     <h4 class="text-center w-100">Farmers</h4>
                     <div class="col-md-12">
@@ -68,14 +72,49 @@
     </div>
 </div>
 
+<div id="import" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Import Milk</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+               
+                   
+                    <div class="row" style="margin-bottom: 10px" >
+                        <div class="col-sm-4 pull-right">
+                            <a href="<?php echo e(asset('files/employee-import.xlsx')); ?>" class="btn btn-primary" download><i class="fa fa-download"></i> Download Template</a> 
+                        </div>
+                    </div>
+                    <form id="import_milk_form"  enctype="multipart/form-data">
+                        <?php echo csrf_field(); ?>
+                        
+                        <div class="form-group">
+                            <input type="file" name="csv_file" class="form-control" required>
+                        </div>
+                       
+                        <div class="form-group mb-0">
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary"><span id="btn_milk_import">Import</span> <i class="fa fa-upload"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('javascript'); ?>
 <script>
-    $(document).on('change','#training_id',function(){
-       $("#course_details").hide();
+    $(document).on('change','#center_id',function(){
+       $("#milk_details").hide();
         var id = $(this).val();
-        console.log(id);
         if(id){
             $("#milk_collection_table tbody").empty();
             
@@ -85,17 +124,16 @@
                 data: {},
                 dataType: 'json',
                 success: function(response) {
-                    console.log(response)
-                    $("#course_details").show();
                     
-                    $("#course_id").val(response.training.course_id).trigger('change');
-                    $("#venue_id").val(response.training.venue_id).trigger('change');
-                    $("#facilitator_id").val(response.training.facilitator_id).trigger('change');
-                    $("#room_id").val(response.training.room_id).trigger('change');
+                    $("#milk_details").show();
+                    
+                    // $("#course_id").val(response.training.course_id).trigger('change');
+                    // $("#venue_id").val(response.training.venue_id).trigger('change');
+                    // $("#facilitator_id").val(response.training.facilitator_id).trigger('change');
+                    // $("#room_id").val(response.training.room_id).trigger('change');
                     
                     if(response.parts){                           
-                        $.each(response.parts, function( index, value ) {
-                            
+                        $.each(response.parts, function( index, value ) {      
                           var tr = `
                                 <tr>
                                     <td>` + value.farmerCode + ` - ` + value.fname + `</td>
@@ -112,9 +150,7 @@
                             $("#confirmed_"+index).val(value.confirmed_status).trigger('change');
                             $("#agent_"+index).val(value.agent).trigger('change');
                         });
-                    }
-                    
-                                        
+                    }                           
                 },
                 error: function(xhr, status, error) {
                     toastr.error('Something Went Wrong!, Try again!','Error');
@@ -138,35 +174,79 @@
 
     $(document).ready(function(){
             
-            $('#add_milk_collection').on('submit', function (e) {
-                e.preventDefault();
-        
-                var form = $(this);
-                var frm = this;
-                var formData = form.serialize();
-                var url = form.attr('action');
-                console.log(form);
-                $.ajax({
-                    url: url,
-                    method: 'POST',
-                    data: formData,
-                    success: function (response) {
-                        // Handle success response
-                        console.log(response);
-                        frm.reset();
-                        
-                        // Close the modal
-                        //$('#edit_modal').modal('hide');
-                        window.location.reload();
-                        toastr.success(response.message, 'Success');
-                    },
-                    error: function (xhr, status, error) {
-                        // Handle error response
-                        toastr.error('Something Went Wrong!, Try again!','Error');
-                    }
-                });
+        $('#add_milk_collection').on('submit', function (e) {
+            e.preventDefault();
+    
+            var form = $(this);
+            var frm = this;
+            var formData = form.serialize();
+            var url = form.attr('action');
+           
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: formData,
+                success: function (response) {
+                    // Handle success response
+                    frm.reset();
+                    
+                    // Close the modal
+                    //$('#edit_modal').modal('hide');
+                    window.location.reload();
+                    toastr.success(response.message, 'Success');
+                },
+                error: function (xhr, status, error) {
+                    // Handle error response
+                    toastr.error('Something Went Wrong!, Try again!','Error');
+                }
             });
         });
+    });
+
+    
+   
+
+$(document).ready(function() {
+    $('#downloadFarmersButton').on('click', function(e) {
+        e.preventDefault();
+        var centerId = $('#center_id').val();
+
+        if (centerId) {
+            $.ajax({
+                url: "/milkCollection/center-farmers/" + centerId,
+                method: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    var farmers = response.parts;
+                    // BOM for UTF-8 to avoid Excel treating as SYLK
+                    var csvContent = "\uFEFF";
+                    csvContent += "ID,Center ID,Farmer Code,Farmer Name,Morning,Evening,Rejected\n"; // Add CSV headers
+                    
+                    farmers.forEach(function(farmer) {
+                        var row = `${farmer.farmer_id},${farmer.center_id},${farmer.farmerCode},${farmer.fname},,,,\n`;
+                        csvContent += row;
+                    });
+
+                    var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                    var link = document.createElement("a");
+                    var url = URL.createObjectURL(blob);
+                    link.setAttribute("href", url);
+                    link.setAttribute("download", "farmers.xlsx");
+                    document.body.appendChild(link); // Required for Firefox
+
+                    link.click();
+                    document.body.removeChild(link); // Cleanup after download
+                },
+                error: function(xhr, status, error) {
+                    toastr.error('Something Went Wrong!, Try again!', 'Error');
+                    console.error(error);
+                }
+            });
+        } else {
+            toastr.error('Please select a center first!', 'Error');
+        }
+    });
+});
 </script>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layout.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\comaziwa\resources\views/companies/milkcollection/addcollection.blade.php ENDPATH**/ ?>

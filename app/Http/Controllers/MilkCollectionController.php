@@ -12,6 +12,7 @@ use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Excel;
 
 class MilkCollectionController extends Controller
 {
@@ -88,12 +89,13 @@ class MilkCollectionController extends Controller
                                 'farmers.fname',
                                 'farmers.lname',
                                 'farmers.id as farmer_id',
+                                'farmers.center_id',
                                 'farmers.farmerID as farmerCode',	
                                 'collection_centers.center_name',
                                 'collection_centers.tenant_id',
                             ])->get();
 
-        $response = array('training' => $data,'parts' => $farmers);
+        $response = array('center' => $data,'parts' => $farmers);
         
         echo json_encode($response);
     }
@@ -158,6 +160,125 @@ class MilkCollectionController extends Controller
         } catch (\Exception $e) {
             logger($e);
             return redirect()->back()->with('message', 'Err! Failed Try Again');
+        }
+    }
+
+    public function store_import_milk(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'csv_file' => 'required|mimes:csv,txt,xls,xlsx',
+        ]);
+        
+        $file = $request->file('csv_file');
+        
+        $parsed_array = Excel::toArray([], $file);
+
+        // Remove header row
+        $csvData = array_splice($parsed_array[0], 1);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+    
+        DB::beginTransaction();
+    
+        try {
+            
+            foreach ($csvData as $key => $row) {
+                $farmer_id = $row[0];
+                $center_id = $row[1]; 
+                $farmer_code = $row[2]; 
+                $farmer_name = $row[3];
+                $morning = $row[4];
+                $evening = $row[5];
+                $rejected = $row[6];
+                
+                // if(empty($name)){
+                //     DB::rollback();
+                //     return response()->json(['errors' => 'Please enter name for row '.($key+1)], 422);
+                // }
+                
+                // if(empty($phone_no)){
+                    
+                //     DB::rollback();
+                //     return response()->json(['errors' => 'Please enter Phone No. for row '.($key+1)], 422);
+                    
+                // }else{
+                //     $exists = Employee::where('phone_no',$phone_no)->count();
+                //     if($exists > 0){
+                //         DB::rollback();
+                //         return response()->json(['errors' => 'A user with the Phone No '.$phone_no.' already exists on row '.($key+1)], 422);
+                //     }
+                // }
+                
+                // if(empty($staff_no)){
+                    
+                //     DB::rollback();
+                //     return response()->json(['errors' => 'Please enter Staff No. for row '.($key+1)], 422);
+                    
+                // }else{
+                //     $exists = Employee::where('staff_no',$staff_no)->count();
+                //     if($exists > 0){
+                //         DB::rollback();
+                //         return response()->json(['errors' => 'A user with the Staff No '.$staff_no.' already exists on row '.($key+1)], 422);
+                //     }
+                // }
+                
+                // if(empty($ssn)){
+                    
+                //     DB::rollback();
+                //     return response()->json(['errors' => 'Please enter SSN for row '.($key+1)], 422);
+                    
+                // }else{
+                //     $exists = Employee::where('ssn',$ssn)->count();
+                //     if($exists > 0){
+                //         DB::rollback();
+                //         return response()->json(['errors' => 'A user with the SSN '.$ssn.' already exists on row '.($key+1)], 422);
+                //     }
+                // }
+                
+                // if(empty($account_no)){
+                    
+                //     DB::rollback();
+                //     return response()->json(['errors' => 'Please enter Account No for row '.($key+1)], 422);
+                    
+                // }else{
+                //     $exists = Employee::where('account_no',$account_no)->count();
+                //     if($exists > 0){
+                //         DB::rollback();
+                //         return response()->json(['errors' => 'A user with the Account No '.$account_no.' already exists on row '.($key+1)], 422);
+                //     }
+                // }
+                
+                $total_milk = $morning + $evening - $rejected;
+                $tenant_id = auth()->user()->id;
+                $data = [
+                    'tenant_id' => $tenant_id,
+                    'farmer_id' => $farmer_id,	
+                    'farmer_code' => $farmer_code,
+                    'center_id' => $center_id,
+                    'name' => $farmer_name,
+                    'morning' => $morning,
+                    'evening' => $evening,
+                    'rejected' => $rejected,
+                    'total' => $total_milk,
+                    'collection_date' => date('Y-m-d'),
+                    'user_id' => "180"
+                    
+
+                ];
+                logger($data);
+                $milk = MilkCollection::create($data);               
+            }
+    
+            DB::commit();
+    
+            return response()->json(['message' => 'Milk imported Successfully']);
+        } catch (\Exception $e) {
+            logger($e);
+            // DB::rollback();
+    
+            return response()->json(['message' => 'Failed to Import Milk. Please try again.'], 500);
         }
     }
 

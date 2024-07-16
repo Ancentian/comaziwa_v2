@@ -149,7 +149,8 @@
                         <ul style="display: none;">
                             <li><a href="{{url('deductions/index')}}">List</a></li>
                             <li><a href="{{url('deductions/add-deduction')}}">Add Deduction</a></li>
-                            <li><a href="{{url('deductions/deduction-types')}}"> Deduction Types</a></li>                          
+                            <li><a href="{{url('deductions/deduction-types')}}"> Deduction Types</a></li> 
+                            <li><a href="{{url('shares/index')}}"> Shares</a></li>                         
                         </ul>
                     </li>
 
@@ -174,6 +175,14 @@
                             @if(auth()->user()->type == 'superadmin')
                                 <li><a href="{{url('packages/list')}}"> Packages </a></li>
                             @endif
+                        </ul>
+                    </li>
+
+                    <li class="submenu">
+                        <a href="#"><i class="la la-cog"></i> <span> Assets </span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+                            <li><a href="{{url('assets/index')}}"> Assets List </a></li>
+                            <li><a href="{{url('assets/categories')}}"> Categories </a></li>
                         </ul>
                     </li>
                     
