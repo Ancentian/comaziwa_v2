@@ -32,6 +32,7 @@ use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\SharesController;
 use App\Http\Controllers\AssetsController;
+use App\Http\Controllers\MilkManagementController;
 use App\Http\Controllers\Crons;
 
 
@@ -259,6 +260,18 @@ Route::prefix('assets')->middleware(['auth:web,employee'])->group(function () {
 
     Route::delete('/delete-asset-category/{id}', [AssetsController::class, 'delete_asset_category']);
     Route::delete('/delete-asset/{id}', [AssetsController::class, 'delete_asset']);   
+});
+
+Route::prefix('milk-management')->middleware(['auth:web, employee'])->group(function () {
+    Route::get('/index', [MilkManagementController::class, 'index'])->name('assets.index');
+    Route::get('/spillages', [MilkManagementController::class, 'spillages']);
+    Route::get('/milk-spillages', [MilkManagementController::class, 'milk_spillages']);
+    Route::post('/store-spillages', [MilkManagementController::class, 'store_spillages']);
+    Route::get('/edit-spillage/{id}', [MilkManagementController::class, 'edit_spillage']);
+    Route::post('/update-spillage/{id}', [MilkManagementController::class, 'update_spillage']);
+    Route::delete('/delete-spillage/{id}', [MilkManagementController::class, 'delete_spillage']); 
+//Comment
+Route::get('/view-comment/{id}', [MilkManagementController::class, 'view_comments']);
 });
 
 Route::prefix('profile')->middleware(['auth:web,employee'])->group(function () {

@@ -19,6 +19,28 @@
 <!-- /Page Header -->
 
 <div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            <label>Date Range <span class="text-danger">*</span></label>
+            <input type="text" readonly id="daterange" class="form-control" value="{{date('m/01/Y')}} - {{date('m/t/Y')}}" />
+        </div>
+    </div>
+    <div class="form-group col-sm-4">
+        <label for="center_id">Select Center</label>
+        <select class="form-control select" name="center_id" id="center_id" required>
+            <option value="">Choose one</option>
+            @foreach($centers as $center)
+                <option value="{{ $center->id }}">{{ $center->center_name }}</option>
+            @endforeach
+        </select>
+    </div>
+    
+    <div class="form-group col-sm-4">
+        <label for="farmer_id">Select Farmer</label>
+        <select class="form-control select" name="farmer_id" id="farmer_id" required>
+            <option value="">Choose one</option>
+        </select>
+    </div>
     <div class="col-md-12">
         <div class="table-responsive">	
             <table class="table table-striped custom-table" id="collected_milk_table">
@@ -50,7 +72,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Import Employee</h5>
+                <h5 class="modal-title">Import Milk</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -230,41 +252,109 @@ $(document).ready(function(){
 });
 
 $(document).ready(function(){
-        collected_milk_table = $('#collected_milk_table').DataTable({
-            @include('layout.export_buttons')
-            processing: true,
-            serverSide: false,
-            ajax: {
-                url : "{{url('milkCollection/all-milk-collection')}}",
-                data: function(d){
-                    
-                }
-            },
-            columnDefs:[{
-                    "targets": 1,
-                    "orderable": false,
-                    "searchable": false
-                }],
-                
-            columns: [
-                {data: 'action', name: 'action',className: 'text-left'}, 
-                {data: 'fullname', name: 'fullname'},
-                {data: 'center_name', name: 'center_name'},
-                {data: 'collection_date', name: 'collection_date'},
-                {data: 'morning', name: 'morning'},
-                {data: 'evening', name: 'evening'},
-                {data: 'rejected', name: 'rejected'},
-                {data: 'total', name: 'total'},
-                // {data: 'userName', name: 'userName'},
-                {data: 'created_on', name: 'created_on'},            
-            ],
-            createdRow: function( row, data, dataIndex ) {
-            }
-        });
-
+    $('#daterange').daterangepicker({
+        opens: 'bottom',
+        ranges: ranges
+    }, function(start, end, label) {
+        collected_milk_table.ajax.reload();
     });
 
-    
+    $(document).on('change', ' #center_id, #farmer_id', function () {
+        collected_milk_table.ajax.reload();
+    })
+
+    collected_milk_table = $('#collected_milk_table').DataTable({
+        @include('layout.export_buttons')
+        processing: true,
+        serverSide: false,
+        ajax: {
+            url : "{{url('milkCollection/all-milk-collection')}}",
+            data: function(d){
+            // Access the start and end dates from the date range picker
+            var startDate = $('#daterange').data('daterangepicker').startDate.format('YYYY-MM-DD');
+            var endDate = $('#daterange').data('daterangepicker').endDate.format('YYYY-MM-DD');
+            
+            // Add the dates as parameters to the request
+            d.start_date = startDate;
+            d.end_date = endDate;
+            d.center_id = $("#center_id").val();
+            d.farmer_id = $("#farmer_id").val();
+                
+            }
+        },
+        columnDefs:[{
+                "targets": 1,
+                "orderable": false,
+                "searchable": false
+            }],
+            
+        columns: [
+            {data: 'action', name: 'action',className: 'text-left'}, 
+            {data: 'fullname', name: 'fullname'},
+            {data: 'center_name', name: 'center_name'},
+            {data: 'collection_date', name: 'collection_date'},
+            {data: 'morning', name: 'morning'},
+            {data: 'evening', name: 'evening'},
+            {data: 'rejected', name: 'rejected'},
+            {data: 'total', name: 'total'},
+            // {data: 'userName', name: 'userName'},
+            {data: 'created_on', name: 'created_on'},            
+        ],
+        createdRow: function( row, data, dataIndex ) {
+        }
+    });
+
+});
+
+$(document).ready(function() {
+    $('#center_id').on('change', function() {
+        var centerId = $(this).val();
+
+        // Clear farmer details and farmer select options
+        $('#farmer_id').val('');
+        $('#farmer_id').empty().append('<option value="">Choose one</option>');
+
+        if (centerId) {
+            $.ajax({
+                url: '/sales/getFarmersByCenter/' + centerId,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $.each(data, function(key, value) {
+                        $('#farmer_id').append('<option value="'+ value.id +'">'+ value.fname +' '+ value.lname +' - '+ value.farmerID +'</option>');
+                    });
+                },
+                error: function() {
+                    alert('Failed to retrieve farmers. Please try again.');
+                }
+            });
+        }
+    });
+
+    $('#farmer_id').on('change', function() {
+        var farmerId = $(this).val();
+
+        if (farmerId) {
+            $.ajax({
+                url: '/sales/getFarmerDetails/' + farmerId,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $('#farmer_id').val(data.id);
+                    $('#farmer_code').val(data.farmerID);
+                    $('#farmer_name').val(data.fname + ' ' + data.lname);
+                    // Add more fields as necessary
+                },
+                error: function() {
+                    alert('Failed to retrieve farmer details. Please try again.');
+                }
+            });
+        } else {
+            $('#farmer_id').val('');
+            $('#farmer_name').val('');
+        }
+    });
+});   
 </script>
 
 @endsection

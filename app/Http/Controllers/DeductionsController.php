@@ -17,7 +17,12 @@ class DeductionsController extends Controller
 {
     public function index()
     {
+        $tenant_id = Auth::user()->id;
+        $centers = CollectionCenter::where('tenant_id', $tenant_id)->get();
         if (request()->ajax()) {
+            $start_date = request()->start_date;
+            $end_date = request()->end_date;
+
             $tenant_id = Auth::user()->id;
             $deduction = Deduction::join('deduction_types', 'deduction_types.id', '=', 'deductions.deduction_id')
                     ->leftJoin('farmers', 'farmers.id', '=', 'deductions.farmer_id')
@@ -30,17 +35,30 @@ class DeductionsController extends Controller
                         'farmers.farmerID',
                         'collection_centers.center_name',
                         'deduction_types.name as deduction_name'
-                    ])->get();
+                    ]);
 
-            return DataTables::of($deduction)
+                if(!empty($start_date) && !empty($end_date)){
+                    $deduction->whereDate('deductions.date','>=',$start_date);
+                    $deduction->whereDate('deductions.date','<=',$end_date);
+                }
+    
+                if(!empty(request()->center_id)){
+                    $deduction->where('deductions.center_id','=',request()->center_id);
+                }
+    
+                if(!empty(request()->farmer_id)){
+                    $deduction->where('deductions.farmer_id','=',request()->farmer_id);
+                }
+
+            return DataTables::of($deduction->get())
             ->addColumn(
                 'action',
                 function ($row) {
                     $html = '<div class="btn-group">
                     <button type="button" class="badge btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
                     <div class="dropdown-menu dropdown-menu-right">
-                      <a class="dropdown-item edit-button" data-action="'.url('deductions/editDeduction',[$row->id]).'" href="#" ><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                      <a class="dropdown-item delete-button" data-action="'.url('deductions/delete_deduction',[$row->id]).'" href="#" ><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                      <a class="dropdown-item edit-button" data-action="'.url('deductions/edit-deduction',[$row->id]).'" href="#" ><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                      <a class="dropdown-item delete-button" data-action="'.url('deductions/delete-deduction',[$row->id]).'" href="#" ><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                     </div>
                   </div>';
 
@@ -79,7 +97,7 @@ class DeductionsController extends Controller
             ->rawColumns(['action', 'fullname', 'date', 'amount', 'created_on', 'center_name'])
             ->make(true);
         }
-        return view('companies.deductions.index');
+        return view('companies.deductions.index', compact('centers'));
     }
 
     public function deduction_types()
@@ -276,9 +294,9 @@ class DeductionsController extends Controller
         }
     }
 
-    public function editDeduction($id){
+    public function edit_deduction($id){
         $deduction = Deduction::findOrFail($id);
-        return view('companies.partials.deductions.edit',compact('deduction'));
+        return view('companies.deductions.edit-deduction',compact('deduction'));
     } 
     
     public function edit_deduction_type($id){
@@ -343,7 +361,7 @@ class DeductionsController extends Controller
         }
     }
 
-    public function deleteDeduction($id)
+    public function delete_deduction($id)
     {
         DB::beginTransaction();
         try {

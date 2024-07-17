@@ -1506,6 +1506,10 @@ $('#staff_create_template_form').on('submit', function (e) {
                 if ($('#assets_table').length > 0) {
                     assets_table.ajax.reload();
                 }
+
+                if ($('#milk_spillage_table').length > 0) {
+                    milk_spillage_table.ajax.reload();
+                }
                 
                 if ($('#leave_types_table').length > 0) {
                     leave_types_table.ajax.reload();

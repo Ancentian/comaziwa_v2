@@ -18,13 +18,20 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class SalesController extends Controller
 {
     public function index()
     {
         //Sales
+        $tenant_id = Auth::user()->id;
+        $centers = CollectionCenter::where('tenant_id', $tenant_id)->get();
+
         if (request()->ajax()) {
+            $start_date = request()->start_date;
+            $end_date = request()->end_date;
+
             $tenant_id = auth()->user()->id;
             $sales = StoreSale::join('farmers', 'farmers.id', '=', 'store_sales.farmer_id')
                     ->join('collection_centers', 'collection_centers.id', '=', 'store_sales.center_id')
@@ -39,10 +46,22 @@ class SalesController extends Controller
                         'farmers.lname',
                         'inventories.name as product_name',
                         'categories.cat_name',	
+                    ]);
 
-                    ])->get();
+                if(!empty($start_date) && !empty($end_date)){
+                    $sales->whereDate('store_sales.order_date','>=',$start_date);
+                    $sales->whereDate('store_sales.order_date','<=',$end_date);
+                }
+    
+                if(!empty(request()->center_id)){
+                    $sales->where('store_sales.center_id','=',request()->center_id);
+                }
+    
+                if(!empty(request()->farmer_id)){
+                    $sales->where('store_sales.farmer_id','=',request()->farmer_id);
+                }
 
-            return DataTables::of($sales)
+            return DataTables::of($sales->get())
                 ->addColumn(
                     'action',
                     function ($row) {
@@ -78,7 +97,7 @@ class SalesController extends Controller
                 ->rawColumns(['action','fullname', 'order_date', 'created_on', 'unit_cost', 'total_cost'])
                 ->make(true);
         }
-        return view('companies.sales.index');
+        return view('companies.sales.index', compact('centers'));
     }
 
     public function add_sales()
