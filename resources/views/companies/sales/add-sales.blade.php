@@ -269,49 +269,49 @@ $("#add_sales_table").on("click", ".remove", function() {
 
 
     // End Add Multiple Shop Items
-    $(document).ready(function() {
-    $('#center_id').on('change', function() {
-        var centerId = $(this).val();
+$(document).ready(function() {
+$('#center_id').on('change', function() {
+    var centerId = $(this).val();
 
-        // Clear farmer details and farmer select options
+    // Clear farmer details and farmer select options
+    $('#farmer_id').val('');
+    $('#farmer_name').val('');
+    $('#farmer_id_select').empty().append('<option value="">Choose one</option>');
+
+    if (centerId) {
+        $.ajax({
+            url: '/sales/getFarmersByCenter/' + centerId,
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                $.each(data, function(key, value) {
+                    $('#farmer_id_select').append('<option value="'+ value.id +'">'+ value.fname +' '+ value.lname +' - '+ value.farmerID +'</option>');
+                });
+            }
+        });
+    }
+});
+
+$('#farmer_id_select').on('change', function() {
+    var farmerId = $(this).val();
+
+    if (farmerId) {
+        $.ajax({
+            url: '/sales/getFarmerDetails/' + farmerId,
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                $('#farmer_id').val(data.id);
+                $('#farmer_code').val(data.farmerID);
+                $('#farmer_name').val(data.fname + ' ' + data.lname);
+                // Add more fields as necessary
+            }
+        });
+    } else {
         $('#farmer_id').val('');
         $('#farmer_name').val('');
-        $('#farmer_id_select').empty().append('<option value="">Choose one</option>');
-
-        if (centerId) {
-            $.ajax({
-                url: '/sales/getFarmersByCenter/' + centerId,
-                type: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    $.each(data, function(key, value) {
-                        $('#farmer_id_select').append('<option value="'+ value.id +'">'+ value.fname +' '+ value.lname +' - '+ value.farmerID +'</option>');
-                    });
-                }
-            });
-        }
-    });
-
-    $('#farmer_id_select').on('change', function() {
-        var farmerId = $(this).val();
-
-        if (farmerId) {
-            $.ajax({
-                url: '/sales/getFarmerDetails/' + farmerId,
-                type: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    $('#farmer_id').val(data.id);
-                    $('#farmer_code').val(data.farmerID);
-                    $('#farmer_name').val(data.fname + ' ' + data.lname);
-                    // Add more fields as necessary
-                }
-            });
-        } else {
-            $('#farmer_id').val('');
-            $('#farmer_name').val('');
-        }
-    });
+    }
+});
 });
     //Add Sales
     $(document).ready(function(){       

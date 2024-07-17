@@ -129,7 +129,8 @@
                         <a href="#"><i class="la la-cubes"></i> <span> Milk Collection </span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li><a href="{{url('milkCollection/add-collection')}}">Add Collection</a></li>
-                            <li><a href="{{url('milkCollection/index')}}">Milk List</a></li>                            
+                            <li><a href="{{url('milkCollection/index')}}">Milk List</a></li>  
+                            <li><a href="{{url('milk-management/spillages')}}">Milk Spillages</a></li>                          
                         </ul>
                     </li>
 

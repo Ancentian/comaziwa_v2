@@ -19,6 +19,28 @@
 <!-- /Page Header -->
 
 <div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            <label>Date Range <span class="text-danger">*</span></label>
+            <input type="text" readonly id="daterange" class="form-control" value="<?php echo e(date('m/01/Y')); ?> - <?php echo e(date('m/t/Y')); ?>" />
+        </div>
+    </div>
+    <div class="form-group col-sm-4">
+        <label for="center_id">Select Center</label>
+        <select class="form-control select" name="center_id" id="center_id" required>
+            <option value="">Choose one</option>
+            <?php $__currentLoopData = $centers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $center): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <option value="<?php echo e($center->id); ?>"><?php echo e($center->center_name); ?></option>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        </select>
+    </div>
+    
+    <div class="form-group col-sm-4">
+        <label for="farmer_id">Select Farmer</label>
+        <select class="form-control select" name="farmer_id" id="farmer_id" required>
+            <option value="">Choose one</option>
+        </select>
+    </div>
     <div class="col-md-12">
         <div class="table-responsive">	
             <table class="table table-striped custom-table" id="all_sales_table">
@@ -145,6 +167,17 @@ $(document).ready(function(){
 
 
 $(document).ready(function(){
+    $('#daterange').daterangepicker({
+        opens: 'bottom',
+        ranges: ranges
+    }, function(start, end, label) {
+        all_sales_table.ajax.reload();
+    });
+
+    $(document).on('change', ' #center_id, #farmer_id', function () {
+        all_sales_table.ajax.reload();
+    })
+
     all_sales_table = $('#all_sales_table').DataTable({
             <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
@@ -152,6 +185,15 @@ $(document).ready(function(){
             ajax: {
                 url : "<?php echo e(url('sales/index')); ?>",
                 data: function(d){
+                    // Access the start and end dates from the date range picker
+                var startDate = $('#daterange').data('daterangepicker').startDate.format('YYYY-MM-DD');
+                var endDate = $('#daterange').data('daterangepicker').endDate.format('YYYY-MM-DD');
+                
+                // Add the dates as parameters to the request
+                d.start_date = startDate;
+                d.end_date = endDate;
+                d.center_id = $("#center_id").val();
+                d.farmer_id = $("#farmer_id").val();
                     
                 }
             },
@@ -179,6 +221,57 @@ $(document).ready(function(){
         });
 
     });
+
+    $(document).ready(function() {
+    $('#center_id').on('change', function() {
+        var centerId = $(this).val();
+
+        // Clear farmer details and farmer select options
+        $('#farmer_id').val('');
+        $('#farmer_name').val('');
+        $('#farmer_id').empty().append('<option value="">Choose one</option>');
+
+        if (centerId) {
+            $.ajax({
+                url: '/sales/getFarmersByCenter/' + centerId,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $.each(data, function(key, value) {
+                        $('#farmer_id').append('<option value="'+ value.id +'">'+ value.fname +' '+ value.lname +' - '+ value.farmerID +'</option>');
+                    });
+                },
+                error: function() {
+                    alert('Failed to retrieve farmers. Please try again.');
+                }
+            });
+        }
+    });
+
+    $('#farmer_id').on('change', function() {
+        var farmerId = $(this).val();
+
+        if (farmerId) {
+            $.ajax({
+                url: '/sales/getFarmerDetails/' + farmerId,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $('#farmer_id').val(data.id);
+                    $('#farmer_code').val(data.farmerID);
+                    $('#farmer_name').val(data.fname + ' ' + data.lname);
+                    // Add more fields as necessary
+                },
+                error: function() {
+                    alert('Failed to retrieve farmer details. Please try again.');
+                }
+            });
+        } else {
+            $('#farmer_id').val('');
+            $('#farmer_name').val('');
+        }
+    });
+});
 
     
 </script>

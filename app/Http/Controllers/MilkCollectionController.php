@@ -18,7 +18,10 @@ class MilkCollectionController extends Controller
 {
     public function index()
     {
-        return view('companies.milkcollection.index');
+        $tenant_id = auth()->user()->id;
+        $centers = CollectionCenter::where('tenant_id', $tenant_id)->get();
+        $farmers = Farmer::where('tenant_id', $tenant_id)->get();
+        return view('companies.milkcollection.index', compact('centers', 'farmers'));
     }
 
     public function all_milk_collection()
@@ -27,6 +30,9 @@ class MilkCollectionController extends Controller
         $centers = CollectionCenter::where('tenant_id', $tenant_id)->get();
         $banks = Bank::where('tenant_id', $tenant_id)->get();
         if (request()->ajax()) {
+            $start_date = request()->start_date;
+            $end_date = request()->end_date;
+
             $tenant_id = auth()->user()->id;
             $milk = MilkCollection::join('farmers', 'farmers.id', '=', 'milk_collections.farmer_id')
                     ->join('collection_centers', 'collection_centers.id', '=', 'milk_collections.center_id')
@@ -37,9 +43,22 @@ class MilkCollectionController extends Controller
                         'farmers.farmerID',
                         'farmers.fname',
                         'farmers.lname',
-                    ])->get();
+                    ]);
 
-            return DataTables::of($milk)
+            if(!empty($start_date) && !empty($end_date)){
+                $milk->whereDate('milk_collections.collection_date','>=',$start_date);
+                $milk->whereDate('milk_collections.collection_date','<=',$end_date);
+            }
+
+            if(!empty(request()->center_id)){
+                $milk->where('milk_collections.center_id','=',request()->center_id);
+            }
+
+            if(!empty(request()->farmer_id)){
+                $milk->where('milk_collections.farmer_id','=',request()->farmer_id);
+            }
+
+            return DataTables::of($milk->get())
                 ->addColumn(
                     'action',
                     function ($row) {
@@ -331,7 +350,7 @@ class MilkCollectionController extends Controller
             return response()->json(['message' => 'Deleted Successfully']);
         } catch (\Exception $e) {
             DB::rollback();
-            return response()->json(['message' => 'Failed to delete Benefits of Kind. Please try again.'], 500);
+            return response()->json(['message' => 'Failed to delete Collection. Please try again.'], 500);
         }
     }
 
