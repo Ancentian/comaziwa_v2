@@ -4,7 +4,7 @@
     <!-- Logo -->
     <div class="header-left">
         <a href="#" class="logo">
-            <img src="<?php echo e(asset('img/logo-white.png')); ?>" width="150" height="50" alt="">
+            <img src="<?php echo e(asset('img/logo.png')); ?>" width="50" height="50" alt="">
         </a>
     </div>
     <!-- /Logo -->
@@ -36,9 +36,7 @@
             </a>
             <div class="dropdown-menu">
                 <a class="dropdown-item" href="<?php echo e(url('profile/my-profile')); ?>">My Profile</a>
-                <?php if(auth()->user()->type == 'client'): ?>
-                <a class="dropdown-item" href="<?php echo e(url('dashboard/subscriptions')); ?>">Subscription status</a>
-                <?php endif; ?>
+                
                 <a class="dropdown-item" href="<?php echo e(url('auth/logout')); ?>">Logout</a>
             </div>
         </li>

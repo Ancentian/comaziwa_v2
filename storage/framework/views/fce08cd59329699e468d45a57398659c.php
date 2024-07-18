@@ -1,19 +1,18 @@
-@extends('layout.auth')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="container">
 				
     <!-- Account Logo -->
     <div class="account-logo">
-        <a href="#"><img src="{{asset('img/logo.png')}}" alt=""></a>
+        <a href="#"><img src="<?php echo e(asset('img/ghana.png')); ?>" alt=""></a>
     </div>
     <!-- /Account Logo -->
 
-    @if (Session::has('message'))
+    <?php if(Session::has('message')): ?>
         <div class="alert alert-success" role="alert">
-            {{ Session::get('message') }}
+            <?php echo e(Session::get('message')); ?>
+
         </div>
-    @endif
+    <?php endif; ?>
     
     <div class="account-box">
         <div class="account-wrapper">
@@ -21,20 +20,20 @@
             <p class="account-subtitle">Enter your email to get a password reset link</p>
             
             <!-- Account Form -->
-            <form action="{{url('auth/staff-forgot-password')}}" method="POST">
-                @csrf
+            <form action="<?php echo e(url('auth/forgot-password')); ?>" method="POST">
+                <?php echo csrf_field(); ?>
                 <div class="form-group">
                     <label>Email Address</label>
                     <input class="form-control" name="email" type="email" required>
-                    @if ($errors->has('email'))
-                        <span class="text-danger">{{ $errors->first('email') }}</span>
-                    @endif
+                    <?php if($errors->has('email')): ?>
+                        <span class="text-danger"><?php echo e($errors->first('email')); ?></span>
+                    <?php endif; ?>
                 </div>
                 <div class="form-group text-center">
                     <button class="btn btn-primary account-btn" type="submit">Reset Password</button>
                 </div>
                 <div class="account-footer">
-                    <p>Remember your password? <a href="{{url('auth/login')}}">Login</a></p>
+                    <p>Remember your password? <a href="<?php echo e(url('auth/login')); ?>">Login</a></p>
                 </div>
             </form>
             <!-- /Account Form -->
@@ -43,4 +42,5 @@
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.auth', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\comaziwa\resources\views/auth/pass_reset.blade.php ENDPATH**/ ?>

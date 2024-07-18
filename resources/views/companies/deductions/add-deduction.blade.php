@@ -38,6 +38,7 @@
         Please select a deduction type.
     </div>
     {{-- Individual Deduction --}}
+    {{-- Individual Deduction --}}
     <div class="col-md-12" id="individual_deduction">
         <!-- Individual Deduction Form -->
         <form id="add_deduction_form"  action="{{ url('deductions/store-deduction') }}" method="POST">
@@ -157,9 +158,9 @@
                                     <thead>
                                         <tr>
                                             <th style="width: 20px">#</th>
-                                            <th><input type="checkbox" id="checkAll"> Check All</th>
+                                            <th  class="text-success"> <input id="checkAll" type="checkbox"> Check All to Include</th>
                                             <th hidden></th>
-                                            <th class="col-sm-3">Deduction</th>   
+                                            <th class="col-sm-3">Deduction</th>
                                             <th>Total</th>
                                         </tr>
                                     </thead>
@@ -167,16 +168,21 @@
                                         @foreach($general_deductions as $i => $key)
                                         <tr>
                                             <td>{{ ++$i }}</td>
-                                            <td><input type="checkbox" class="deduction-checkbox" name="check_box[]" checked value="1"></td>
+                                            <td>
+                                                <input type="checkbox" class="deduction-checkbox" name="check_box[]" checked>
+                                                <input type="hidden" class="checkbox-value" name="check_box_value[]" value="1">
+                                            </td>
                                             <td hidden>
                                                 <input class="form-control" type="text" name="deduction_id[]" value="{{ $key['id'] }}" readonly>
                                             </td>
-                                            <td><input class="form-control"  type="text" value="{{ $key['name'] }}" readonly></td>
-                                            <td><input class="form-control total" type="text" name="amount[]" value="{{ $key['amount'] }}" readonly></td>
+                                            <td><input class="form-control" type="text" value="{{ $key['name'] }}" readonly></td>
+                                            <td><input class="form-control " type="text" name="amount[]" value="{{ $key['amount'] }}" readonly></td>
                                         </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
+                                
+                                
 							</div>
 							<div class="table-responsive">
 								<table class="table table-hover table-white">
@@ -207,52 +213,56 @@
 
 @section('javascript')
 <script>
-   $(document).ready(function(){
-        $('#deduction_type').change(function(){
-            var deductionType = $(this).val();
-            if(deductionType == 'individual') {
-                $('#individual_deduction').show();
-                $('#general_deduction').hide();
-                $('#error_message').hide();
-            } else if(deductionType == 'general') {
-                $('#individual_deduction').hide();
-                $('#general_deduction').show();
-                $('#error_message').hide();
-            } else {
-                $('#individual_deduction').hide();
-                $('#general_deduction').hide();
-                $('#error_message').show();
-            }
-        });
-
-        // Function to check the checkbox state and enable/disable the submit button
-        function checkCheckboxes() {
-            if ($('.deduction-checkbox:checked').length == 0) {
-                $('#general_submit').prop('disabled', true);
-            } else {
-                $('#general_submit').prop('disabled', false);
-            }
+  $(document).ready(function() {
+    $('#deduction_type').change(function() {
+        var deductionType = $(this).val();
+        if(deductionType == 'individual') {
+            $('#individual_deduction').show();
+            $('#general_deduction').hide();
+            $('#error_message').hide();
+        } else if(deductionType == 'general') {
+            $('#individual_deduction').hide();
+            $('#general_deduction').show();
+            $('#error_message').hide();
+        } else {
+            $('#individual_deduction').hide();
+            $('#general_deduction').hide();
+            $('#error_message').show();
         }
-
-        // Check initial state of checkboxes
-        checkCheckboxes();
-
-        // Attach change event listener to #checkAll
-        $('#checkAll').change(function() {
-            var isChecked = $(this).is(':checked');
-            $('.deduction-checkbox').prop('checked', isChecked);
-            $('.deduction-checkbox').each(function() {
-                $(this).val(isChecked ? 1 : 0);
-            });
-            checkCheckboxes(); // Check the state after changing all checkboxes
-        });
-
-        // Attach change event listener to individual checkboxes
-        $('.deduction-checkbox').change(function() {
-            $(this).val($(this).is(':checked') ? 1 : 0);
-            checkCheckboxes(); // Check the state after changing individual checkbox
-        });
     });
+
+    // Function to check the checkbox state and enable/disable the submit button
+    function checkCheckboxes() {
+        if ($('.deduction-checkbox:checked').length == 0) {
+            $('#general_submit').prop('disabled', true);
+        } else {
+            $('#general_submit').prop('disabled', false);
+        }
+    }
+
+    // Check initial state of checkboxes
+    checkCheckboxes();
+
+    // Attach change event listener to #checkAll
+    $('#checkAll').change(function() {
+        var isChecked = $(this).is(':checked');
+        $('.deduction-checkbox').prop('checked', isChecked);
+        $('.checkbox-value').each(function() {
+            $(this).val(isChecked ? 1 : 0); // Update hidden input value
+        });
+        checkCheckboxes(); // Check the state after changing all checkboxes
+    });
+
+    // Attach change event listener to individual checkboxes
+    $('.deduction-checkbox').change(function() {
+        var isChecked = $(this).is(':checked');
+        $(this).siblings('.checkbox-value').val(isChecked ? 1 : 0); // Update hidden input value
+        checkCheckboxes(); // Check the state after changing individual checkbox
+    });
+});
+
+
+
      
     // Start Add Multiple Shop Items
     $(document).ready(function() {
@@ -405,7 +415,8 @@ $("#add_deductions_table").on("click", ".remove", function() {
                 },
                 error: function (xhr, status, error) {
                     // Handle error response
-                    toastr.error('Something Went Wrong!, Try again!', 'Error');
+                    
+                    toastr.error('Something Went Wrong.!, Try again!', 'Error');
                 }
             });
         });

@@ -249,50 +249,103 @@ class DeductionsController extends Controller
         }
     }
 
-    public function store_general_deduction(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'farmer_id'  => '',
-            'deduction_id'  => 'required',
-            'center_id'  => '',
-            'deduction_type'  => 'required',
-            'amount'     => 'required',
-            'date'       => 'required',
-        ]);
+    // public function store_general_deduction(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'farmer_id'  => '',
+    //         'deduction_id'  => 'required',
+    //         'center_id'  => '',
+    //         'deduction_type'  => 'required',
+    //         'amount'     => 'required',
+    //         'date'       => 'required',
+    //     ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+    //     if ($validator->fails()) {
+    //         return response()->json(['errors' => $validator->errors()], 422);
+    //     }
+    //     logger($request->all());
+    //     DB::beginTransaction();
+    //     try {
+    //     $tenant_id = auth()->user()->id;
+    //     $user_id = auth()->user()->id;
+        
+    //     foreach($request->deduction_id as $key => $ded) {
+    //         if ($request->check_box[$key] == 1) {
+    //             $deduction['tenant_id'] = $tenant_id;
+    //             $deduction['farmer_id'] = $request->farmer_id;
+    //             $deduction['center_id'] = $request->center_id;	
+    //             $deduction['deduction_id'] = $ded;
+    //             $deduction['deduction_type'] = $request->deduction_type;
+    //             $deduction['amount'] = $request->amount[$key];
+    //             $deduction['date'] = $request->date;
+    //             $deduction['user_id'] = $user_id;
+    //             //$deduction['user_role'] = $request->user_role;
+    //             Deduction::create($deduction);
+    //         }
+    //     }
+
+    //     DB::commit();
+    //     return response()->json(['message' => 'Deduction Added Successfully']);
+    //     } catch (\Exception $e) {
+    //         logger($e);
+    //         DB::rollback();
+    //         return response()->json(['message' => 'Data saving failed. Please try again.'], 500);
+    //     }
+    // }
+    public function store_general_deduction(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'farmer_id'  => '',
+        'deduction_id'  => 'required',
+        'center_id'  => '',
+        'deduction_type'  => 'required',
+        'amount'     => 'required',
+        'date'       => 'required',
+    ]);
+
+    // Custom validation to ensure at least one checkbox is checked
+    $validator->after(function ($validator) use ($request) {
+        if (!isset($request->check_box_value) || !in_array('1', $request->check_box_value)) {
+            $validator->errors()->add('check_box_value', 'At least one deduction must be selected.');
         }
-        logger($request->all());
-        DB::beginTransaction();
-        try {
+    });
+
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 422);
+    }
+
+    logger($request->all());
+    DB::beginTransaction();
+    try {
         $tenant_id = auth()->user()->id;
         $user_id = auth()->user()->id;
-        
-        foreach($request->deduction_id as $key => $ded) {
-            if ($request->deduction_checkbox[$key] == 1) {
-                $deduction['tenant_id'] = $tenant_id;
-                $deduction['farmer_id'] = $request->farmer_id;
-                $deduction['center_id'] = $request->center_id;	
-                $deduction['deduction_id'] = $ded;
-                $deduction['deduction_type'] = $request->deduction_type;
-                $deduction['amount'] = $request->amount[$key];
-                $deduction['date'] = $request->date;
-                $deduction['user_id'] = $user_id;
-                //$deduction['user_role'] = $request->user_role;
-        
+
+        foreach ($request->deduction_id as $key => $ded) {
+            if ($request->check_box_value[$key] == '1') {
+                $deduction = [
+                    'tenant_id' => $tenant_id,
+                    'farmer_id' => $request->farmer_id,
+                    'center_id' => $request->center_id,
+                    'deduction_id' => $ded,
+                    'deduction_type' => $request->deduction_type,
+                    'amount' => $request->amount[$key],
+                    'date' => $request->date,
+                    'user_id' => $user_id,
+                ];
                 Deduction::create($deduction);
             }
         }
 
         DB::commit();
         return response()->json(['message' => 'Deduction Added Successfully']);
-        return redirect()->route('deductions.index');
-        } catch (\Exception $e) {
-            DB::rollback();
-            return response()->json(['message' => 'Data saving failed. Please try again.'], 500);
-        }
+    } catch (\Exception $e) {
+        logger($e);
+        DB::rollback();
+        return response()->json(['message' => 'Data saving failed. Please try again.'], 500);
     }
+}
+
+
 
     public function edit_deduction($id){
         $deduction = Deduction::findOrFail($id);

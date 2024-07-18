@@ -33,6 +33,7 @@ use App\Http\Controllers\SalesController;
 use App\Http\Controllers\SharesController;
 use App\Http\Controllers\AssetsController;
 use App\Http\Controllers\MilkManagementController;
+use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\Crons;
 
 
@@ -239,7 +240,15 @@ Route::prefix('shares')->middleware(['auth:web,employee'])->group(function () {
     Route::post('/store-shares', [SharesController::class, 'store_shares']); 
     Route::get('/edit-shares/{id}', [SharesController::class, 'edit_shares']);
     Route::post('/update-shares/{id}', [SharesController::class, 'update_shares']);
-    Route::delete('/delete-shares/{id}', [SharesController::class, 'delete_shares']);   
+    Route::delete('/delete-shares/{id}', [SharesController::class, 'delete_shares']); 
+    
+    //Settings
+    Route::get('/shares-settings', [SharesController::class, 'shares_settings']);
+    Route::get('/all-shares-settings', [SharesController::class, 'all_shares_settings']);
+    Route::post('/store-shares-settings', [SharesController::class, 'store_shares_settings']);
+    Route::get('/edit-shares-settings/{id}', [SharesController::class, 'edit_shares_settings']);
+    Route::post('/update-shares-settings/{id}', [SharesController::class, 'update_shares_settings']);
+    Route::delete('/delete-shares-settings/{id}', [SharesController::class, 'delete_shares_settings']);
 });
 
 Route::prefix('assets')->middleware(['auth:web,employee'])->group(function () {
@@ -263,15 +272,23 @@ Route::prefix('assets')->middleware(['auth:web,employee'])->group(function () {
 });
 
 Route::prefix('milk-management')->middleware(['auth:web, employee'])->group(function () {
-    Route::get('/index', [MilkManagementController::class, 'index'])->name('assets.index');
+    Route::get('/index', [MilkManagementController::class, 'index'])->name('management.index');
     Route::get('/spillages', [MilkManagementController::class, 'spillages']);
     Route::get('/milk-spillages', [MilkManagementController::class, 'milk_spillages']);
     Route::post('/store-spillages', [MilkManagementController::class, 'store_spillages']);
     Route::get('/edit-spillage/{id}', [MilkManagementController::class, 'edit_spillage']);
     Route::post('/update-spillage/{id}', [MilkManagementController::class, 'update_spillage']);
     Route::delete('/delete-spillage/{id}', [MilkManagementController::class, 'delete_spillage']); 
-//Comment
-Route::get('/view-comment/{id}', [MilkManagementController::class, 'view_comments']);
+
+    //Comment
+    Route::get('/view-comment/{id}', [MilkManagementController::class, 'view_comments']);
+});
+
+Route::prefix('payments')->middleware(['auth:web, employee'])->group(function () {
+    Route::get('/index', [PaymentsController::class, 'index'])->name('payments.index');
+    Route::get('/all-payments', [PaymentsController::class, 'all_payments']);
+    Route::get('/generate-payments', [PaymentsController::class, 'generate_payments']);
+    Route::post('/store-payments', [PaymentsController::class, 'store_payments']);
 });
 
 Route::prefix('profile')->middleware(['auth:web,employee'])->group(function () {

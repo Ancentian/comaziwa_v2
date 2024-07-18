@@ -4,7 +4,7 @@
     <!-- Logo -->
     <div class="header-left">
         <a href="#" class="logo">
-            <img src="{{ asset('img/logo-white.png') }}" width="150" height="50" alt="">
+            <img src="{{ asset('img/logo.png') }}" width="50" height="50" alt="">
         </a>
     </div>
     <!-- /Logo -->
@@ -36,9 +36,9 @@
             </a>
             <div class="dropdown-menu">
                 <a class="dropdown-item" href="{{url('profile/my-profile')}}">My Profile</a>
-                @if(auth()->user()->type == 'client')
+                {{-- @if(auth()->user()->type == 'client')
                 <a class="dropdown-item" href="{{url('dashboard/subscriptions')}}">Subscription status</a>
-                @endif
+                @endif --}}
                 <a class="dropdown-item" href="{{url('auth/logout')}}">Logout</a>
             </div>
         </li>

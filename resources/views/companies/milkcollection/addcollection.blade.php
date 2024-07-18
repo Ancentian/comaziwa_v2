@@ -239,7 +239,6 @@ $(document).ready(function() {
                 },
                 error: function(xhr, status, error) {
                     toastr.error('Something Went Wrong!, Try again!', 'Error');
-                    console.error(error);
                 }
             });
         } else {

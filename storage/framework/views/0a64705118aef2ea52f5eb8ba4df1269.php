@@ -1500,6 +1500,11 @@ $('#staff_create_template_form').on('submit', function (e) {
                 if ($('#shares_table').length > 0) {
                     shares_table.ajax.reload();
                 }
+
+                if ($('#shares_settings_table').length > 0) {
+                    shares_settings_table.ajax.reload();
+                }
+
                 if ($('#asset_categories_table').length > 0) {
                     asset_categories_table.ajax.reload();
                 }

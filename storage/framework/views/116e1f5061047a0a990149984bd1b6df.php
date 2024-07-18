@@ -161,6 +161,7 @@
                             <li><a href="<?php echo e(url('company/profile')); ?>"> Collection Centers </a></li>
                             <li><a href="<?php echo e(url('company/settings')); ?>"> Company Settings </a></li>
                             <li><a href="<?php echo e(url('communications/mailSettings')); ?>"> Email Settings </a></li>
+                            <li><a href="<?php echo e(url('shares/shares-settings')); ?>"> Shares Settings </a></li>
                             <?php if(auth()->user()->type == 'superadmin'): ?>
                                 <li><a href="<?php echo e(url('packages/list')); ?>"> Packages </a></li>
                             <?php endif; ?>
@@ -184,6 +185,14 @@
                         <ul style="display: none;">
                             <li><a href="<?php echo e(url('assets/index')); ?>"> Assets List </a></li>
                             <li><a href="<?php echo e(url('assets/categories')); ?>"> Categories </a></li>
+                        </ul>
+                    </li>
+
+                    <li class="submenu">
+                        <a href="#"><i class="la la-cog"></i> <span> Payroll </span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+                            <li><a href="<?php echo e(url('payments/index')); ?>"> Payments List </a></li>
+                            <li><a href="<?php echo e(url('payments/generate-payments')); ?>"> Generate Payments </a></li>
                         </ul>
                     </li>
                     

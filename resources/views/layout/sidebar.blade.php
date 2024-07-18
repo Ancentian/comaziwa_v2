@@ -161,6 +161,7 @@
                             <li><a href="{{url('company/profile')}}"> Collection Centers </a></li>
                             <li><a href="{{url('company/settings')}}"> Company Settings </a></li>
                             <li><a href="{{url('communications/mailSettings')}}"> Email Settings </a></li>
+                            <li><a href="{{url('shares/shares-settings')}}"> Shares Settings </a></li>
                             @if(auth()->user()->type == 'superadmin')
                                 <li><a href="{{url('packages/list')}}"> Packages </a></li>
                             @endif
@@ -184,6 +185,14 @@
                         <ul style="display: none;">
                             <li><a href="{{url('assets/index')}}"> Assets List </a></li>
                             <li><a href="{{url('assets/categories')}}"> Categories </a></li>
+                        </ul>
+                    </li>
+
+                    <li class="submenu">
+                        <a href="#"><i class="la la-cog"></i> <span> Payroll </span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+                            <li><a href="{{url('payments/index')}}"> Payments List </a></li>
+                            <li><a href="{{url('payments/generate-payments')}}"> Generate Payments </a></li>
                         </ul>
                     </li>
                     
