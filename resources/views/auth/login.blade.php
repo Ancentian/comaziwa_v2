@@ -5,7 +5,7 @@
 				
     <!-- Account Logo -->
     <div class="account-logo">
-        <a href="#"><img src="{{asset('img/ghana.png')}}" alt="Code Sniper Developers"></a>
+        <a href="#"><img src="{{asset('img/logo.png')}}" alt="Code Sniper Developers"></a>
     </div>
     <!-- /Account Logo -->
 
