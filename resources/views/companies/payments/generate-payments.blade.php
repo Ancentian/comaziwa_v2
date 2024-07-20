@@ -13,7 +13,7 @@
     </div>
 </div>
 <!-- /Page Header -->
-<form id="generatePayeeReport" action="{{url('payslip-exports/generate-payee-report')}}" method="POST">
+<form id="generatePayment">
     @csrf
     <div class="row">
         <div class="col-sm-6">
@@ -22,10 +22,31 @@
                 <input class="form-control" type="month" name="paye_period" value="{{ date('Y-m') }}" id="pay_period">
             </div>
         </div>
-        <input type="hidden"  value="" name="action" id="action">
-         
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label>Collection Center <span class="text-danger">*</span></label>
+                <select class="form-control select" name="collection_center" id="center_id">
+                    <option value="">Choose one</option>
+                    @foreach($centers as $center)
+                        <option value="{{ $center->id }}">{{ $center->center_name }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-4">  
+            <div class="form-group">
+                <label class="col-form-label">Milk Pay Rate <span class="text-danger">*</span></label>
+                <input class="form-control" name="milk_rate" id="milk_rate" type="number" placeholder="0.00" required>
+            </div>
+        </div>
+        <div class="col-sm-4">  
+            <div class="form-group">
+                <label class="col-form-label">Bonus Rate <span class="text-danger">*</span></label>
+                <input class="form-control" name="bonus_rate" id="bonus_rate" type="number" placeholder="0.00" required>
+            </div>
+        </div>
     </div>
-</form>
+
 <div class="row">
     <hr>
 
@@ -34,12 +55,13 @@
             <table class="table table-striped custom-table" id="generate_payments_table">
                 <thead>
                     <tr>
-                        <th>Name</th>
+                        <th>Member Name - Code </th>
+                        <th style="display: none;">Farmer ID</th>
                         <th>Total Milk</th> 
                         <th>Stores Deductions</th>
                         <th>Individual Deductions</th>
                         <th>General Deductions</th>
-                        <th>Shares</th>
+                        <th>Shares Contribution</th>
                         <th>Previous Dues</th>
                     </tr>
                 </thead>
@@ -48,73 +70,10 @@
                 </tbody>
             </table>
         </div>
+        <button type="submit" id="submit_payments" class="btn btn-primary mt-3">Submit Payments</button>
+    </form>
     </div>
 </div>
-
-<div id="bulk_generate" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title">Generate Payslip</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <form id="bulk_payslip_form" action="{{url('/payslip-exports/bulk-print-payslip')}}" method="POST">
-                @csrf
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label>Pay Period <span class="text-danger">*</span></label>
-                            <input class="form-control" type="month" name="pay_period" required>
-                        </div>
-                    </div>
-                    
-    
-                    <div class="col-sm-6">
-                        <br><button class="btn btn-primary submit-btn">Submit</button>
-                        <div class="alert alert-warning warning">Please wait... Based on the number of staff in your database, this operation might take time<br> Please DO NOT close this window.</div>
-                    </div>
-                </div>
-                
-            </form>
-        </div>
-    </div>
-</div>
-
-</div>
-
-<div id="bulk_email" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title">Email Payslip</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <form id="bulk_email_form" action="{{url('/payslip-exports/bulk-email-payslip')}}" method="POST">
-                @csrf
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label>Pay Period <span class="text-danger">*</span></label>
-                            <input class="form-control" type="month" name="pay_period" required>
-                        </div>
-                    </div>
-                    
-    
-                    <div class="col-sm-6">
-                        <br><button class="btn btn-primary submit-btn">Submit</button>
-                        <div class="alert alert-warning warning">Please wait... Based on the number of staff in your database, this operation might take time<br> Please DO NOT close this window.</div>
-                    </div>
-                </div>
-                
-            </form>
-        </div>
-    </div>
 </div>
 
 </div>
@@ -130,10 +89,6 @@ $(document).ready(function(){
         $(document).on('click', '#bulk_generate_btn', function () {
             $('#bulk_generate').modal("show");
         });
-        
-        $(document).on('click', '#bulk_email_btn', function () {
-            $('#bulk_email').modal("show");
-        });
     
         generate_payments_table = $('#generate_payments_table').DataTable({
             @include('layout.export_buttons')
@@ -143,73 +98,122 @@ $(document).ready(function(){
                 url : "{{url('payments/generate-payments')}}",
                 data: function(d){
                     d.pay_period = $("#pay_period").val();
+                    d.center_id = $("#center_id").val();
                 }
             },
-            columnDefs:[{
-                    "targets": 1,
-                    "orderable": false,
-                    "searchable": false
-                }],
+                columnDefs: [
+                {
+                    "targets": 1, // Target the farmer_id column
+                    "visible": false, // Hide the column
+                    "searchable": false,
+                    "orderable": false
+                }
+            ],
             columns: [
                 {data: 'fullname', name: 'fullname'},
+                {data: 'farmer_id', name: 'farmer_id'},
                 {data: 'total_milk', name: 'total_milk'},
                 {data: 'total_store_deductions', name: 'total_store_deductions'},
                 {data: 'total_individual_deductions', name: 'total_individual_deductions'},
                 {data: 'total_general_deductions', name: 'total_general_deductions'},
                 {data: 'total_shares', name: 'total_shares'},
-                // {data: 'total_previous_dues', name: 'total_previous_dues'}, 
-                // {data: 'net_pay', name: 'net_pay'},   
+                {data: 'previous_dues', name: 'previous_dues'},    
             ],
             createdRow: function( row, data, dataIndex ) {
             }
         });
 
-        $('#pay_period').change(function() {
+        $('#pay_period, #center_id').change(function() {
             generate_payments_table.ajax.reload();
         });
+
+        $('#generatePayment').submit(function(e) {
+    e.preventDefault();
+
+    // Get data from the table
+    var tableData = generate_payments_table.rows().data().toArray();
+
+    // Get the value from the collection center select input
+    var center_id = $("#center_id").val();
+    var pay_period = $("#pay_period").val();
+    var milk_rate = $("#milk_rate").val();
+    var bonus_rate = $("#bonus_rate").val();
+
+    // Prepare data for submission
+    var submitData = tableData.map(function(row) {
+        return {
+            farmer_id: row.farmer_id,
+            total_milk: row.total_milk,
+            store_deductions: row.total_store_deductions,
+            individual_deductions: row.total_individual_deductions,
+            general_deductions: row.total_general_deductions,
+            shares_contribution: row.total_shares,
+            previous_dues: row.previous_dues
+        };
+    });
+
+    // First confirmation dialog
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "Do you want to submit the payment data?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, submit it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Second confirmation dialog
+            Swal.fire({
+                title: 'This operation cannot be reversed!',
+                text: "Are you absolutely sure you want to proceed?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, proceed!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Submit the form via AJAX
+                    $.ajax({
+                        url: "{{ url('payments/store-payments') }}",
+                        method: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            center_id: center_id,
+                            pay_period: pay_period,
+                            milk_rate: milk_rate,
+                            bonus_rate: bonus_rate,
+                            payments: submitData
+                        },
+                        success: function(response) {
+                            // Handle the response
+                            Swal.fire(
+                                'Submitted!',
+                                'Your payment data has been submitted.',
+                                'success'
+                            );
+                        },
+                        error: function(error) {
+                            // Handle errors
+                            Swal.fire(
+                                'Error!',
+                                'Something went wrong! Please try again.',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
+        }
+    });
+});
 
     });
 
     function setAction(action) {
         $('#action').val(action);
     }
-
-        $(document).ready(function() {
-        $('#generatePayeeReport').submit(function(e) {
-            e.preventDefault();
-
-            var url = $(this).attr('action');
-            var formData = $(this).serialize();
-
-            $.ajax({
-                url: url,
-                method: 'POST',
-                data: formData,
-                dataType: 'html',
-                success: function(response) {
-                    if($("#action").val() == 'print'){
-                        $("#print_content").html(response);
-                        $('#print_content').show().printThis({
-                            importCSS: true,
-                            afterPrint: function() {
-                                $('#print_content').hide();
-                            }
-                        });
-                    }else{
-                        var pdfUrl = JSON.parse(response).pdfUrl;
-                        window.open(pdfUrl, '_blank');
-                    }
-                    
-                },
-                error: function(xhr, status, error) {
-                    toastr.error('Something Went Wrong!, Try again!','Error');
-                    console.error(error);
-                }
-            });
-        });
-    });
-
-
 </script>
 
 @endsection
