@@ -130,6 +130,44 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-md-12 col-lg-12 col-xl-12 d-flex">
+        <div class="card flex-fill">
+            <div class="card-body">
+                <h4 class="card-title">Production Statistics</h4>
+                <div class="statistics">
+                    <div class="row">
+                        <div class="col-md-3 col-3 text-center">
+                            <div class="stats-box mb-4" >
+                                <p>Today's Expense Requests</p>
+                                <h3><?php echo e($todays); ?></h3>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-3 text-center">
+                            <div class="stats-box mb-4" >
+                                <p>This Months Expense Requests</p>
+                                <h3><?php echo e($monthly); ?></h3>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-3 text-center">
+                            <div class="stats-box mb-4" >
+                                <p>Annual Expense Requests</p>
+                                <h3><?php echo e($annually); ?></h3>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-3 text-center">
+                            <div class="stats-box mb-4" >
+                                <p>Pending Expense Requests</p>
+                                <h3><?php echo e($pending_requests); ?></h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <?php
    $total_leaves = App\Models\Leave::count();
