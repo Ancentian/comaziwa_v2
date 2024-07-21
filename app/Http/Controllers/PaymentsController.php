@@ -57,6 +57,10 @@ class PaymentsController extends Controller
             //     $payments->whereDate('payments.collection_date','<=',$end_date);
             // }
 
+            if(!empty(request()->pay_period)){
+                $payments->where('payments.pay_period','=',request()->pay_period);
+            }
+
             if(!empty(request()->center_id)){
                 $payments->where('payments.center_id','=',request()->center_id);
             }
@@ -160,7 +164,7 @@ class PaymentsController extends Controller
             $start_date = request()->start_date;
             $end_date = request()->end_date;
             $tenant_id = auth()->user()->id;
-            //Selected Center
+            // Selected Center
             $center_id = request()->center_id;
 
             $farmers = Farmer::join('collection_centers', 'collection_centers.id', '=', 'farmers.center_id')
@@ -176,7 +180,30 @@ class PaymentsController extends Controller
                         'farmers.farmerID',
                         'farmers.center_id',
                     ])->get();
-            return DataTables::of($farmers)
+
+            // Add the total_milk calculation for each farmer
+            foreach ($farmers as $farmer) {
+                $tenant_id = auth()->user()->id;
+                $farmer_id = $farmer->farmer_id;
+                $pay_period = request()->pay_period;
+
+                list($year, $month) = explode('-', $pay_period);
+
+                $farmer->total_milk = DB::table('milk_collections')
+                                    ->where('farmer_id', $farmer_id)
+                                    ->where('tenant_id', $tenant_id)
+                                    ->whereYear('collection_date', $year)
+                                    ->whereMonth('collection_date', $month)
+                                    ->where('payment_status', 0)
+                                    ->sum('total') ?? 0;
+            }
+
+            // Filter farmers with total_milk greater than 0
+            $filteredFarmers = $farmers->filter(function ($farmer) {
+                return $farmer->total_milk > 0;
+            });
+
+            return DataTables::of($filteredFarmers)
                 ->addColumn('action', function ($row) {
                     $html = '<div class="btn-group">
                         <button type="button" class="badge btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
@@ -201,30 +228,16 @@ class PaymentsController extends Controller
                     $center_id = $row->center_id;
                     return  $center_id;
                 })
-                
-                ->addColumn('total_milk', function ($row) {
-                    $tenant_id = auth()->user()->id;
-                    $farmer_id = $row->farmer_id;
-                    $pay_period = request()->pay_period;
-                    
-                    list($year, $month) = explode('-', $pay_period);
 
-                    $total_milk = DB::table('milk_collections')
-                                ->where('farmer_id', $farmer_id)
-                                ->where('tenant_id', $tenant_id)
-                                ->whereYear('collection_date', $year)
-                                ->whereMonth('collection_date', $month)
-                                ->where('payment_status', 0)
-                                ->sum('total') ?? 0;
-                               
-                    return $total_milk;
+                ->addColumn('total_milk', function ($row) {
+                    return $row->total_milk;
                 })
 
                 ->editColumn('total_store_deductions', function ($row) {
                     $tenant_id = auth()->user()->id;
                     $farmer_id = $row->farmer_id;
                     $pay_period = request()->pay_period;
-                    
+
                     list($year, $month) = explode('-', $pay_period);
                     $total_sales = DB::table('store_sales')
                                 ->where('farmer_id', $farmer_id)
@@ -235,15 +248,15 @@ class PaymentsController extends Controller
                                 ->whereMonth('order_date', $month)
                                 ->sum('total_cost') ?? 0;
                     return $total_sales;
-    
                 })
+
                 ->editColumn('total_individual_deductions', function ($row) {
                     $tenant_id = auth()->user()->id;
                     $farmer_id = $row->farmer_id;
                     $pay_period = request()->pay_period;
-                    
+
                     list($year, $month) = explode('-', $pay_period);
-                
+
                     $individualDeductions = DB::table('deductions')
                         ->where('tenant_id', $tenant_id)
                         ->where('farmer_id', $farmer_id)
@@ -252,14 +265,15 @@ class PaymentsController extends Controller
                         ->whereMonth('date', $month)
                         ->sum('amount') ?? 0;
                     return $individualDeductions;
-                })                
+                })
+
                 ->editColumn('total_general_deductions', function ($row) {
                     $tenant_id = auth()->user()->id;
 
                     $pay_period = request()->pay_period;
-                    
+
                     list($year, $month) = explode('-', $pay_period);
-                
+
                     $generalDeductions = DB::table('deductions')
                         ->where('tenant_id', $tenant_id)
                         ->where('deduction_type', 'general')
@@ -268,10 +282,11 @@ class PaymentsController extends Controller
                         ->sum('amount') ?? 0;
                     return $generalDeductions;
                 })
+
                 ->editColumn('total_shares', function ($row) {
                     $tenant_id = auth()->user()->id;
                     $farmer_id = $row->farmer_id;
-                
+
                     // Retrieve the accumulative_amount from share_settings
                     $shareSettings = DB::table('share_settings')
                         ->where([
@@ -280,7 +295,7 @@ class PaymentsController extends Controller
                         ])
                         ->select('accumulative_amount')
                         ->first();
-                
+
                     // Ensure shareSettings is not null and get the accumulative_amount
                     $accumulativeAmount = $shareSettings ? $shareSettings->accumulative_amount : 0;
 
@@ -293,15 +308,15 @@ class PaymentsController extends Controller
 
                     return $totalShares;
                 })
+
                 ->editColumn('previous_dues', function ($row) {
                     $tenant_id = auth()->user()->id;
                     $farmer_id = $row->farmer_id;
-                
+
                     $total_dues = "0.00";
                     return $total_dues;
                 })
-                
-                         
+
                 ->rawColumns(['action', 'fullname','farmer_id', 'total_milk', 'total_store_deductions', 'total_individual_deductions', 'total_general_deductions', 'total_shares', 'previous_dues'])
                 ->make(true);
         }
