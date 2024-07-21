@@ -7,10 +7,13 @@
         <div class="col">
             <ul class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Reports</a></li>
-                <li class="breadcrumb-item active">Genearate Payments</li>
+                <li class="breadcrumb-item active">Generate Payments</li>
             </ul>
         </div>       
     </div>
+</div>
+<div id="error_message" class="col-md-12 alert alert-danger">
+    <i class="fa fa-exclamation-triangle"></i> CONFIRM PAYMENT PERIOD & SELECT COLLECTION CENTER
 </div>
 <!-- /Page Header -->
 <form id="generatePayment">
@@ -19,9 +22,9 @@
         <div class="col-sm-6">
             <div class="form-group">
                 <label>Pay Period <span class="text-danger">*</span></label>
-                <input class="form-control" type="month" name="paye_period" value="<?php echo e(date('Y-m')); ?>" id="pay_period">
+                <input class="form-control" type="month" name="pay_period" value="<?php echo e(date('Y-m', strtotime('-1 month'))); ?>" id="pay_period">
             </div>
-        </div>
+        </div>        
         <div class="col-sm-6">
             <div class="form-group">
                 <label>Collection Center <span class="text-danger">*</span></label>
@@ -70,7 +73,9 @@
                 </tbody>
             </table>
         </div>
-        <button type="submit" id="submit_payments" class="btn btn-primary mt-3">Submit Payments</button>
+        <div class="submit-section">
+            <button type="submit"  id="submit_payments" class="btn btn-primary btn-lg mt-3 ">Generate Payments</button>
+        </div>
     </form>
     </div>
 </div>
@@ -83,133 +88,150 @@
 <?php $__env->startSection('javascript'); ?>
 <script>
 
-$(document).ready(function(){
-        $(".warning").hide();
-        $(".submit-btn").show();
-        $(document).on('click', '#bulk_generate_btn', function () {
-            $('#bulk_generate').modal("show");
-        });
-    
-        generate_payments_table = $('#generate_payments_table').DataTable({
-            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-            processing: true,
-            serverSide: false,
-            ajax: {
-                url : "<?php echo e(url('payments/generate-payments')); ?>",
-                data: function(d){
-                    d.pay_period = $("#pay_period").val();
-                    d.center_id = $("#center_id").val();
-                }
-            },
-                columnDefs: [
-                {
-                    "targets": 1, // Target the farmer_id column
-                    "visible": false, // Hide the column
-                    "searchable": false,
-                    "orderable": false
-                }
-            ],
-            columns: [
-                {data: 'fullname', name: 'fullname'},
-                {data: 'farmer_id', name: 'farmer_id'},
-                {data: 'total_milk', name: 'total_milk'},
-                {data: 'total_store_deductions', name: 'total_store_deductions'},
-                {data: 'total_individual_deductions', name: 'total_individual_deductions'},
-                {data: 'total_general_deductions', name: 'total_general_deductions'},
-                {data: 'total_shares', name: 'total_shares'},
-                {data: 'previous_dues', name: 'previous_dues'},    
-            ],
-            createdRow: function( row, data, dataIndex ) {
-            }
-        });
-
-        $('#pay_period, #center_id').change(function() {
-            generate_payments_table.ajax.reload();
-        });
-
-        $('#generatePayment').submit(function(e) {
-    e.preventDefault();
-
-    // Get data from the table
-    var tableData = generate_payments_table.rows().data().toArray();
-
-    // Get the value from the collection center select input
-    var center_id = $("#center_id").val();
-    var pay_period = $("#pay_period").val();
-    var milk_rate = $("#milk_rate").val();
-    var bonus_rate = $("#bonus_rate").val();
-
-    // Prepare data for submission
-    var submitData = tableData.map(function(row) {
-        return {
-            farmer_id: row.farmer_id,
-            total_milk: row.total_milk,
-            store_deductions: row.total_store_deductions,
-            individual_deductions: row.total_individual_deductions,
-            general_deductions: row.total_general_deductions,
-            shares_contribution: row.total_shares,
-            previous_dues: row.previous_dues
-        };
+$(document).ready(function() {
+    $(".warning").hide();
+    $(".submit-btn").show();
+    $(document).on('click', '#bulk_generate_btn', function () {
+        $('#bulk_generate').modal("show");
     });
 
-    // First confirmation dialog
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "Do you want to submit the payment data?",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, submit it!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Second confirmation dialog
-            Swal.fire({
-                title: 'This operation cannot be reversed!',
-                text: "Are you absolutely sure you want to proceed?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, proceed!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Submit the form via AJAX
-                    $.ajax({
-                        url: "<?php echo e(url('payments/store-payments')); ?>",
-                        method: 'POST',
-                        data: {
-                            _token: '<?php echo e(csrf_token()); ?>',
-                            center_id: center_id,
-                            pay_period: pay_period,
-                            milk_rate: milk_rate,
-                            bonus_rate: bonus_rate,
-                            payments: submitData
-                        },
-                        success: function(response) {
-                            // Handle the response
-                            Swal.fire(
-                                'Submitted!',
-                                'Your payment data has been submitted.',
-                                'success'
-                            );
-                        },
-                        error: function(error) {
-                            // Handle errors
-                            Swal.fire(
-                                'Error!',
-                                'Something went wrong! Please try again.',
-                                'error'
-                            );
-                        }
-                    });
-                }
+    var generate_payments_table = $('#generate_payments_table').DataTable({
+        <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+        processing: true,
+        serverSide: false,
+        ajax: {
+            url: "<?php echo e(url('payments/generate-payments')); ?>",
+            data: function(d) {
+                d.pay_period = $("#pay_period").val();
+                d.center_id = $("#center_id").val();
+            }
+        },
+        columnDefs: [
+            {
+                "targets": 1, // Target the farmer_id column
+                "visible": false, // Hide the column
+                "searchable": false,
+                "orderable": false
+            }
+        ],
+        columns: [
+            {data: 'fullname', name: 'fullname'},
+            {data: 'farmer_id', name: 'farmer_id'},
+            {data: 'total_milk', name: 'total_milk'},
+            {data: 'total_store_deductions', name: 'total_store_deductions'},
+            {data: 'total_individual_deductions', name: 'total_individual_deductions'},
+            {data: 'total_general_deductions', name: 'total_general_deductions'},
+            {data: 'total_shares', name: 'total_shares'},
+            {data: 'previous_dues', name: 'previous_dues'}
+        ],
+        createdRow: function(row, data, dataIndex) {
+            // Custom row creation logic (if any)
+        },
+        drawCallback: function(settings) {
+            var totalMilk = 0;
+            var data = this.api().rows().data();
+            data.each(function(row) {
+                totalMilk += parseFloat(row.total_milk);
             });
+            console.log(totalMilk);
+            if (totalMilk === 0) {
+                $("#submit_payments").prop("disabled", true);
+            } else {
+                $("#submit_payments").prop("disabled", false);
+            }
         }
+    });
+
+    $('#pay_period, #center_id').change(function() {
+        generate_payments_table.ajax.reload();
+    });
+
+    $('#generatePayment').submit(function(e) {
+        e.preventDefault();
+
+        // Get data from the table
+        var tableData = generate_payments_table.rows().data().toArray();
+
+        // Get the value from the collection center select input
+        var center_id = $("#center_id").val();
+        var pay_period = $("#pay_period").val();
+        var milk_rate = $("#milk_rate").val();
+        var bonus_rate = $("#bonus_rate").val();
+
+        // Prepare data for submission
+        var submitData = tableData.map(function(row) {
+            return {
+                farmer_id: row.farmer_id,
+                total_milk: row.total_milk,
+                store_deductions: row.total_store_deductions,
+                individual_deductions: row.total_individual_deductions,
+                general_deductions: row.total_general_deductions,
+                shares_contribution: row.total_shares,
+                previous_dues: row.previous_dues
+            };
+        });
+
+        // First confirmation dialog
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to submit the payment data?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, submit it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Second confirmation dialog
+                Swal.fire({
+                    title: 'This operation cannot be reversed!',
+                    text: "Are you absolutely sure you want to proceed?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, proceed!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Submit the form via AJAX
+                        $.ajax({
+                            url: "<?php echo e(url('payments/store-payments')); ?>",
+                            method: 'POST',
+                            data: {
+                                _token: '<?php echo e(csrf_token()); ?>',
+                                center_id: center_id,
+                                pay_period: pay_period,
+                                milk_rate: milk_rate,
+                                bonus_rate: bonus_rate,
+                                payments: submitData
+                            },
+                            success: function(response) {
+                                // Handle the response
+                                Swal.fire(
+                                    'Submitted!',
+                                    'Your payment data has been submitted.',
+                                    'success'
+                                    ).then(() => {
+                                    //Redirect to payments
+                                    window.location.href = "<?php echo e(route('payments.index')); ?>";
+                                });
+                            },
+                            error: function(error) {
+                                // Handle errors
+                                Swal.fire(
+                                    'Error!',
+                                    'Something went wrong! Please try again.',
+                                    'error'
+                                );
+                            }
+                        });
+                    }
+                });
+            }
+        });
     });
 });
 
-    });
 
     function setAction(action) {
         $('#action').val(action);

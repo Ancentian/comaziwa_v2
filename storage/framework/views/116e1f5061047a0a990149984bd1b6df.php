@@ -20,19 +20,10 @@
                 'employees' => 'employees',
                 'contracts' => 'contracts/list',
             ],
-            'attendance' => [
-                'attendance' => 'attendance/list'
-            ],
             'leaves' => [
                 'Leaves Summary' => 'leaves/list',
                 'Leaves' => 'leaves/all-leaves',
                 'Pending Leaves' => 'leaves/pendingLeaves'
-            ],
-            'projects' => [
-                'projects' => 'projects/list',
-            ],
-            'tasks' => [
-                'tasks' => 'tasks/list'
             ],
 
             'bulky_email' => [
@@ -107,23 +98,6 @@
                         </ul>
                     </li>
                 <?php else: ?>
-                
-                
-                    <?php if(in_array('hr', $subscribedModules)): ?>
-                        <li class="submenu">
-                            <a href="#"><i class="la la-users"></i> <span> HR </span> <span class="menu-arrow"></span></a>
-                            <ul style="display: none;">
-                                <?php $__currentLoopData = $moduleUrls['hr']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $moduleName => $moduleUrl): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <li><a href="<?php echo e(url($moduleUrl)); ?>"> <?php echo e(ucfirst($moduleName)); ?> </a></li>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                <?php if(in_array('attendance', $subscribedModules)): ?>
-                                    <?php $__currentLoopData = $moduleUrls['attendance']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $moduleName => $moduleUrl): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <li><a href="<?php echo e(url($moduleUrl)); ?>"> <?php echo e(ucfirst($moduleName)); ?> </a></li>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                <?php endif; ?>
-                            </ul>
-                        </li>
-                    <?php endif; ?>
 
                     <li class="submenu">
                         <a href="#"><i class="la la-cubes"></i> <span> Milk Collection </span> <span class="menu-arrow"></span></a>
@@ -135,7 +109,7 @@
                     </li>
 
                     <li class="submenu">
-                        <a href="#"><i class="la la-cubes"></i> <span> Store </span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="la la-cart-arrow-down"></i> <span> Store </span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li><a href="<?php echo e(url('sales/add-sales')); ?>">Add Sales</a></li>
                             <li><a href="<?php echo e(url('sales/index')); ?>">All Sales</a></li>
@@ -146,7 +120,7 @@
                     </li>
 
                     <li class="submenu">
-                        <a href="#"><i class="la la-cubes"></i> <span> Deductions </span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="la la-scissors"></i> <span> Deductions </span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li><a href="<?php echo e(url('deductions/index')); ?>">List</a></li>
                             <li><a href="<?php echo e(url('deductions/add-deduction')); ?>">Add Deduction</a></li>
@@ -158,8 +132,7 @@
                     <li class="submenu">
                         <a href="#"><i class="la la-cog"></i> <span> Settings </span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
-                            <li><a href="<?php echo e(url('company/profile')); ?>"> Collection Centers </a></li>
-                            <li><a href="<?php echo e(url('company/settings')); ?>"> Company Settings </a></li>
+                            <li><a href="<?php echo e(url('company/settings')); ?>"> Cooperative Settings </a></li>
                             <li><a href="<?php echo e(url('communications/mailSettings')); ?>"> Email Settings </a></li>
                             <li><a href="<?php echo e(url('shares/shares-settings')); ?>"> Shares Settings </a></li>
                             <?php if(auth()->user()->type == 'superadmin'): ?>
@@ -169,7 +142,7 @@
                     </li>
                     
                     <li class="submenu">
-                        <a href="#"><i class="la la-cog"></i> <span> User Admin </span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="la la-user-secret"></i> <span> User Admin </span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li><a href="<?php echo e(url('company/profile')); ?>"> Company Profile </a></li>
                             <li><a href="<?php echo e(url('company/settings')); ?>"> Company Settings </a></li>
@@ -181,7 +154,7 @@
                     </li>
 
                     <li class="submenu">
-                        <a href="#"><i class="la la-cog"></i> <span> Assets </span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="la la-space-shuttle"></i> <span> Assets </span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li><a href="<?php echo e(url('assets/index')); ?>"> Assets List </a></li>
                             <li><a href="<?php echo e(url('assets/categories')); ?>"> Categories </a></li>
@@ -189,7 +162,7 @@
                     </li>
 
                     <li class="submenu">
-                        <a href="#"><i class="la la-cog"></i> <span> Payroll </span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="la la-money"></i> <span> Payroll </span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li><a href="<?php echo e(url('payments/index')); ?>"> Payments List </a></li>
                             <li><a href="<?php echo e(url('payments/generate-payments')); ?>"> Generate Payments </a></li>
@@ -198,7 +171,7 @@
                     
                     <?php if(in_array('payroll', $subscribedModules)): ?>
                         <li class="submenu">
-                            <a href="#"><i class="la la-money"></i> <span> Reports</span> <span class="menu-arrow"></span></a>
+                            <a href="#"><i class="la la-files-o"></i> <span> Reports</span> <span class="menu-arrow"></span></a>
                             <ul style="display: none;">
                                 <?php $__currentLoopData = $moduleUrls['payroll']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $moduleName => $moduleUrl): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <li><a href="<?php echo e(url($moduleUrl)); ?>"> <?php echo e(ucfirst($moduleName)); ?> </a></li>
@@ -209,7 +182,7 @@
                     
                     <?php if(in_array('expenses', $subscribedModules)): ?>
                     <li class="submenu">
-                        <a href="#"><i class="la la-money"></i> <span> Expenses</span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="la la-credit-card"></i> <span> Expenses</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <?php $__currentLoopData = $moduleUrls['expenses']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $moduleName => $moduleUrl): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <li><a href="<?php echo e(url($moduleUrl)); ?>"> <?php echo e(ucfirst($moduleName)); ?> </a></li>
@@ -219,7 +192,7 @@
                     <?php endif; ?>
                     
                     <?php if(in_array('bulky_email', $subscribedModules)): ?>
-                        <li class="submenu">
+                        <li class="submenu" hidden>
                             <a href="#"><i class="la la-bullhorn"></i> <span> Communications </span> <span class="menu-arrow"></span></a>
                             <ul style="display: none;">
                                 <?php $__currentLoopData = $moduleUrls['bulky_email']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $moduleName => $moduleUrl): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -231,7 +204,7 @@
                     
                     <?php if(in_array('leaves', $subscribedModules)): ?>
                     <li class="submenu">
-                        <a href="#"><i class="la la-user-secret"></i> <span> Leaves </span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="la la-user-plus"></i> <span> Leaves </span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <?php $__currentLoopData = $moduleUrls['leaves']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $moduleName => $moduleUrl): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <li><a href="<?php echo e(url($moduleUrl)); ?>"> <?php echo e(ucfirst($moduleName)); ?> </a></li>

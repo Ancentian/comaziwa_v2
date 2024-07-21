@@ -38,7 +38,6 @@
         Please select a deduction type.
     </div>
     {{-- Individual Deduction --}}
-    {{-- Individual Deduction --}}
     <div class="col-md-12" id="individual_deduction">
         <!-- Individual Deduction Form -->
         <form id="add_deduction_form"  action="{{ url('deductions/store-deduction') }}" method="POST">

@@ -19,12 +19,13 @@
 <!-- /Page Header -->
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-sm-4">
         <div class="form-group">
-            <label>Date Range <span class="text-danger">*</span></label>
-            <input type="text" readonly id="daterange" class="form-control" value="<?php echo e(date('m/01/Y')); ?> - <?php echo e(date('m/t/Y')); ?>" />
+            <label>Pay Period <span class="text-danger">*</span></label>
+            <input class="form-control" type="month" name="pay_period" value="<?php echo e(date('Y-m')); ?>" id="pay_period">
         </div>
-    </div>
+    </div> 
+    
     <div class="form-group col-sm-4">
         <label for="center_id">Select Center</label>
         <select class="form-control select" name="center_id" id="center_id" required>
@@ -172,18 +173,18 @@ $(document).ready(function(){
 
 
 $(document).ready(function(){
-    $('#daterange').daterangepicker({
-        opens: 'bottom',
-        ranges: ranges
-    }, function(start, end, label) {
-        all_payments_table.ajax.reload();
-    });
+    // $('#daterange').daterangepicker({
+    //     opens: 'bottom',
+    //     ranges: ranges
+    // }, function(start, end, label) {
+    //     all_payments_table.ajax.reload();
+    // });
 
-    $(document).on('change', ' #center_id, #farmer_id', function () {
+    $(document).on('change', '#pay_period, #center_id, #farmer_id', function () {
         all_payments_table.ajax.reload();
     })
 
-    all_sales_table = $('#all_payments_table').DataTable({
+    all_payments_table = $('#all_payments_table').DataTable({
             <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
@@ -191,12 +192,13 @@ $(document).ready(function(){
                 url : "<?php echo e(url('payments/all-payments')); ?>",
                 data: function(d){
                     // Access the start and end dates from the date range picker
-                var startDate = $('#daterange').data('daterangepicker').startDate.format('YYYY-MM-DD');
-                var endDate = $('#daterange').data('daterangepicker').endDate.format('YYYY-MM-DD');
+                // var startDate = $('#daterange').data('daterangepicker').startDate.format('YYYY-MM-DD');
+                // var endDate = $('#daterange').data('daterangepicker').endDate.format('YYYY-MM-DD');
                 
                 // Add the dates as parameters to the request
-                d.start_date = startDate;
-                d.end_date = endDate;
+                // d.start_date = startDate;
+                // d.end_date = endDate;
+                d.pay_period = $("#pay_period").val();
                 d.center_id = $("#center_id").val();
                 d.farmer_id = $("#farmer_id").val();
                     

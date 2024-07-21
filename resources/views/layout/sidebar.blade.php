@@ -20,19 +20,10 @@
                 'employees' => 'employees',
                 'contracts' => 'contracts/list',
             ],
-            'attendance' => [
-                'attendance' => 'attendance/list'
-            ],
             'leaves' => [
                 'Leaves Summary' => 'leaves/list',
                 'Leaves' => 'leaves/all-leaves',
                 'Pending Leaves' => 'leaves/pendingLeaves'
-            ],
-            'projects' => [
-                'projects' => 'projects/list',
-            ],
-            'tasks' => [
-                'tasks' => 'tasks/list'
             ],
 
             'bulky_email' => [
@@ -107,23 +98,6 @@
                         </ul>
                     </li>
                 @else
-                
-                
-                    @if (in_array('hr', $subscribedModules))
-                        <li class="submenu">
-                            <a href="#"><i class="la la-users"></i> <span> HR </span> <span class="menu-arrow"></span></a>
-                            <ul style="display: none;">
-                                @foreach ($moduleUrls['hr'] as $moduleName => $moduleUrl)
-                                    <li><a href="{{ url($moduleUrl) }}"> {{ ucfirst($moduleName) }} </a></li>
-                                @endforeach
-                                @if (in_array('attendance', $subscribedModules))
-                                    @foreach ($moduleUrls['attendance'] as $moduleName => $moduleUrl)
-                                        <li><a href="{{ url($moduleUrl) }}"> {{ ucfirst($moduleName) }} </a></li>
-                                    @endforeach
-                                @endif
-                            </ul>
-                        </li>
-                    @endif
 
                     <li class="submenu">
                         <a href="#"><i class="la la-cubes"></i> <span> Milk Collection </span> <span class="menu-arrow"></span></a>
@@ -135,7 +109,7 @@
                     </li>
 
                     <li class="submenu">
-                        <a href="#"><i class="la la-cubes"></i> <span> Store </span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="la la-cart-arrow-down"></i> <span> Store </span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li><a href="{{url('sales/add-sales')}}">Add Sales</a></li>
                             <li><a href="{{url('sales/index')}}">All Sales</a></li>
@@ -146,7 +120,7 @@
                     </li>
 
                     <li class="submenu">
-                        <a href="#"><i class="la la-cubes"></i> <span> Deductions </span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="la la-scissors"></i> <span> Deductions </span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li><a href="{{url('deductions/index')}}">List</a></li>
                             <li><a href="{{url('deductions/add-deduction')}}">Add Deduction</a></li>
@@ -158,8 +132,7 @@
                     <li class="submenu">
                         <a href="#"><i class="la la-cog"></i> <span> Settings </span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
-                            <li><a href="{{url('company/profile')}}"> Collection Centers </a></li>
-                            <li><a href="{{url('company/settings')}}"> Company Settings </a></li>
+                            <li><a href="{{url('company/settings')}}"> Cooperative Settings </a></li>
                             <li><a href="{{url('communications/mailSettings')}}"> Email Settings </a></li>
                             <li><a href="{{url('shares/shares-settings')}}"> Shares Settings </a></li>
                             @if(auth()->user()->type == 'superadmin')
@@ -169,7 +142,7 @@
                     </li>
                     
                     <li class="submenu">
-                        <a href="#"><i class="la la-cog"></i> <span> User Admin </span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="la la-user-secret"></i> <span> User Admin </span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li><a href="{{url('company/profile')}}"> Company Profile </a></li>
                             <li><a href="{{url('company/settings')}}"> Company Settings </a></li>
@@ -181,7 +154,7 @@
                     </li>
 
                     <li class="submenu">
-                        <a href="#"><i class="la la-cog"></i> <span> Assets </span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="la la-space-shuttle"></i> <span> Assets </span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li><a href="{{url('assets/index')}}"> Assets List </a></li>
                             <li><a href="{{url('assets/categories')}}"> Categories </a></li>
@@ -189,7 +162,7 @@
                     </li>
 
                     <li class="submenu">
-                        <a href="#"><i class="la la-cog"></i> <span> Payroll </span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="la la-money"></i> <span> Payroll </span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li><a href="{{url('payments/index')}}"> Payments List </a></li>
                             <li><a href="{{url('payments/generate-payments')}}"> Generate Payments </a></li>
@@ -198,7 +171,7 @@
                     
                     @if (in_array('payroll', $subscribedModules))
                         <li class="submenu">
-                            <a href="#"><i class="la la-money"></i> <span> Reports</span> <span class="menu-arrow"></span></a>
+                            <a href="#"><i class="la la-files-o"></i> <span> Reports</span> <span class="menu-arrow"></span></a>
                             <ul style="display: none;">
                                 @foreach ($moduleUrls['payroll'] as $moduleName => $moduleUrl)
                                     <li><a href="{{ url($moduleUrl) }}"> {{ ucfirst($moduleName) }} </a></li>
@@ -209,7 +182,7 @@
                     
                     @if (in_array('expenses', $subscribedModules))
                     <li class="submenu">
-                        <a href="#"><i class="la la-money"></i> <span> Expenses</span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="la la-credit-card"></i> <span> Expenses</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             @foreach ($moduleUrls['expenses'] as $moduleName => $moduleUrl)
                                 <li><a href="{{ url($moduleUrl) }}"> {{ ucfirst($moduleName) }} </a></li>
@@ -219,7 +192,7 @@
                     @endif
                     
                     @if (in_array('bulky_email', $subscribedModules))
-                        <li class="submenu">
+                        <li class="submenu" hidden>
                             <a href="#"><i class="la la-bullhorn"></i> <span> Communications </span> <span class="menu-arrow"></span></a>
                             <ul style="display: none;">
                                 @foreach ($moduleUrls['bulky_email'] as $moduleName => $moduleUrl)
@@ -231,7 +204,7 @@
                     
                     @if (in_array('leaves', $subscribedModules))
                     <li class="submenu">
-                        <a href="#"><i class="la la-user-secret"></i> <span> Leaves </span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="la la-user-plus"></i> <span> Leaves </span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             @foreach ($moduleUrls['leaves'] as $moduleName => $moduleUrl)
                                 <li><a href="{{ url($moduleUrl) }}"> {{ ucfirst($moduleName) }} </a></li>
