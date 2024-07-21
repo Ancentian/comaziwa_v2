@@ -84,7 +84,7 @@
             <div class="modal-body">
                
                    
-                    <div class="row" style="margin-bottom: 10px" >
+                    <div class="row" style="margin-bottom: 10px" hidden>
                         <div class="col-sm-4 pull-right">
                             <a href="<?php echo e(asset('files/employee-import.xlsx')); ?>" class="btn btn-primary" download><i class="fa fa-download"></i> Download Template</a> 
                         </div>
@@ -203,10 +203,7 @@
         });
     });
 
-    
-   
-
-$(document).ready(function() {
+    $(document).ready(function() {
     $('#downloadFarmersButton').on('click', function(e) {
         e.preventDefault();
         var centerId = $('#center_id').val();
@@ -231,11 +228,17 @@ $(document).ready(function() {
                     var link = document.createElement("a");
                     var url = URL.createObjectURL(blob);
                     link.setAttribute("href", url);
-                    link.setAttribute("download", "farmers.xlsx");
+                    link.setAttribute("download", "farmers.csv"); // Change extension to .csv
                     document.body.appendChild(link); // Required for Firefox
 
                     link.click();
                     document.body.removeChild(link); // Cleanup after download
+
+
+                     $('#import').modal('hide');
+
+                    // Show Toastr success message
+                    toastr.success('File downloaded successfully!', 'Success');
                 },
                 error: function(xhr, status, error) {
                     toastr.error('Something Went Wrong!, Try again!', 'Error');
@@ -245,7 +248,44 @@ $(document).ready(function() {
             toastr.error('Please select a center first!', 'Error');
         }
     });
+
+
+    $('#import_milk_form').on('submit', function (e) {
+        e.preventDefault();
+    
+        $("#btn_milk_import").html("Please wait...");
+    
+        var form = this;
+        var formData = new FormData(form);
+    
+        $.ajax({
+            url: '<?php echo e(url('milkCollection/store-import-milk')); ?>',
+            method: 'POST',
+            data: formData,
+            contentType: false, 
+            processData: false,
+            success: function (response) {
+                form.reset();
+                //employees_table.ajax.reload();
+                $("#btn_milk_import").html("Import");
+                $('#import').modal('hide');
+                console.log(response.message);
+                toastr.success(response.message, 'Success');
+            },
+            error: function (xhr, status, error) {
+                if (xhr.status === 422) {
+                    var errors = xhr.responseJSON.errors;
+                    var errorMessage = errors;
+            
+                    toastr.error(errorMessage, 'Validation Errors');
+                } else {
+                    toastr.error('Something Went Wrong!, Try again!', 'Error');
+                }
+            }
+        });
+    });
 });
+
 </script>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layout.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\comaziwa\resources\views/companies/milkcollection/addcollection.blade.php ENDPATH**/ ?>

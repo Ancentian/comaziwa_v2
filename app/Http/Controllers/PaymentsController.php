@@ -116,16 +116,16 @@ class PaymentsController extends Controller
                     $html = num_format($row->general_deductions);
                     return $html;
                 })
-                 
-                ->editColumn('total_deductions', function ($row) {
-                    $total = $row->store_deductions + $row->individual_deductions + $row->general_deductions;
-                    $html = num_format($total);
-                    return $html;
-                })
                 ->editColumn('shares_contribution', function ($row) {
                     $html = num_format($row->shares_contribution);
                     return $html;
-                }) 
+                })
+                ->editColumn('total_deductions', function ($row) {
+                    $total = $row->store_deductions + $row->individual_deductions + $row->general_deductions + $row->shares_contribution;
+                    $html = num_format($total);
+                    return $html;
+                })
+                 
                 ->editColumn('previous_dues', function ($row) {
                     $html = num_format($row->previous_dues);
                     return $html;
@@ -214,8 +214,9 @@ class PaymentsController extends Controller
                                 ->where('tenant_id', $tenant_id)
                                 ->whereYear('collection_date', $year)
                                 ->whereMonth('collection_date', $month)
+                                ->where('payment_status', 0)
                                 ->sum('total') ?? 0;
-                               logger($total_milk);
+                               
                     return $total_milk;
                 })
 
@@ -323,17 +324,25 @@ class PaymentsController extends Controller
             'payments.*.shares_contribution' => 'required|numeric',
             'payments.*.previous_dues' => 'nullable|numeric',
         ]);
-    
+
         if ($validator->fails()) {
             // Log validation errors for debugging
             return response()->json(['errors' => $validator->errors()], 422);
         }
-    
+
         DB::beginTransaction();
         try {
             $tenant_id = auth()->user()->id;
             $user_id = auth()->user()->id;
-    
+
+            $share_settings = ShareSetting::where('tenant_id', $tenant_id)
+                        ->where('is_active', 1)
+                        ->select(['deduction_amount'])->first();
+
+            if (!$share_settings) {
+                throw new \Exception('Share settings not found');
+            }
+
             foreach ($request->payments as $paymentData) {
                 $payment = [
                     'tenant_id' => $tenant_id,
@@ -345,20 +354,51 @@ class PaymentsController extends Controller
                     'store_deductions' => $paymentData['store_deductions'],
                     'individual_deductions' => $paymentData['individual_deductions'],
                     'general_deductions' => $paymentData['general_deductions'],
-                    'shares_contribution' => $paymentData['shares_contribution'],
+                    //'shares_contribution' => $paymentData['shares_contribution'],
+                    'shares_contribution' => $share_settings->deduction_amount,
                     'previous_dues' => $paymentData['previous_dues'],
                     'generated_by' => $user_id,
                     'pay_period' => $request->pay_period,
                 ];
+
+                // Shares Contribution
+                // $shares_contributed = $paymentData['shares_contribution'];                
+                // $shares_value = floatval($shares_contributed) + floatval($share_settings->deduction_amount);
+                $mode_of_contribution = "milk";
+                
+                $shares_contribution = [
+                    'tenant_id' => $tenant_id,
+                    'farmer_id' => $paymentData['farmer_id'],
+                    'center_id' => $request->center_id,
+                    'share_value' => $share_settings->deduction_amount,
+                    'issue_date' => date('Y-m-d'),
+                    'mode_of_contribution' => $mode_of_contribution,
+                ];
+                
+                // Update Milk Payment Status
+                $pay_period = $request->pay_period;
+                list($year, $month) = explode('-', $pay_period);
+                $milkcollection = MilkCollection::where([
+                        ['tenant_id', '=', $tenant_id],
+                        ['farmer_id', '=', $paymentData['farmer_id']],
+                        ['center_id', '=', $request->center_id],
+                    ])
+                    ->whereYear('collection_date', $year)
+                    ->whereMonth('collection_date', $month)
+                    ->update(['payment_status' => 1]);
+                
+                    
                 Payment::create($payment);
+                ShareContribution::create($shares_contribution);
             }
-    
+
             DB::commit();
             return response()->json(['message' => 'Payment Generated Added Successfully']);
         } catch (\Exception $e) {
+            
             DB::rollback();
             return response()->json(['message' => 'Data saving failed. Please try again.'], 500);
         }
     }
-    
+
 }

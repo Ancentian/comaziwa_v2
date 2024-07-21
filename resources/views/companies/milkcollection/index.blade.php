@@ -12,7 +12,7 @@
         </div>
         <div class="col-auto float-right ml-auto">
             <a href="{{url('milkCollection/add-collection')}}" class="btn btn-info" ><i class="fa fa-plus"></i> Add Milk Collection</a> &nbsp;
-            <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#import"><i class="fa fa-download"></i> Import</a> &nbsp;
+            <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#import" hidden><i class="fa fa-download"></i> Import</a> &nbsp;
         </div>
     </div>
 </div>

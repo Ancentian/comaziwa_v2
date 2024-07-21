@@ -287,7 +287,7 @@ Route::prefix('milk-management')->middleware(['auth:web, employee'])->group(func
 Route::prefix('payments')->middleware(['auth:web, employee'])->group(function () {
     Route::get('/index', [PaymentsController::class, 'index'])->name('payments.index');
     Route::get('/all-payments', [PaymentsController::class, 'all_payments']);
-    Route::get('/generate-payments', [PaymentsController::class, 'generate_payments']);
+    Route::get('/generate-payments', [PaymentsController::class, 'generate_payments'])->name('payments.generate-payments');
     Route::post('/store-payments', [PaymentsController::class, 'store_payments']);
 });
 

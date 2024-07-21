@@ -1051,39 +1051,7 @@ $('#staff_send_mail_form').on('submit', function (e) {
         });
     });
     
-    $('#import_milk_form').on('submit', function (e) {
-        e.preventDefault();
     
-        $("#btn_milk_import").html("Please wait...");
-    
-        var form = this;
-        var formData = new FormData(form);
-    
-        $.ajax({
-            url: '{{ url('milkCollection/store-import-milk') }}',
-            method: 'POST',
-            data: formData,
-            contentType: false, 
-            processData: false,
-            success: function (response) {
-                form.reset();
-                employees_table.ajax.reload();
-                $("#btn_milk_import").html("Import");
-                $('#import').modal('hide');
-                toastr.success(response.message, 'Success');
-            },
-            error: function (xhr, status, error) {
-                if (xhr.status === 422) {
-                    var errors = xhr.responseJSON.errors;
-                    var errorMessage = errors;
-            
-                    toastr.error(errorMessage, 'Validation Errors');
-                } else {
-                    toastr.error('Something Went Wrong!, Try again!', 'Error');
-                }
-            }
-        });
-    });
 
 //Save Client Data
 $('#add_clients').on('submit', function (e) {

@@ -334,7 +334,8 @@ $('#farmer_id_select').on('change', function() {
                     
                     // Close the modal
                     //$('#edit_modal').modal('hide');
-                    window.location.reload();
+                    //window.location.reload();
+                    window.location.href = "{{ route('sales.index') }}";
                     toastr.success(response.message, 'Success');
                 },
                 error: function (xhr, status, error) {
