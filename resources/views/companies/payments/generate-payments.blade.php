@@ -7,7 +7,7 @@
         <div class="col">
             <ul class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Reports</a></li>
-                <li class="breadcrumb-item active">PAYE</li>
+                <li class="breadcrumb-item active">Genearate Payments</li>
             </ul>
         </div>       
     </div>

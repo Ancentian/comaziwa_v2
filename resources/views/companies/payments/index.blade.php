@@ -11,8 +11,8 @@
             </ul>
         </div>
         <div class="col-auto float-right ml-auto">
-            <a href="{{url('milkCollection/add-collection')}}" class="btn btn-info" ><i class="fa fa-plus"></i> Add Milk Collection</a> &nbsp;
-            <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#import"><i class="fa fa-download"></i> Import</a> &nbsp;
+            <a href="{{route('payments.generate-payments')}}" class="btn btn-info" ><i class="fa fa-plus"></i> Generate Payment</a> &nbsp;
+            <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#import" hidden><i class="fa fa-download"></i> Import</a> &nbsp;
         </div>
     </div>
 </div>
@@ -56,8 +56,8 @@
                         <th>Store Deductions</th>
                         <th>Individual Deductions</th>
                         <th>General Deductions</th>
+                        <th>Shares Deduction</th>
                         <th>Total Deductions</th>
-                        <th>Shares Contribution</th>
                         <th>Previous Dues</th>
                         <th>Gross Pay</th>
                         <th>Net Pay</th>
@@ -219,8 +219,9 @@ $(document).ready(function(){
                 {data: 'store_deductions', name: 'store_deductions'},
                 {data: 'individual_deductions', name: 'individual_deductions'},
                 {data: 'general_deductions', name: 'general_deductions'},
-                {data: 'total_deductions', name: 'total_deductions'},
                 {data: 'shares_contribution', name: 'shares_contribution'},
+                {data: 'total_deductions', name: 'total_deductions'},
+                
                 {data: 'previous_dues', name: 'previous_dues'},
                 {data: 'gross_pay', name: 'gross_pay'},
                 {data: 'net_pay', name: 'net_pay'},
