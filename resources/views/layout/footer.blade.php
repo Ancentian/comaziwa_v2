@@ -9,6 +9,9 @@
 <!-- Chart JS -->
 <script src="{{ asset('plugins/morris/morris.min.js') }}"></script>
 <script src="{{ asset('plugins/raphael/raphael.min.js') }}"></script>
+<script src="{{ asset('js/Chart.min.js') }}"></script>
+{{-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> --}}
+
 
 <!-- Select2 JS -->
 <script src="{{ asset('js/select2.min.js') }}"></script>

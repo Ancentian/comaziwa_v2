@@ -7,10 +7,11 @@
 <script src="<?php echo e(asset('js/jquery.slimscroll.min.js')); ?>"></script>
 
 <!-- Chart JS -->
+<script src="<?php echo e(asset('plugins/morris/morris.min.js')); ?>"></script>
+<script src="<?php echo e(asset('plugins/raphael/raphael.min.js')); ?>"></script>
+<script src="<?php echo e(asset('js/Chart.min.js')); ?>"></script>
 
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
 
 <!-- Select2 JS -->
 <script src="<?php echo e(asset('js/select2.min.js')); ?>"></script>

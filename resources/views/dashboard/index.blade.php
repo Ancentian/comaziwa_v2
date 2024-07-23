@@ -86,10 +86,14 @@
     $annually = App\Models\Expense::whereRaw('DATE_FORMAT(created_at, "%Y") = ?', [date('Y')])->where('tenant_id', $tenant_id)->count();
     $pending_requests = App\Models\Expense::where('approval_status', '=', 0)->whereRaw('DATE_FORMAT(created_at, "%Y") = ?', [date('Y')])->where('tenant_id', $tenant_id)->count();
 
-    $today_requests = \App\Models\Expense::where('approval_status', '=', 1)->where('tenant_id', $tenant_id)->whereDate('created_at', '=', Carbon::today())->count();
-    $monthly_requests = \App\Models\Expense::where('approval_status', '=', 2)->where('tenant_id', $tenant_id)->whereMonth('created_at', '=', Carbon::now()->month)->count();
-    $yearly_requests = \App\Models\Expense::where('approval_status', '=', 2)->where('tenant_id', $tenant_id)->whereYear('created_at', '=', Carbon::now()->year)->count();
-    //$pending_requests = \App\Models\Expense::where('approval_status', '=', 0)->count();
+    $morning = App\Models\MilkCollection::where('tenant_id', '=', $tenant_id)->sum('morning');
+    $evening = App\Models\MilkCollection::where('tenant_id', '=', $tenant_id)->sum('evening');
+    $rejected = App\Models\MilkCollection::where('tenant_id', '=', $tenant_id)->sum('rejected');
+    $total = ($morning + $evening) - $rejected;
+
+    $stores = App\Models\StoreSale::where('tenant_id', '=', $tenant_id)->sum('total_cost');
+    $deductions = App\Models\Deduction::where('tenant_id', '=', $tenant_id)->sum('amount');
+    // $milk = App\Models\PAyment::where('tenant_id', '=', $tenant_id)->sum('total_milk');
     
 @endphp
 
@@ -98,31 +102,31 @@
     <div class="col-md-12 col-lg-12 col-xl-12 d-flex">
         <div class="card flex-fill">
             <div class="card-body">
-                <h4 class="card-title">Expense Statistics</h4>
+                <h4 class="card-title">Production Statistics</h4>
                 <div class="statistics">
                     <div class="row">
                         <div class="col-md-3 col-3 text-center">
                             <div class="stats-box mb-4" >
-                                <p>Today's Expense Requests</p>
-                                <h3>{{$todays}}</h3>
+                                <p>Total Milk</p>
+                                <h3>{{num_format($total)}}</h3>
                             </div>
                         </div>
                         <div class="col-md-3 col-3 text-center">
                             <div class="stats-box mb-4" >
-                                <p>This Months Expense Requests</p>
-                                <h3>{{$monthly}}</h3>
+                                <p>Morning</p>
+                                <h3>{{num_format($morning)}}</h3>
                             </div>
                         </div>
                         <div class="col-md-3 col-3 text-center">
                             <div class="stats-box mb-4" >
-                                <p>Annual Expense Requests</p>
-                                <h3>{{$annually}}</h3>
+                                <p>Evening</p>
+                                <h3>{{num_format($evening)}}</h3>
                             </div>
                         </div>
                         <div class="col-md-3 col-3 text-center">
                             <div class="stats-box mb-4" >
-                                <p>Pending Expense Requests</p>
-                                <h3>{{$pending_requests}}</h3>
+                                <p>Rejected</p>
+                                <h3>{{num_format($rejected)}}</h3>
                             </div>
                         </div>
                     </div>
@@ -136,31 +140,31 @@
     <div class="col-md-12 col-lg-12 col-xl-12 d-flex">
         <div class="card flex-fill">
             <div class="card-body">
-                <h4 class="card-title">Production Statistics</h4>
+                <h4 class="card-title">Sales Statistics</h4>
                 <div class="statistics">
                     <div class="row">
                         <div class="col-md-3 col-3 text-center">
                             <div class="stats-box mb-4" >
-                                <p>Today's Expense Requests</p>
-                                <h3>{{$todays}}</h3>
+                                <p>Stores</p>
+                                <h3>{{num_format($stores)}}</h3>
                             </div>
                         </div>
                         <div class="col-md-3 col-3 text-center">
                             <div class="stats-box mb-4" >
-                                <p>This Months Expense Requests</p>
-                                <h3>{{$monthly}}</h3>
+                                <p>Deductions</p>
+                                <h3>{{num_format($deductions)}}</h3>
                             </div>
                         </div>
                         <div class="col-md-3 col-3 text-center">
                             <div class="stats-box mb-4" >
-                                <p>Annual Expense Requests</p>
-                                <h3>{{$annually}}</h3>
+                                <p>Gross</p>
+                                <h3>{{ 0.00 }}</h3>
                             </div>
                         </div>
                         <div class="col-md-3 col-3 text-center">
                             <div class="stats-box mb-4" >
-                                <p>Pending Expense Requests</p>
-                                <h3>{{$pending_requests}}</h3>
+                                <p>Nett</p>
+                                <h3>{{ 0.00 }}</h3>
                             </div>
                         </div>
                     </div>
@@ -184,16 +188,24 @@
             <div class="col-md-6 text-center">
                 <div class="card">
                     <div class="card-body">
-                        <h3 class="card-title">Sales Overview</h3>
+                        <h3 class="card-title">Monthly Overview</h3>
                         <div id="pie-chart"></div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 text-center">
+            <div class="col-md-6 text-center">
                 <div class="card">
                     <div class="card-body">
-                        <h3 class="card-title">Sales Overview</h3>
-                        <div id="line-chart"></div>
+                        <h3 class="card-title">Milk Overview</h3>
+                        <canvas id="lineChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 text-center">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Collection Center Overview</h3>
+                        <canvas id="line2Chart" style="height: 250px;"></canvas>
                     </div>
                 </div>
             </div>
@@ -214,65 +226,44 @@
     <div class="col-md-12 col-lg-12 col-xl-6 d-flex">
         <div class="card flex-fill dash-statistics">
             <div class="card-body">
-                <h5 class="card-title">Leave Statistics</h5>
+                <h5 class="card-title">Center Statistics</h5>
                 <div class="stats-list">
-                    <div class="stats-info">
-                        <p>Today Leave <strong>{{$today_leaves}} <small>/ {{$total_leaves}}</small></strong></p>
-                        <div class="progress">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: {{$today_leaves > 0 ? ($today_leaves/$total_leaves*100) : 0}}%" aria-valuenow="{{$today_leaves > 0 ? ($today_leaves/$total_leaves*100) : 0}}" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
-                    <div class="stats-info">
-                        <p>This Month <strong>{{$month_leaves}} <small>/ {{$total_leaves}}</small></strong></p>
-                        <div class="progress">
-                            <div class="progress-bar bg-warning" role="progressbar" style="width: {{$month_leaves > 0 ? ($month_leaves/$total_leaves*100) : 0}}%" aria-valuenow="{{$month_leaves > 0 ? ($month_leaves/$total_leaves*100) : 0}}" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
-                    <div class="stats-info">
-                        <p>This Year <strong>{{$year_leaves}} <small>/ {{$total_leaves}}</small></strong></p>
-                        <div class="progress">
-                            <div class="progress-bar bg-success" role="progressbar" style="width: {{$year_leaves > 0 ? ($year_leaves/$year_leaves*100) : 0}}%" aria-valuenow="{{$year_leaves > 0 ? ($year_leaves/$year_leaves*100) : 0}}" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
+                    <table class="table table-striped custom-table" id="center_statistics_table">
+                        <thead>
+                            <tr>
+                                <th>Center</th>
+                                <th>Total Milk</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-
-    @php
-        $projects = App\Models\Project::where('tenant_id',auth()->user()->id)->count();
-        $inprogress = $projects > 0 ? App\Models\Project::where('progress','<',100)->where('tenant_id',auth()->user()->id)->count() : 0;
-        $completed = $projects-$inprogress;
-    @endphp
     
     <div class="col-md-12 col-lg-6 col-xl-6 d-flex">
         <div class="card flex-fill">
             <div class="card-body">
-                <h4 class="card-title">Project Statistics</h4>
+                <h4 class="card-title">Farmer Statistics</h4>
                 <div class="statistics">
-                    <div class="row">
-                        <div class="col-md-6 col-6 text-center">
-                            <div class="stats-box mb-4">
-                                <p>In Progress</p>
-                                <h3>{{$inprogress}}</h3>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-6 text-center">
-                            <div class="stats-box mb-4">
-                                <p>Completed</p>
-                                <h3>{{$completed}}</h3>
-                            </div>
-                        </div>
-                    </div>
+                    <table class="table table-striped custom-table" id="farmer_statistics_table">
+                        <thead>
+                            <tr>
+                                <th>Farmer</th>
+                                <th>Total Milk</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
                 </div>
-                <div class="progress mb-4">
-                    <div class="progress-bar bg-purple" role="progressbar" style="width: {{$completed > 0 ? ($completed/$projects*100) : 0}}%" aria-valuenow=" {{$completed > 0 ?($completed/$projects*100) : 0}}" aria-valuemin="0" aria-valuemax="100"> {{$completed > 0 ?($completed/$projects*100) : 0}}%</div>
-                    <div class="progress-bar bg-warning" role="progressbar" style="width: {{$inprogress >0 ? ($inprogress/$projects*100) : 0}}%" aria-valuenow="18" aria-valuemin="0" aria-valuemax="{{$inprogress >0 ? ($inprogress/$projects*100) : 0}}">{{$inprogress >0 ? ($inprogress/$projects*100) : 0}}%</div>
-                </div>
-                <div>
-                    <p><i class="fa fa-dot-circle-o text-purple mr-2"></i>Completed <span class="float-right">{{$completed}}</span></p>
-                    <p><i class="fa fa-dot-circle-o text-warning mr-2"></i>Inprogress <span class="float-right">{{$inprogress}}</span></p>
-                </div>
+                
             </div>
         </div>
     </div> 
@@ -282,6 +273,7 @@
 
 @section('javascript')
 <script>
+    //Bar Graph
     $(document).ready(function() {
         $.ajax({
             url: '/milk-analysis', // Adjust the route as needed
@@ -324,6 +316,7 @@
         });
     });
 
+    //Pie Chart
     $(document).ready(function() {
         $.ajax({
             url: '/monthly-milk-analysis', // Adjust the route as needed
@@ -354,43 +347,251 @@
             }
         });
     });
+    
+    //Line Chart
+   
 
-        $(document).ready(function() {
-            $.ajax({
-                url: '/monthly-milk-analysis', // Adjust the route as needed
-                method: 'GET',
-                success: function(data) {
-                    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-                    var chartData = [];
-                    
-                    data.forEach(function(item) {
-                        var monthName = monthNames[item.month - 1]; // Convert month number to month name
-                        chartData.push({
-                            year: monthName,
-                            value: item.total_milk
-                        });
-                    });
+    
+    $(document).ready(function() {
+    $.ajax({
+        url: '/monthly-milk-analysis', // Adjust the route as needed
+        method: 'GET',
+        success: function(data) {
+            var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            var labels = [];
+            var totals = [];
+            var morning = [];
+            var evening = [];
+            var rejected = [];
 
-                    // Create Morris.Line chart
-                    new Morris.Line({
-                        element: 'line-chart',
-                        data: chartData,
-                        xkey: 'year',
-                        ykeys: ['value'],
-                        labels: ['Total Milk'],
-                        lineColors: ['#373651'],
-                        lineWidth: 2,
-                        resize: true,
-                        xLabelAngle: 45 // Rotate x-axis labels for better visibility
-                    });
+            data.forEach(function(item) {
+                labels.push(monthNames[item.month - 1]); // Subtract 1 because JavaScript uses 0-based indexing
+                totals.push(item.total_milk);
+                morning.push(item.total_morning);
+                evening.push(item.total_evening);
+                rejected.push(item.total_rejected);
+            });
+
+            // Get the context of the canvas element we want to select
+            var ctx = document.getElementById("lineChart").getContext('2d');
+            var lineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total ',
+                        data: totals,
+                        fill: false,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Morning ',
+                        data: morning,
+                        fill: false,
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Evening ',
+                        data: evening,
+                        fill: false,
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Rejected ',
+                        data: evening,
+                        fill: false,
+                        borderColor: 'rgba(154, 162, 235, 1)',
+                        borderWidth: 1
+                    }
+                ]
                 },
-                error: function(xhr, status, error) {
-                    console.error("AJAX request failed:", status, error);
+                options: {
+                    responsive: true,
+                    legend: {
+                        display: true
+                    },
+                    scales: {
+                        x: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: 'Month'
+                            }
+                        },
+                        y: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: 'Liters'
+                            }
+                        }
+                    }
                 }
             });
-        });
-    </script>
-    </script>
+        },
+        error: function(xhr, status, error) {
+            console.error("AJAX request failed:", status, error);
+        }
+    });
+});
 
+    
+
+    
+//Center Analysis
+$(document).ready(function() {
+    $.ajax({
+        url: '/collection-center-analysis', // Adjust the route as needed
+        method: 'GET',
+        success: function(data) {
+            var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            var labels = [];
+            var centerData = {};
+
+            // Process the data to create labels and centerData
+            data.forEach(function(item) {
+                var monthName = monthNames[item.month - 1];
+                if (!labels.includes(monthName)) {
+                    labels.push(monthName);
+                }
+                if (!centerData[item.center_name]) {
+                    centerData[item.center_name] = {
+                        label: item.center_name,
+                        data: Array(labels.length).fill(null) // Fill data array with nulls up to the current label length
+                    };
+                }
+                centerData[item.center_name].data[labels.indexOf(monthName)] = item.total_milk;
+            });
+
+            // Ensure each center has the correct length of data array
+            Object.keys(centerData).forEach(center => {
+                centerData[center].data = centerData[center].data.concat(Array(labels.length - centerData[center].data.length).fill(null));
+            });
+
+            // Create datasets for the chart
+            var datasets = Object.values(centerData).map(center => ({
+                label: center.label,
+                data: center.data,
+                fill: false,
+                borderColor: getRandomColor(),
+                borderWidth: 1
+            }));
+
+            // Check if the canvas element exists
+            var canvas = document.getElementById("line2Chart");
+            if (canvas) {
+                var ctx = canvas.getContext('2d');
+                var line2Chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: true
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(tooltipItem) {
+                                        return `${tooltipItem.dataset.label}: ${tooltipItem.raw} liters`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Month'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Liters'
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                console.error("Canvas element with id 'lineChart' not found.");
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("AJAX request failed:", status, error);
+        }
+    });
+});
+
+// Function to generate a random color for the lines
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+$(document).ready(function(){
+        center_statistics_table = $('#center_statistics_table').DataTable({
+            @include('layout.export_buttons')
+            processing: true,
+            serverSide: false,
+            ajax: {
+                url : "{{url('center-statistics')}}",
+                data: function(d){
+                    
+                }
+            },
+            columnDefs:[{
+                    "targets": 1,
+                    "orderable": false,
+                    "searchable": false
+                }],
+            columns: [
+                {data: 'center_name', name: 'center_name'},
+                {data: 'total_milk', name: 'total_milk'},
+                {data: 'action', name: 'action', className: 'text-left'}   
+            ],
+            createdRow: function( row, data, dataIndex ) {
+            }
+        });
+    });
+
+    $(document).ready(function(){
+        farmer_statistics_table = $('#farmer_statistics_table').DataTable({
+            @include('layout.export_buttons')
+            processing: true,
+            serverSide: false,
+            ajax: {
+                url : "{{url('farmer-statistics')}}",
+                data: function(d){
+                    
+                }
+            },
+            columnDefs:[{
+                    "targets": 1,
+                    "orderable": false,
+                    "searchable": false
+                }],
+            columns: [
+                {data: 'fullname', name: 'fullname'},
+                {data: 'total_milk', name: 'total_milk'},
+                {data: 'action', name: 'action', className: 'text-left'}   
+            ],
+            createdRow: function( row, data, dataIndex ) {
+            }
+        });
+    });
+ 
+</script>
 </script>
 @endsection

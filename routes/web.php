@@ -520,6 +520,9 @@ Route::get('/check-subscriptions', [Crons::class, 'checkSubscriptions']);
 
 Route::get('/milk-analysis', [DashboardController::class, 'milk_analysis']);
 Route::get('/monthly-milk-analysis', [DashboardController::class, 'monthly_milk_analysis']);
+Route::get('/collection-center-analysis', [DashboardController::class, 'collection_center_analysis']);
+Route::get('/center-statistics', [DashboardController::class, 'center_statistics']);
+Route::get('/farmer-statistics', [DashboardController::class, 'farmer_statistics']);
     
 
 
