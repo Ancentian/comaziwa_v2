@@ -12,7 +12,7 @@
         </div>
         <div class="col-auto float-right ml-auto">
             <a href="#" class="btn btn-info" data-toggle="modal" data-target="#add_farmer"><i class="fa fa-plus"></i> Add Farmer</a> &nbsp;
-            <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#import"><i class="fa fa-download"></i> Import</a> &nbsp;
+            <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#import" hidden><i class="fa fa-download"></i> Import</a> &nbsp;
         </div>
     </div>
 </div>
@@ -245,7 +245,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Account Number</label>
-                                <input class="form-control" type="text" name="acc_number">
+                                <input class="form-control" type="number" name="acc_number" >
                                 <span class="modal-error invalid-feedback" role="alert"></span>
                             </div>
                         </div>
@@ -297,7 +297,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Import Employee</h5>
+                <h5 class="modal-title">Import Farmer</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

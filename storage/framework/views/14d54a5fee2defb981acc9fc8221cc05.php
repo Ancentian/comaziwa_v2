@@ -4,7 +4,7 @@
     <!-- Logo -->
    <div class="header-left">
         <a href="#" class="logo">
-            <img src="{{ asset('img/logo.png') }}" width="50" height="50" alt="">
+            <img src="<?php echo e(asset('img/logo.png')); ?>" width="50" height="50" alt="">
         </a>
     </div>
     <!-- /Logo -->
@@ -19,12 +19,12 @@
     
     <!-- Header Title -->
     <div class="page-title-box">
-    @if(session('is_admin') == 0 && optional(auth()->guard('employee')->user())->is_admin_configured == 1)
-        <h3><a class="btn btn-danger" href="{{url('staff/set-as-admin')}}">Admin View</a></h3>
-    @endif    
-    @if(session('is_admin') == 1)
-        <h3><a class="btn btn-warning" href="{{url('staff/set-as-staff')}}">Staff View</a></h3>
-    @endif 
+    <?php if(session('is_admin') == 0 && optional(auth()->guard('employee')->user())->is_admin_configured == 1): ?>
+        <h3><a class="btn btn-danger" href="<?php echo e(url('staff/set-as-admin')); ?>">Admin View</a></h3>
+    <?php endif; ?>    
+    <?php if(session('is_admin') == 1): ?>
+        <h3><a class="btn btn-warning" href="<?php echo e(url('staff/set-as-staff')); ?>">Staff View</a></h3>
+    <?php endif; ?> 
     </div>
     <!-- /Header Title -->
     
@@ -35,13 +35,13 @@
 
         <li class="nav-item dropdown has-arrow main-drop">
             <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                <span class="user-img"><img src="{{ asset('img/profiles/user.jpg') }}" alt="">
+                <span class="user-img"><img src="<?php echo e(asset('img/profiles/user.jpg')); ?>" alt="">
                 <span class="status online"></span></span>
-                <span><span>{{ optional(auth()->guard('employee')->user())->name }}</span></span>
+                <span><span><?php echo e(optional(auth()->guard('employee')->user())->name); ?></span></span>
             </a>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="{{url('profile/staff-profile')}}">My Profile</a>
-                <a class="dropdown-item" href="{{url('staff/logout')}}">Logout</a>
+                <a class="dropdown-item" href="<?php echo e(url('profile/staff-profile')); ?>">My Profile</a>
+                <a class="dropdown-item" href="<?php echo e(url('staff/logout')); ?>">Logout</a>
             </div>
         </li>
     </ul>
@@ -51,11 +51,11 @@
     <div class="dropdown mobile-user-menu">
         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
         <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item" href="{{url('profile/staff-profile')}}">My Profile</a>
-            <a class="dropdown-item" href="{{url('staff/logout')}}">Logout</a>
+            <a class="dropdown-item" href="<?php echo e(url('profile/staff-profile')); ?>">My Profile</a>
+            <a class="dropdown-item" href="<?php echo e(url('staff/logout')); ?>">Logout</a>
         </div>
     </div>
     <!-- /Mobile Menu -->
 
 </div>
-<!-- /Header -->
+<!-- /Header --><?php /**PATH C:\laragon\www\comaziwa\resources\views/companies/staff/layout/navbar.blade.php ENDPATH**/ ?>

@@ -3,17 +3,20 @@
     if(session('is_admin') == 1)
     {
         $userId = optional(auth()->guard('employee')->user())->tenant_id;
+        
     }else{
         $userId = auth()->user()->id;
     }
+    
     $user = \App\Models\User::find($userId);
+    logger($userId);
     $userType = $user->type;
-
+    
     if ($userType === 'client') {
         $package_id = $user->package_id;
         $package = \App\Models\Package::where('id', $package_id)->first();    
         $subscribedModules = !empty($package) ? explode(',', $package->module) : [];
-
+        
         $moduleUrls = [
             'hr' => [
                 'farmers' => 'cooperative/farmers',
@@ -99,6 +102,17 @@
                     </li>
                 @else
 
+                @if (in_array('hr', $subscribedModules))
+                    <li class="submenu">
+                        <a href="#"><i class="la la-users"></i> <span> HR </span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+                            @foreach ($moduleUrls['hr'] as $moduleName => $moduleUrl)
+                                <li><a href="{{ url($moduleUrl) }}"> {{ ucfirst($moduleName) }} </a></li>
+                            @endforeach
+                        </ul>
+                    </li>
+                @endif
+
                     <li class="submenu">
                         <a href="#"><i class="la la-cubes"></i> <span> Milk Collection </span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
@@ -141,7 +155,7 @@
                         </ul>
                     </li>
                     
-                    <li class="submenu">
+                    <li class="submenu" hidden>
                         <a href="#"><i class="la la-user-secret"></i> <span> User Admin </span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li><a href="{{url('company/profile')}}"> Company Profile </a></li>
@@ -189,7 +203,7 @@
                             @endforeach
                         </ul>
                     </li>
-                    @endif
+                    @endif 
                     
                     @if (in_array('bulky_email', $subscribedModules))
                         <li class="submenu" hidden>

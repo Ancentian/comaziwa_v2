@@ -170,6 +170,38 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6 text-center">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Total Milk</h3>
+                        <div id="bar-charts"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 text-center">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Sales Overview</h3>
+                        <div id="pie-chart"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 text-center">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Sales Overview</h3>
+                        <div id="line-chart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 @php
    $total_leaves = App\Models\Leave::count();
@@ -243,10 +275,122 @@
                 </div>
             </div>
         </div>
-    </div>
-
-
-    
+    </div> 
 </div>
 
+@endsection
+
+@section('javascript')
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            url: '/milk-analysis', // Adjust the route as needed
+            method: 'GET',
+            success: function(data) {
+                var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                var chartData = [];
+                
+                data.forEach(function(item) {
+                    var monthName = monthNames[item.month - 1]; // Subtract 1 because JavaScript uses 0-based indexing
+                    chartData.push({
+                        y: monthName,
+                        morning: item.total_morning,
+                        evening: item.total_evening,
+                        rejected: item.total_rejected,
+                        total: item.total_milk
+                    });
+                });
+
+                // Create Morris.Bar chart for Morning, Evening, and Total Milk
+                new Morris.Bar({
+                    element: 'bar-charts',
+                    data: chartData,
+                    xkey: 'y',
+                    ykeys: ['morning', 'evening', 'total'],
+                    labels: ['Morning Milk', 'Evening Milk', 'Total Milk'],
+                    barColors: ['#2ecc71', '#e74c3c', '#3498db'],
+                    resize: true,
+                    xLabelAngle: 45, // Rotate x-axis labels for better visibility
+                    hoverCallback: function (index, options, content, row) {
+                       
+                        var totalMilk = row.morning + row.evening - row.rejected;
+                        return content + " Total: " + totalMilk;
+                    }
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX request failed:", status, error);
+            }
+        });
+    });
+
+    $(document).ready(function() {
+        $.ajax({
+            url: '/monthly-milk-analysis', // Adjust the route as needed
+            method: 'GET',
+            success: function(data) {
+                var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                var chartData = [];
+                
+                data.forEach(function(item) {
+                    var monthName = monthNames[item.month - 1]; // Subtract 1 because JavaScript uses 0-based indexing
+                    chartData.push({
+                        label: monthName,
+                        value: item.total_milk
+                    });
+                });
+
+                // Create Morris.Donut chart for Total Milk per Month
+                new Morris.Donut({
+                    element: 'pie-chart',
+                    data: chartData,
+                    colors: ['#2ecc71', '#e74c3c', '#3498db', '#9b59b6', '#f39c12', '#1abc9c', '#34495e', '#16a085', '#27ae60', '#2980b9', '#8e44ad', '#c0392b'],
+                    resize: true,
+                    formatter: function (y, data) { return y + " liters"; }
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX request failed:", status, error);
+            }
+        });
+    });
+
+        $(document).ready(function() {
+            $.ajax({
+                url: '/monthly-milk-analysis', // Adjust the route as needed
+                method: 'GET',
+                success: function(data) {
+                    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                    var chartData = [];
+                    
+                    data.forEach(function(item) {
+                        var monthName = monthNames[item.month - 1]; // Convert month number to month name
+                        chartData.push({
+                            year: monthName,
+                            value: item.total_milk
+                        });
+                    });
+
+                    // Create Morris.Line chart
+                    new Morris.Line({
+                        element: 'line-chart',
+                        data: chartData,
+                        xkey: 'year',
+                        ykeys: ['value'],
+                        labels: ['Total Milk'],
+                        lineColors: ['#373651'],
+                        lineWidth: 2,
+                        resize: true,
+                        xLabelAngle: 45 // Rotate x-axis labels for better visibility
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX request failed:", status, error);
+                }
+            });
+        });
+    </script>
+    </script>
+
+</script>
 @endsection

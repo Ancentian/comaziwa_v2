@@ -20,13 +20,7 @@ use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use App\Models\EmployeePayslip;
 
-use App\Models\StatutoryDeduction;
-use App\Models\NonStatutoryDeduction;
-use App\Models\Allowance;
-use App\Models\BenefitsInKind;
 use App\Models\Leave;
-use App\Models\Project;
-use App\Models\Task;
 use App\Models\PaySlips;
 use App\Models\Attendance;
 use App\Models\EmailSettings;
@@ -50,9 +44,11 @@ class StaffController extends Controller
         $employee = Employee::where('employees.id', $employee_id)
             ->where('employees.tenant_id', $tenant_id)
             ->first();
-        $attendance_summary = $this->fetchAttendanceSummary($employee_id);
-        return view('companies.staff.index', compact('employee', 'attendance_summary'));
+    
+        return view('companies.staff.index', compact('employee'));
     }
+
+    
 
     public function settings()
     {
@@ -297,171 +293,6 @@ class StaffController extends Controller
 
     }
 
-    public function projects()
-    {
-        $tenant_id = optional(auth()->guard('employee')->user())->tenant_id;
-        $employee_id = optional(auth()->guard('employee')->user())->id;
-        //$employees = Employee::where('tenant_id', $tenant_id)->get();
-        if (request()->ajax()) {
-            $tenant_id = optional(auth()->guard('employee')->user())->tenant_id;
-            $projects = Project::join('employees','employees.id','=','projects.team_leader')
-                            ->where('projects.team_leader', $employee_id)
-                            ->select([
-                                'employees.name as employeeName',
-                                'projects.*'
-                            ])->get();
-
-            return DataTables::of($projects)
-            ->addColumn(
-                'action',
-                function ($row) {
-                    $html = '<div class="btn-group">
-                    <button type="button" class="badge btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
-                    <div class="dropdown-menu dropdown-menu-right">
-                      <a class="dropdown-item edit-button" data-action="'.url('staff/editProject',[$row->id]).'" href="#" ><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                    </div>
-                  </div>';
-
-                  return $html;
-                })
-
-                ->editColumn(
-                    'project_team',
-                    function ($row) {
-                        $employees = json_decode($row->project_team);
-                        $html = "";
-                        if(!empty($employees)){
-                            foreach($employees as $one){
-                                $staff = Employee::where('id',$one)->first();
-                                if(!empty($staff)){
-                                    $html .= $staff->name.", ";
-                                }
-                            }
-                        }
-                        return $html;
-                })
-
-                ->editColumn(
-                    'priority',
-                    function ($row) {
-                        $html = "" ;
-                        if($row->priority == "high"){
-                            $html = "<span class='badge text-danger'>High</span>";
-                        }elseif($row->priority == "medium"){
-                            $html = "<span class='badge text-info'>Medium</span>";
-                        }else{
-                            $html = "<span class='badge text-secondary'>Low</span>";
-                        }
-
-                        return $html;
-                })
-
-                ->editColumn(
-                    'progress',
-                    function ($row) {
-                        $color = "";
-                        if($row->progress < 50){
-                            $color = "bg-danger";
-                        }elseif($row->progress > 50 && $row->progress < 75){
-                            $color = "bg-info";
-                        }else{
-                            $color = "bg-success";
-                        }
-
-                        $html = '<div class="progress mb-2" style="height: 5px;">
-                                    <div class="progress-bar '.$color.'" role="progressbar" style="width:'.$row->progress.'%;" aria-valuenow="'.$row->progress.'" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>&nbsp;<b>'.$row->progress.'%</b>';
-
-                        return $html;
-                })
-            
-            ->rawColumns(['action','priority','progress'])
-            ->make(true);
-        }
-        return view('companies.staff.projects.index');
-    }
-
-    public function edit($id){
-        $project = Project::findOrFail($id);
-        return view('companies.staff.projects.edit',compact('project'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'progress'     =>   'required',
-        ]);
-
-        DB::beginTransaction();
-        try {
-        $project = Project::findOrFail($id);
-
-        $project->progress = $request->progress;
-        $project->save();
-
-        DB::commit();
-        return response()->json(['message' => 'Data Updated successfully']);
-        } catch (\Exception $e) {
-            DB::rollback();
-            return response()->json(['message' => 'Data saving failed. Please try again.'], 500);
-        }
-        
-    }
-
-    public function tasks()
-    {
-        $employee_id = optional(auth()->guard('employee')->user())->id;
-        $projects = Project::where('team_leader', $employee_id)->get();
-        $completeTasks = Task::join('projects', 'projects.id', '=', 'tasks.project_id')
-                ->join('employees', 'employees.id', '=', 'tasks.assigned_to')
-                ->where('assigned_to', $employee_id)
-                ->where('tasks.status', 'complete')
-                ->select([
-                    'projects.title as projectName',
-                    'employees.name as employeeName',
-                    'tasks.*'
-                ])->latest()->get();
-
-        $inprogressTasks = Task::join('projects', 'projects.id', '=', 'tasks.project_id')
-                ->join('employees', 'employees.id', '=', 'tasks.assigned_to')
-                ->where('assigned_to', $employee_id)
-                ->where('tasks.status', 'inprogress')
-                ->select([
-                    'projects.title as projectName',
-                    'employees.name as employeeName',
-                    'tasks.*'
-                ])->latest()->get();
-        return view('companies.staff.tasks.index', compact('projects', 'completeTasks', 'inprogressTasks'));
-    }
-
-    public function editTask($id)
-    {
-        $task = Task::findorFail($id);
-        return view('companies.staff.tasks.edit', compact('task'));
-    }
-
-    public function updateTask(Request $request, $id)
-    {
-        $request->validate([
-            'status'    => 'required',
-        ]);
-
-        DB::beginTransaction();
-        try {
-
-        $task = Task::findOrFail($id);
-        $task->status = $request->status;
-        $task->save();
-
-        DB::commit();
-        return response()->json(['message' => 'Data Updated successfully']);
-        } catch (\Exception $e) {
-            DB::rollback();
-            return response()->json(['message' => 'Data saving failed. Please try again.'], 500);
-        }
-
-    }
-
     public function login()
     {
         return view('companies.staff.employeeLogin');
@@ -660,81 +491,6 @@ class StaffController extends Controller
         } elseif ($action === 'print') {           
             return view('companies.staff.reports.print_payslip', compact('payslip', 'pay_period', 'company','action'));
         }
-    }
-
-    public function fetchAttendanceSummary($employee_id){
-
-        $todays_hrs = 0;
-        $todays_attendance = Attendance::where('employee_id', $employee_id)
-                        ->whereDate('date',date('Y-m-d'))
-                        ->where('employee_id', $employee_id)->get();
-        foreach($todays_attendance as $today){
-            $punch_ins = json_decode($today->punch_in);
-            $punch_outs = json_decode($today->punch_out);
-
-            foreach($punch_ins as $key => $punchin){
-                if(!empty($punch_outs[$key])){
-                    $todays_hrs += (strtotime($punch_outs[$key])-strtotime($punchin))/3600;
-                }else{
-                    $todays_hrs += (time()-strtotime($punchin))/3600;
-                }
-                
-            }
-        }
-
-        $months_hrs = 0;
-        $months_attendance = Attendance::where('employee_id', $employee_id)
-                        ->whereDate('date','>=',date('Y-m-01'))
-                        ->whereDate('date','<=',date('Y-m-t'))
-                        ->where('employee_id', $employee_id)->get();
-        foreach($months_attendance as $month){
-            $punch_ins = json_decode($month->punch_in);
-            $punch_outs = json_decode($month->punch_out);
-
-            foreach($punch_ins as $key => $punchin){
-                if(!empty($punch_outs[$key])){
-                    // echo $punchin."---->".$punch_outs[$key]."<br>";
-                    $months_hrs += (strtotime($punch_outs[$key])-strtotime($punchin))/3600;
-                }else{
-                    // echo $punchin."---->".date('H:i')."<br>";
-                    $months_hrs += (time()-strtotime($punchin))/3600;
-                }
-                
-            }
-        }
-        // Get the current date
-        $currentDate = Carbon::now();
-
-        // Set the start of the week (Monday)
-        $startOfWeek = $currentDate->copy()->startOfWeek();
-
-        // Set the end of the week (Sunday)
-        $endOfWeek = $currentDate->copy()->endOfWeek();
-
-        // Format the dates as desired
-        $startDate = $startOfWeek->format('Y-m-d');
-        $endDate = $endOfWeek->format('Y-m-d');
-        
-        
-        $weeks_hrs = 0;
-        $weeks_attendance = Attendance::where('employee_id', $employee_id)
-                        ->whereDate('date','>=',$startDate)
-                        ->whereDate('date','<=',$endDate)
-                        ->where('employee_id', $employee_id)->get();
-        foreach($weeks_attendance as $week){
-            $punch_ins = json_decode($week->punch_in);
-            $punch_outs = json_decode($week->punch_out);
-
-            foreach($punch_ins as $key => $punchin){
-                if(!empty($punch_outs[$key])){
-                    $weeks_hrs += (strtotime($punch_outs[$key])-strtotime($punchin))/3600;
-                }else{
-                    $weeks_hrs += (time()-strtotime($punchin))/3600;
-                }
-                
-            }
-        }
-        return array("weeks" => $weeks_hrs,"days" => $todays_hrs, "months" => $months_hrs);
     }
 
 

@@ -23,7 +23,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <form id="add_milk_collection" action="<?php echo e(url('milkCollection/store-milk-collection')); ?>" method="POST">
+        <form id="add_milk_collection" action="<?php echo e(url('staff/store-milkCollection')); ?>" method="POST">
             <?php echo csrf_field(); ?>
             <div class="row">
                 <div class="form-group col-sm-4">
@@ -119,7 +119,7 @@
             $("#milk_collection_table tbody").empty();
             
             $.ajax({
-                url: "/milkCollection/center-farmers/"+id,
+                url: "/staff/center-farmers/"+id,
                 method: 'GET',
                 data: {},
                 dataType: 'json',
@@ -193,7 +193,7 @@
                     // Close the modal
                     //$('#edit_modal').modal('hide');
                     //window.location.reload();
-                    window.location.href = "<?php echo e(route('milk-collection.index')); ?>";
+                    window.location.href = "<?php echo e(url('staff/index-milk')); ?>";
                     toastr.success(response.message, 'Success');
                 },
                 error: function (xhr, status, error) {
@@ -211,7 +211,7 @@
 
         if (centerId) {
             $.ajax({
-                url: "/milkCollection/center-farmers/" + centerId,
+                url: "/staff/center-farmers/" + centerId,
                 method: 'GET',
                 dataType: 'json',
                 success: function(response) {
@@ -289,4 +289,4 @@
 
 </script>
 <?php $__env->stopSection(); ?>
-<?php echo $__env->make('layout.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\comaziwa\resources\views/companies/milkcollection/addcollection.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('companies.staff.layout.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\comaziwa\resources\views/companies/staff/milk-collection/add-collection.blade.php ENDPATH**/ ?>
