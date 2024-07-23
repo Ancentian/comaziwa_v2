@@ -2,7 +2,7 @@
     <p>
         Dear <b>{{$data['name']}}</b>,
         <br>
-            Welcome to {{company()->mycompany()->name}}! We are thrilled to have you on board. Your self-service account is ready for you to access all our HR and payroll features. Here are your login details:
+            Welcome to {{company()->mycompany()->name}}! We are thrilled to have you on board. Your self-service account is ready for you to access all our Comaziwa MIS features. Here are your login details:
         <br>
             Username: <b>{{$data['email']}}</b>
         <br>
@@ -12,7 +12,7 @@
         <br>
             <a href="{{url('staff/login')}}">Get started</a>
         <br>
-            If you have any questions or need assistance, feel free to contact our support team at info@ghpayroll.net . We look forward to working with you! <br>
+            If you have any questions or need assistance, feel free to contact our support team at info@comaziwa.co.ke . We look forward to working with you! <br>
             Best regards,
         <br>
         {{company()->mycompany()->name}}
@@ -30,7 +30,7 @@
         <br>
             <a href="{{url('auth/login')}}">Get started</a>
         <br>
-        If you have any questions or require assistance, don't hesitate to contact our support team at  info@ghpayroll.net . We're here to help you succeed.
+        If you have any questions or require assistance, don't hesitate to contact our support team at  info@comaziwa.co.ke . We're here to help you succeed.
         <br>
         Warm regards,
         <br>
@@ -49,7 +49,7 @@
         <br>
             - Next Billing Date: <b>{{format_date($data['date'])}}</b>
         <br>
-            You can access your account and manage your subscription at <a href="{{url('dashboard/subscriptions')}}">Manage subscriptions</a>. If you have any questions or need assistance, please contact our support team at info@ghpayroll.net .
+            You can access your account and manage your subscription at <a href="{{url('dashboard/subscriptions')}}">Manage subscriptions</a>. If you have any questions or need assistance, please contact our support team at info@comaziwa.co.ke .
         <br>
             Best regards,
         <br>
@@ -59,7 +59,7 @@
     <p>
         Dear <b>{{$data['name']}}</b>,
         <br>
-            This is a confirmation that your password for {{$data['company']}} has been successfully changed. If you did not initiate this change, please contact us immediately at info@ghpayroll.net
+            This is a confirmation that your password for {{$data['company']}} has been successfully changed. If you did not initiate this change, please contact us immediately at info@comaziwa.co.ke
         <br>
             Thank you for using our services.
         <br>
@@ -73,7 +73,7 @@
         <br>
             We hope you've been enjoying your subscription with {{env('APP_NAME')}}. This is a friendly reminder that your subscription is set to renew on {{format_date($data['date'])}}.
         <br>
-            To continue enjoying our services, no action is required; we'll automatically renew your subscription. If you wish to make any changes, please log in to your account at <a href="{{url('dashboard/subscriptions')}}">Manage subscriptions</a>. For questions or assistance, reach out to our support team at info@ghpayroll.net 
+            To continue enjoying our services, no action is required; we'll automatically renew your subscription. If you wish to make any changes, please log in to your account at <a href="{{url('dashboard/subscriptions')}}">Manage subscriptions</a>. For questions or assistance, reach out to our support team at info@comaziwa.co.ke 
         <br>
             Thank you for choosing <b>{{env('APP_NAME')}}</b>!
     </p>
@@ -83,7 +83,7 @@
         <br>
             We wanted to notify you that your {{$data['company']}} subscription is expiring on {{format_date($data['date'])}} . Don't miss out on the benefits of our services!
         <br>
-            To renew your subscription, please log in to your account at <a href="{{url('dashboard/subscriptions')}}">Manage subscriptions</a>. If you have any questions or need assistance, feel free to contact our support team at info@ghpayroll.net.
+            To renew your subscription, please log in to your account at <a href="{{url('dashboard/subscriptions')}}">Manage subscriptions</a>. If you have any questions or need assistance, feel free to contact our support team at info@comaziwa.co.ke.
         <br>
             Best regards,
         <br>
@@ -191,6 +191,6 @@
     </p>
 @endif
 <p>
-    <img src="{{ asset('img/ghana.png') }}" width="80" height="40">
-    <strong>Powered By JPCann</strong>
+    <img src="{{ asset('img/logo.png') }}" width="80" height="40">
+    <strong>Powered By Brainnet</strong>
 </p>

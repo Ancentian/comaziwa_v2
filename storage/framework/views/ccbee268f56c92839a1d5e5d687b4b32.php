@@ -1,14 +1,9 @@
 <?php
-    if(session('is_admin') == 1)
-    {
-        $tenant_id = optional(auth()->guard('employee')->user())->tenant_id;
-    }else{
-        $tenant_id = auth()->user()->id;
-    }
-    $total_requests = \App\Models\Expense::where('tenant_id', $tenant_id)->where('approval_status','=',1)->sum('amount');
-    $approved = \App\Models\Expense::where('approval_status','=',1)->where('tenant_id', $tenant_id)->count();
-    $declined = \App\Models\Expense::where('approval_status','=',2)->where('tenant_id', $tenant_id)->count();
-    $paid = \App\Models\Expense::where('payment_status', '=', 1)->where('tenant_id', $tenant_id)->count();
+    $employee_id = optional(auth()->guard('employee')->user())->id;
+    $total_requests = \App\Models\Expense::where('approval_status','=',1)->where('employee_id', $employee_id)->sum('amount');
+    $approved = \App\Models\Expense::where('approval_status','=',1)->where('employee_id', $employee_id)->count();
+    $declined = \App\Models\Expense::where('approval_status','=',2)->where('employee_id', $employee_id)->count();
+    $paid = \App\Models\Expense::where('payment_status', '=', 1)->where('employee_id', $employee_id)->count();
 ?>
 
 
@@ -22,7 +17,9 @@
                 <li class="breadcrumb-item active">Employee</li>
             </ul>
         </div>
-        
+        <div class="col-auto float-right ml-auto">
+            <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_expense"><i class="fa fa-plus"></i> Add Expense Request</a>
+        </div>
     </div>
 </div>
 <!-- /Page Header -->
@@ -60,13 +57,13 @@
 <div class="row">
     <div class="col-md-12">
         <div class="table-responsive">
-            <table class="table table-striped custom-table" id="all_expenses_table">
+            <table class="table table-striped custom-table" id="staff_expenses_table">
                 <thead>
                     <tr>
                         <th class="text-left">Actions</th>
                         <th>Type</th>
                         <th>Request By</th>
-                        <th>Date</th>
+                        <th>Date</th>  
                         <th>Amount</th>
                         <th>Purpose</th>
                         <th>Approval Status</th>
@@ -74,7 +71,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
+
                 </tbody>
             </table>
         </div>
@@ -130,13 +127,26 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Amount</label>
-                                <input placeholder="" class="form-control" name="amount" type="text">
+                                <input placeholder="" class="form-control" name="amount" type="number">
+                                <span class="modal-error invalid-feedback" role="alert"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Supervisor </label>
+                                <select class="select" name="supervisor">
+                                    <option>Select Supervisor</option>
+                                    <?php $__currentLoopData = $supervisors; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($key->id); ?>"><?php echo e($key->name); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </select>
                                 <span class="modal-error invalid-feedback" role="alert"></span>
                             </div>
                         </div>
                     </div>
+                    
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn"><span id="submit_form">Submit</span></button>
+                        <button class="btn btn-primary submit-btn"> <span id="submit_form">Submit</span></button>
                     </div>
                 </form>
             </div>
@@ -145,5 +155,78 @@
 </div>
 <!-- /Add Expense Modal -->
 
+<!-- Add Project Modal -->
+<div id="expense_modal" class="modal custom-modal fade" role="dialog">
+    
+</div>
+
+<!-- Delete  Modal -->
+<div class="modal custom-modal fade" id="delete_modal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Delete Record</h3>
+                    <p>Are you sure want to delete?</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <input type="hidden" id="modal_delete_action">
+                        <div class="col-6">
+                            <a href="#" id="modal_delete_button" class="btn btn-primary continue-btn">Delete</a>
+                        </div>
+                        <div class="col-6">
+                            <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Delete Modal -->
 <?php $__env->stopSection(); ?>
-<?php echo $__env->make('layout.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\comaziwa\resources\views/companies/expenses/index.blade.php ENDPATH**/ ?>
+
+
+<?php $__env->startSection('javascript'); ?>
+<script>
+     $(document).on('click', '.edit-button', function () {
+        var actionuRL = $(this).data('action');
+
+        $('#expense_modal').load(actionuRL, function() {
+            $(this).modal('show');
+        });
+    });
+
+    $(document).on('click', '.delete-button', function () {
+        var actionuRL = $(this).data('action');
+        console.log(actionuRL);
+        $("#modal_delete_action").val(actionuRL);
+        $("#delete_modal").modal('show');
+    });
+
+
+    $('#modal_delete_button').on('click', function () {
+        var token = $('meta[name="csrf-token"]').attr('content');
+        $.ajax({
+            url: $("#modal_delete_action").val(), 
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': token 
+            },
+            success: function (response) {
+                // Handle success response
+                staff_expenses_table.ajax.reload();
+                $("#delete_modal").modal('hide');
+                toastr.success('Data Deleted Successfully','Success');
+            },
+            error: function (xhr, status, error) {
+                // Handle error response
+                console.error(error);
+                toastr.error('Something went wrong','Error');
+            }
+        });
+    });
+</script>
+ <?php $__env->stopSection(); ?>
+<?php echo $__env->make('companies.staff.layout.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\comaziwa\resources\views/companies/staff/expenses/index.blade.php ENDPATH**/ ?>

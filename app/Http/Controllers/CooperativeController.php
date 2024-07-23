@@ -14,6 +14,7 @@ use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class CooperativeController extends Controller
 {
@@ -132,28 +133,63 @@ class CooperativeController extends Controller
         }
     }
 
+    // public function store_banks(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'bank_name'    => 'required|unique:banks,bank_name',
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return response()->json(['errors' => $validator->errors()], 422);
+    //     }
+    //     DB::beginTransaction();
+    //     try {
+    //     $tenant_id = auth()->user()->id;
+    //         Bank::create([
+    //             'tenant_id'  => $tenant_id,
+    //             'bank_name'    => $request->bank_name, 
+    //         ]);
+        
+    //     DB::commit();
+    //     return response()->json(['message' => 'Bank Detail Added Successfully']);
+    //     } catch (\Exception $e) {
+    //         logger($e);
+    //         DB::rollback();
+    //         return response()->json(['message' => 'Data saving failed. Please try again.'], 500);
+    //     }
+    // }
+
     public function store_banks(Request $request)
     {
+        $tenant_id = auth()->user()->id;
+
         $validator = Validator::make($request->all(), [
-            'bank_name'    => 'required|unique:bank_details,bank_name',
+            'bank_name' => [
+                'required',
+                Rule::unique('banks')->where(function ($query) use ($tenant_id) {
+                    return $query->where('tenant_id', $tenant_id);
+                }),
+            ],
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
+
         DB::beginTransaction();
         try {
-        $tenant_id = auth()->user()->id;
             Bank::create([
-                'tenant_id'  => $tenant_id,
-                'bank_name'    => $request->bank_name, 
+                'tenant_id' => $tenant_id,
+                'bank_name' => $request->bank_name, 
             ]);
-        
-        DB::commit();
-        return response()->json(['message' => 'Bank Detail Added Successfully']);
+            
+            DB::commit();
+            return response()->json(['message' => 'Bank Detail Added Successfully']);
         } catch (\Exception $e) {
+            logger($e);
             DB::rollback();
             return response()->json(['message' => 'Data saving failed. Please try again.'], 500);
         }
     }
+
 }

@@ -1,14 +1,15 @@
 <!-- Sidebar -->
 <div class="sidebar" id="sidebar">
-     {{staffCan('th')}}
+     <?php echo e(staffCan('th')); ?>
+
     <div class="sidebar-inner slimscroll">
         <div id="sidebar-menu" class="sidebar-menu">
-        @if(session('is_admin') == 0)
+        <?php if(session('is_admin') == 0): ?>
         <ul>
                 <li class="submenu">
                     <a href="#"><i class="la la-dashboard"></i> <span> Dashboard</span> <span class="menu-arrow"></span></a>
                     <ul style="display: none;">
-                        <li><a  href="{{url('staff/index')}}">Dashboard</a></li>
+                        <li><a  href="<?php echo e(url('staff/index')); ?>">Dashboard</a></li>
                         
                     </ul>
                 </li>
@@ -16,44 +17,44 @@
                 <li class="submenu">
                     <a href="#"><i class="la la-users"></i> <span> HR </span> <span class="menu-arrow"></span></a>
                     <ul style="display: none;">
-                        {{-- <li><a href="{{url('staff/payslip')}}">Pay Slip</a></li> --}}
-                        <li><a href="{{url('staff/leaves')}}"> My Leaves </a></li>
+                        
+                        <li><a href="<?php echo e(url('staff/leaves')); ?>"> My Leaves </a></li>
                     </ul>
                 </li>
                 <li class="submenu">
                     <a href="#"><i class="la la-cubes"></i> <span> Milk Collection </span> <span class="menu-arrow"></span></a>
                     <ul style="display: none;">
-                        <li><a href="{{ url('staff/add-milk-collection') }}">Add Collection</a></li>
-                        <li><a href="{{ url('staff/index-milk') }}">Milk List</a></li>  
-                        <li><a href="{{url('milk-management/spillages')}}">Milk Spillages</a></li>                          
+                        <li><a href="<?php echo e(url('staff/add-milk-collection')); ?>">Add Collection</a></li>
+                        <li><a href="<?php echo e(url('staff/index-milk')); ?>">Milk List</a></li>  
+                        <li><a href="<?php echo e(url('milk-management/spillages')); ?>">Milk Spillages</a></li>                          
                     </ul>
                 </li>
                
                 <li class="submenu">
                     <a href="#"><i class="la la-money"></i> <span> Expenses </span> <span class="menu-arrow"></span></a>
                     <ul style="display: none;">
-                        <li><a href="{{url('expenses/staff-expenses')}}"> Expenses </a></li>
+                        <li><a href="<?php echo e(url('expenses/staff-expenses')); ?>"> Expenses </a></li>
                     </ul>
                 </li>
                 <li class="submenu">
                     <a href="#"><i class="la la-files-o"></i> <span> Payslip Reports </span> <span class="menu-arrow"></span></a>
                     <ul style="display: none;">
-                        <li><a href="{{url('staff/paye')}}"> PAYE Report </a></li>
+                        <li><a href="<?php echo e(url('staff/paye')); ?>"> PAYE Report </a></li>
                     </ul>
                 </li>
                 <li class="submenu">
                     <a href="#"><i class="la la-cog"></i> <span> Settings</span> <span class="menu-arrow"></span></a>
                     <ul style="display: none;">
-                        <li><a href="{{url('staff/settings')}}"> My Data </a></li>
+                        <li><a href="<?php echo e(url('staff/settings')); ?>"> My Data </a></li>
                     </ul>
                 </li>
 
             </ul>
-        @endif  
+        <?php endif; ?>  
         
         
-        @if(session('is_admin') == 1)
-        @php
+        <?php if(session('is_admin') == 1): ?>
+        <?php
             if(session('is_admin') == 1)
             {
                 $userId = optional(auth()->guard('employee')->user())->tenant_id;
@@ -106,152 +107,152 @@
             ];
 
             }
-        @endphp
+        ?>
         
         <ul>
                                      
-                    @if(
+                    <?php if(
                         staffCan('create.company.profile') || 
                         staffCan('edit.email.settings') || 
                         staffCan('create.company.settings')
-                    )
+                    ): ?>
                         <li class="submenu">
                             <a href="#"><i class="la la-cog"></i> <span> User Admin </span> <span class="menu-arrow"></span></a>
                             <ul style="display: none;">
-                                @if(staffCan('create.company.profile'))
-                                    <li><a href="{{url('company/profile')}}"> Company Profile </a></li>
-                                @endif
+                                <?php if(staffCan('create.company.profile')): ?>
+                                    <li><a href="<?php echo e(url('company/profile')); ?>"> Company Profile </a></li>
+                                <?php endif; ?>
                                 
-                                @if(staffCan('edit.email.settings'))
-                                    <li><a href="{{url('company/settings')}}"> Company Settings </a></li>
-                                @endif
+                                <?php if(staffCan('edit.email.settings')): ?>
+                                    <li><a href="<?php echo e(url('company/settings')); ?>"> Company Settings </a></li>
+                                <?php endif; ?>
                                 
-                                @if(staffCan('create.company.settings'))
-                                    <li><a href="{{url('communications/mailSettings')}}"> Email Settings </a></li>
-                                @endif
+                                <?php if(staffCan('create.company.settings')): ?>
+                                    <li><a href="<?php echo e(url('communications/mailSettings')); ?>"> Email Settings </a></li>
+                                <?php endif; ?>
                                 
                             </ul>
                         </li>
-                    @endif
+                    <?php endif; ?>
                    
                     
-                    @if (in_array('payroll', $subscribedModules))
+                    <?php if(in_array('payroll', $subscribedModules)): ?>
                         <li class="submenu">
                             <a href="#"><i class="la la-money"></i> <span> Reports</span> <span class="menu-arrow"></span></a>
                             <ul style="display: none;">
-                                @if(staffCan('view.paye'))
-                                    <li><a href="{{ url('payslip-reports/paye') }}"> Payslips </a></li>
-                                @endif
+                                <?php if(staffCan('view.paye')): ?>
+                                    <li><a href="<?php echo e(url('payslip-reports/paye')); ?>"> Payslips </a></li>
+                                <?php endif; ?>
                                 
-                                @if(staffCan('paye.tax.returns.report'))
-                                    <li><a href="{{ url('payslip-reports/paye-tax') }}"> PAYE Tax Returns Report </a></li>
-                                @endif
+                                <?php if(staffCan('paye.tax.returns.report')): ?>
+                                    <li><a href="<?php echo e(url('payslip-reports/paye-tax')); ?>"> PAYE Tax Returns Report </a></li>
+                                <?php endif; ?>
                                 
-                                @if(staffCan('view.tier.one'))
-                                    <li><a href="{{ url('payslip-reports/tier-one') }}"> Tier One </a></li>
-                                @endif
+                                <?php if(staffCan('view.tier.one')): ?>
+                                    <li><a href="<?php echo e(url('payslip-reports/tier-one')); ?>"> Tier One </a></li>
+                                <?php endif; ?>
                                 
-                                @if(staffCan('view.tier.two'))
-                                    <li><a href="{{ url('payslip-reports/tier-two') }}"> Tier Two </a></li>
-                                @endif
+                                <?php if(staffCan('view.tier.two')): ?>
+                                    <li><a href="<?php echo e(url('payslip-reports/tier-two')); ?>"> Tier Two </a></li>
+                                <?php endif; ?>
                                 
-                                @if(staffCan('view.allowances'))
-                                    <li><a href="{{ url('payslip-reports/allowances') }}"> Allowances Report </a></li>
-                                @endif
+                                <?php if(staffCan('view.allowances')): ?>
+                                    <li><a href="<?php echo e(url('payslip-reports/allowances')); ?>"> Allowances Report </a></li>
+                                <?php endif; ?>
                                 
-                                @if(staffCan('view.benefits.report'))
-                                    <li><a href="{{ url('payslip-reports/benefits') }}"> Benefits Report </a></li>
-                                @endif
+                                <?php if(staffCan('view.benefits.report')): ?>
+                                    <li><a href="<?php echo e(url('payslip-reports/benefits')); ?>"> Benefits Report </a></li>
+                                <?php endif; ?>
                                 
-                                @if(staffCan('view.statutory.report'))
-                                    <li><a href="{{ url('payslip-reports/statutory') }}"> Statutory Deductions </a></li>
-                                @endif
+                                <?php if(staffCan('view.statutory.report')): ?>
+                                    <li><a href="<?php echo e(url('payslip-reports/statutory')); ?>"> Statutory Deductions </a></li>
+                                <?php endif; ?>
                                 
-                                @if(staffCan('view.non.statutory.report'))
-                                    <li><a href="{{ url('payslip-reports/non-statutory') }}"> Non Statutory Deductions </a></li>
-                                @endif
+                                <?php if(staffCan('view.non.statutory.report')): ?>
+                                    <li><a href="<?php echo e(url('payslip-reports/non-statutory')); ?>"> Non Statutory Deductions </a></li>
+                                <?php endif; ?>
                                 
-                                @if(staffCan('view.net.pay.to.bank.report'))
-                                    <li><a href="{{ url('payslip-reports/bank-net-pay') }}"> Net Pay to Bank Report </a></li>
-                                @endif
+                                <?php if(staffCan('view.net.pay.to.bank.report')): ?>
+                                    <li><a href="<?php echo e(url('payslip-reports/bank-net-pay')); ?>"> Net Pay to Bank Report </a></li>
+                                <?php endif; ?>
                                 
                             </ul>
                         </li>
-                    @endif
+                    <?php endif; ?>
                     
                     
-                    @if(
+                    <?php if(
                         staffCan('view.expenses') || 
                         staffCan('delete.expense') || 
                         staffCan('approve.expense')
-                    )
-                        @if (in_array('expenses', $subscribedModules))
+                    ): ?>
+                        <?php if(in_array('expenses', $subscribedModules)): ?>
                         <li class="submenu">
                             <a href="#"><i class="la la-money"></i> <span> Expenses</span> <span class="menu-arrow"></span></a>
                             <ul style="display: none;">
-                                @foreach ($moduleUrls['expenses'] as $moduleName => $moduleUrl)
-                                    <li><a href="{{ url($moduleUrl) }}"> {{ ucfirst($moduleName) }} </a></li>
-                                @endforeach
+                                <?php $__currentLoopData = $moduleUrls['expenses']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $moduleName => $moduleUrl): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <li><a href="<?php echo e(url($moduleUrl)); ?>"> <?php echo e(ucfirst($moduleName)); ?> </a></li>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </ul>
                         </li>
-                        @endif
+                        <?php endif; ?>
                         
-                    @endif
+                    <?php endif; ?>
                     
                     
                     
-                    @if(
+                    <?php if(
                         staffCan('view.emails') || 
                         staffCan('edit.template') || 
                         staffCan('edit.template') ||
                         staffCan('delete.template')
-                    )
-                        @if (in_array('bulky_email', $subscribedModules))
+                    ): ?>
+                        <?php if(in_array('bulky_email', $subscribedModules)): ?>
                             <li class="submenu">
                                 <a href="#"><i class="la la-bullhorn"></i> <span> Communications </span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;">
-                                    @if(
+                                    <?php if(
                                         staffCan('view.emails') 
-                                    )
-                                        <li><a href="{{ url('communications/emails') }}"> Emails </a></li>
-                                    @endif
+                                    ): ?>
+                                        <li><a href="<?php echo e(url('communications/emails')); ?>"> Emails </a></li>
+                                    <?php endif; ?>
                                     
-                                    @if(
+                                    <?php if(
                                         staffCan('edit.template') || 
                                         staffCan('edit.template') ||
                                         staffCan('delete.template')
-                                    )
-                                        <li><a href="{{ url('communications/email-templates') }}"> Email Templates </a></li>
-                                    @endif
+                                    ): ?>
+                                        <li><a href="<?php echo e(url('communications/email-templates')); ?>"> Email Templates </a></li>
+                                    <?php endif; ?>
                                 </ul>
                             </li>
-                        @endif
-                    @endif
+                        <?php endif; ?>
+                    <?php endif; ?>
                     
                     
-                    @if(
+                    <?php if(
                         staffCan('view.leave') || 
                         staffCan('approve.leave') || 
                         staffCan('delete.leave') ||
                         staffCan('request.leave') ||
                         staffCan('decline.leave') 
-                    )
-                        @if (in_array('leaves', $subscribedModules))
+                    ): ?>
+                        <?php if(in_array('leaves', $subscribedModules)): ?>
                             <li class="submenu">
                                 <a href="#"><i class="la la-user-secret"></i> <span> Leaves </span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;">
-                                    @foreach ($moduleUrls['leaves'] as $moduleName => $moduleUrl)
-                                        <li><a href="{{ url($moduleUrl) }}"> {{ ucfirst($moduleName) }} </a></li>
-                                    @endforeach
+                                    <?php $__currentLoopData = $moduleUrls['leaves']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $moduleName => $moduleUrl): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <li><a href="<?php echo e(url($moduleUrl)); ?>"> <?php echo e(ucfirst($moduleName)); ?> </a></li>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </ul>
                             </li>
-                        @endif
-                    @endif
+                        <?php endif; ?>
+                    <?php endif; ?>
         
-                    @endif
+                    <?php endif; ?>
                     </ul>
         
         </div>
     </div>
 </div>
-<!-- /Sidebar -->
+<!-- /Sidebar --><?php /**PATH C:\laragon\www\comaziwa\resources\views/companies/staff/layout/sidebar.blade.php ENDPATH**/ ?>

@@ -1,17 +1,17 @@
+@extends('companies.staff.layout.app')
 
-
-<?php $__env->startSection('content'); ?>
+@section('content')
 <!-- Page Header -->
 <div class="page-header">
     <div class="row align-items-center">
         <div class="col">
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#"> Dashboard</a></li>
-                <li class="breadcrumb-item active"> Deductions</li>
+                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                <li class="breadcrumb-item active"> Farmers</li>
             </ul>
         </div>
         <div class="col-auto float-right ml-auto">
-            <a href="<?php echo e(route('deductions.add-deduction')); ?>" class="btn btn-info"><i class="fa fa-plus"></i> Add Deduction</a> &nbsp;
+            <a href="{{url('staff/add-milk-collection')}}" class="btn btn-info" ><i class="fa fa-plus"></i> Add Milk Collection</a> &nbsp;
             <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#import" hidden><i class="fa fa-download"></i> Import</a> &nbsp;
         </div>
     </div>
@@ -22,16 +22,16 @@
     <div class="col-md-4">
         <div class="form-group">
             <label>Date Range <span class="text-danger">*</span></label>
-            <input type="text" readonly id="daterange" class="form-control" value="<?php echo e(date('m/01/Y')); ?> - <?php echo e(date('m/t/Y')); ?>" />
+            <input type="text" readonly id="daterange" class="form-control" value="{{date('m/01/Y')}} - {{date('m/t/Y')}}" />
         </div>
     </div>
     <div class="form-group col-sm-4">
         <label for="center_id">Select Center</label>
         <select class="form-control select" name="center_id" id="center_id" required>
             <option value="">Choose one</option>
-            <?php $__currentLoopData = $centers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $center): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <option value="<?php echo e($center->id); ?>"><?php echo e($center->center_name); ?></option>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            @foreach($centers as $center)
+                <option value="{{ $center->id }}">{{ $center->center_name }}</option>
+            @endforeach
         </select>
     </div>
     
@@ -41,21 +41,22 @@
             <option value="">Choose one</option>
         </select>
     </div>
-    
     <div class="col-md-12">
         <div class="table-responsive">	
-            <table class="table table-striped custom-table" id="deductions_table">
+            <table class="table table-striped custom-table" id="collected_milk_table">
                 <thead>
                     <tr>
-                        <th>Farmer</th>
+                        <th class="text-left no-sort">Action</th>
+                        <th class="text-center">Code</th>
                         <th>Center</th>
-                        <th>Deduction</th>
-                        <th>Type</th>
-                        <th>Amount</th>
-                        <th>Date</th>
-                        <th>Created On</th>
-                        <th class="text-right no-sort">Action</th>
-                    </tr>
+                        <th>Col. Date</th>
+                        <th>Morning</th>
+                        <th>Evening</th>
+                        <th>Rejected</th>
+                        <th>Total</th>					
+                        <th>Recorded By</th>
+                        <th>Created at</th>
+                    </tr> 
                 </thead>
                 <tbody>
                     
@@ -65,11 +66,13 @@
     </div>
 </div>
 
+
+
 <div id="import" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Import Employee</h5>
+                <h5 class="modal-title">Import Milk</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -79,11 +82,11 @@
                    
                     <div class="row" style="margin-bottom: 10px">
                         <div class="col-sm-4 pull-right">
-                            <a href="<?php echo e(asset('files/employee-import.xlsx')); ?>" class="btn btn-primary" download><i class="fa fa-download"></i> Download Template</a>
+                            <a href="{{ asset('files/employee-import.xlsx') }}" class="btn btn-primary" download><i class="fa fa-download"></i> Download Template</a>
                         </div>
                     </div>
                     <form id="import_employee_form"  enctype="multipart/form-data">
-                        <?php echo csrf_field(); ?>
+                        @csrf
                         
                         <div class="form-group">
                             <input type="file" name="csv_file" class="form-control" required>
@@ -113,8 +116,8 @@
             </button>
         </div>
         <div class="modal-body">
-            <form id="bulk_payslip_form" action="<?php echo e(url('/employees/bulk-generate-monthly-payslip')); ?>" method="POST">
-                <?php echo csrf_field(); ?>
+            <form id="bulk_payslip_form" action="{{url('/employees/bulk-generate-monthly-payslip')}}" method="POST">
+                @csrf
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
@@ -137,16 +140,16 @@
 
 </div>
 
-<?php $__env->stopSection(); ?>
+@endsection
 
-<?php $__env->startSection('javascript'); ?>
+@section('javascript')
 <script>
 $(document).ready(function(){
     $(".warning").hide();
     $(".submit-btn").show();
     
     $(document).on('click', '#add_employee_btn', function () {
-        var actionuRL = "<?php echo e(url('/employees/create')); ?>";
+        var actionuRL = "{{url('/employees/create')}}";
         $('#add_employee').load(actionuRL, function() {
             $(this).modal('show');
         });
@@ -206,13 +209,13 @@ $(document).ready(function(){
         var formData = $(this).serialize();
 
         $.ajax({
-            url: '<?php echo e(url('cooperative/store-farmers')); ?>',
+            url: '{{ url('cooperative/store-farmers') }}',
             method: 'POST',
             data: formData,
             success: function (response) {
                 // Handle success response
                 form.reset();
-                deductions_table.ajax.reload();
+                collected_milk_table.ajax.reload();
                 
                 // Close the modal
                 $('#add_farmer').modal('hide');
@@ -253,61 +256,62 @@ $(document).ready(function(){
         opens: 'bottom',
         ranges: ranges
     }, function(start, end, label) {
-        deductions_table.ajax.reload();
+        collected_milk_table.ajax.reload();
     });
 
     $(document).on('change', ' #center_id, #farmer_id', function () {
-        deductions_table.ajax.reload();
+        collected_milk_table.ajax.reload();
     })
-        deductions_table = $('#deductions_table').DataTable({
-            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-            processing: true,
-            serverSide: false,
-            ajax: {
-                url : "<?php echo e(url('deductions/index')); ?>",
-                data: function(d){
-                // Access the start and end dates from the date range picker
-                var startDate = $('#daterange').data('daterangepicker').startDate.format('YYYY-MM-DD');
-                var endDate = $('#daterange').data('daterangepicker').endDate.format('YYYY-MM-DD');
-                
-                // Add the dates as parameters to the request
-                d.start_date = startDate;
-                d.end_date = endDate;
-                d.center_id = $("#center_id").val();
-                d.farmer_id = $("#farmer_id").val();
-                    
-                }
-            },
-            columnDefs:[{
-                    "targets": 1,
-                    "orderable": false,
-                    "searchable": false
-                }],
-            columns: [
-                
-                {data: 'fullname', name: 'fullname'},
-                {data: 'center_name', name: 'center_name'},
-                {data: 'deduction_name', name: 'deduction_name'},
-                {data: 'deduction_type', name: 'deduction_type'},
-                {data: 'amount', name: 'amount'},
-                {data: 'date', name: 'date'},
-                {data: 'created_on', name: 'created_on'},
-                {data: 'action', name: 'action',className: 'text-left'}, 
-                // {data: 'status', name: 'status'},             
-            ],
-            createdRow: function( row, data, dataIndex ) {
-            }
-        });
 
+    collected_milk_table = $('#collected_milk_table').DataTable({
+        @include('layout.export_buttons')
+        processing: true,
+        serverSide: false,
+        ajax: {
+            url : "{{url('staff/all-milk-collection')}}",
+            data: function(d){
+            // Access the start and end dates from the date range picker
+            var startDate = $('#daterange').data('daterangepicker').startDate.format('YYYY-MM-DD');
+            var endDate = $('#daterange').data('daterangepicker').endDate.format('YYYY-MM-DD');
+            
+            // Add the dates as parameters to the request
+            d.start_date = startDate;
+            d.end_date = endDate;
+            d.center_id = $("#center_id").val();
+            d.farmer_id = $("#farmer_id").val();
+                
+            }
+        },
+        columnDefs:[{
+                "targets": 1,
+                "orderable": false,
+                "searchable": false
+            }],
+            
+        columns: [
+            {data: 'action', name: 'action',className: 'text-left'}, 
+            {data: 'fullname', name: 'fullname'},
+            {data: 'center_name', name: 'center_name'},
+            {data: 'collection_date', name: 'collection_date'},
+            {data: 'morning', name: 'morning'},
+            {data: 'evening', name: 'evening'},
+            {data: 'rejected', name: 'rejected'},
+            {data: 'total', name: 'total'},
+            {data: 'staff_name', name: 'staff_name'},
+            {data: 'created_on', name: 'created_on'},            
+        ],
+        createdRow: function( row, data, dataIndex ) {
+        }
     });
 
-    $(document).ready(function() {
+});
+
+$(document).ready(function() {
     $('#center_id').on('change', function() {
         var centerId = $(this).val();
 
         // Clear farmer details and farmer select options
         $('#farmer_id').val('');
-        $('#farmer_name').val('');
         $('#farmer_id').empty().append('<option value="">Choose one</option>');
 
         if (centerId) {
@@ -350,11 +354,7 @@ $(document).ready(function(){
             $('#farmer_name').val('');
         }
     });
-});
-
-
-    
+});   
 </script>
 
-<?php $__env->stopSection(); ?>
-<?php echo $__env->make('layout.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\comaziwa\resources\views/companies/deductions/index.blade.php ENDPATH**/ ?>
+@endsection

@@ -35,6 +35,7 @@ use App\Http\Controllers\AssetsController;
 use App\Http\Controllers\MilkManagementController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\Crons;
+use App\Http\Controllers\StaffMilkController;
 
 
 /*
@@ -160,7 +161,7 @@ Route::prefix('cooperative')->middleware(['auth:web,employee'])->group(function 
 
 Route::prefix('milkCollection')->middleware(['auth:web,employee'])->group(function () {
     //Milk Collection
-    Route::get('/index', [MilkCollectionController::class, 'index']);
+    Route::get('/index', [MilkCollectionController::class, 'index'])->name('milk-collection.index');
     Route::get('/all-milk-collection', [MilkCollectionController::class, 'all_milk_collection']);
     Route::get('/add-collection', [MilkCollectionController::class, 'add_collection']);
     Route::post('/store-milk-collection', [MilkCollectionController::class, 'store_milkCollection']);
@@ -271,7 +272,7 @@ Route::prefix('assets')->middleware(['auth:web,employee'])->group(function () {
     Route::delete('/delete-asset/{id}', [AssetsController::class, 'delete_asset']);   
 });
 
-Route::prefix('milk-management')->middleware(['auth:web, employee'])->group(function () {
+Route::prefix('milk-management')->middleware(['auth:web,employee'])->group(function () {
     Route::get('/index', [MilkManagementController::class, 'index'])->name('management.index');
     Route::get('/spillages', [MilkManagementController::class, 'spillages']);
     Route::get('/milk-spillages', [MilkManagementController::class, 'milk_spillages']);
@@ -284,7 +285,7 @@ Route::prefix('milk-management')->middleware(['auth:web, employee'])->group(func
     Route::get('/view-comment/{id}', [MilkManagementController::class, 'view_comments']);
 });
 
-Route::prefix('payments')->middleware(['auth:web, employee'])->group(function () {
+Route::prefix('payments')->middleware(['auth:web,employee'])->group(function () {
     Route::get('/index', [PaymentsController::class, 'index'])->name('payments.index');
     Route::get('/all-payments', [PaymentsController::class, 'all_payments']);
     Route::get('/generate-payments', [PaymentsController::class, 'generate_payments'])->name('payments.generate-payments');
@@ -468,17 +469,21 @@ Route::prefix('staff')->middleware(['auth:web,employee'])->group(function () {
     Route::get('/mail-settings', [EmailsController::class, 'staff_mailSettings']);
     Route::post('/store_mailSettings', [EmailsController::class, 'store_staffMailSettings']);
 
-    Route::get('/tier-one',[PayslipsReports::class, 'staff_tier_one']);
-    Route::get('/tier-two',[PayslipsReports::class, 'staff_tier_two']);
-    Route::get('/all-staff-paye',[PayslipsReports::class, 'staff_paye']);
-    Route::get('/paye-tax', [PayslipsReports::class, 'staff_paye_tax']); 
-    Route::get('/bank-net-pay', [PayslipsReports::class, 'staff_bank_net_pay']); 
-    Route::get('/print-tier-one', [PayslipsReports::class, 'staff_printTierOne']); 
-
     Route::get('/set-as-admin',[AuthController::class, 'set_as_admin']);
     Route::get('/set-as-staff',[AuthController::class, 'set_as_staff']);
     
     Route::post('/post-assign-permissions/{id}', [EmployeesController::class, 'post_assign_permissions']);
+
+    Route::get('index-milk', [StaffMilkController::class, 'index'])->name('staff.milk-index');
+    Route::get('/add-milk-collection', [StaffMilkController::class, 'add_milk_collection'])->name('staff.milk.add-collection');
+    Route::post('/store-milkCollection', [StaffMilkController::class, 'store_milkCollection']);
+    Route::get('/all-milk-collection', [StaffMilkController::class, 'all_milk_collection']);
+
+
+    //Center
+    Route::get('/center-farmers/{id}', [StaffMilkController::class, 'center_farmers']);
+
+
 });
 
 Route::prefix('expenses')->middleware(['auth:web,employee'])->group(function () {
@@ -512,6 +517,9 @@ Route::post('/staff/login', [StaffController::class, 'authenticate']);
 Route::get('/staff/staff-forgot-password', [StaffController::class, 'forgot_password']);
 
 Route::get('/check-subscriptions', [Crons::class, 'checkSubscriptions']);
+
+Route::get('/milk-analysis', [DashboardController::class, 'milk_analysis']);
+Route::get('/monthly-milk-analysis', [DashboardController::class, 'monthly_milk_analysis']);
     
 
 

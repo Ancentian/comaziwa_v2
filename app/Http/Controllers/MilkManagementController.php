@@ -29,6 +29,11 @@ class MilkManagementController extends Controller
         return view('companies.milk_management.spillages.index', compact('centers'));
     }
 
+    public function milk_analysis()
+    {
+        
+    }
+
     public function milk_spillages()
     {
         if (request()->ajax()) {

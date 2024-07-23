@@ -1,7 +1,7 @@
 
+@extends('companies.staff.layout.app')
 
-
-<?php $__env->startSection('content'); ?>
+@section('content')
 
 <input type="hidden" id="reload_page">
 <!-- Page Header -->
@@ -23,16 +23,16 @@
 
 <div class="row">
     <div class="col-md-12">
-        <form id="add_milk_collection" action="<?php echo e(url('milkCollection/store-milk-collection')); ?>" method="POST">
-            <?php echo csrf_field(); ?>
+        <form id="add_milk_collection" action="{{ url('staff/store-milkCollection') }}" method="POST">
+            @csrf
             <div class="row">
                 <div class="form-group col-sm-4">
                     <label>Select Center</label>
                     <select class="form-control select" name="center_id" id="center_id" required>
                         <option value="">Choose one</option>
-                        <?php $__currentLoopData = $centers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <option value="<?php echo e($key->id); ?>"><?php echo e($key->center_name); ?></option>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        @foreach($centers as $key)
+                            <option value="{{ $key->id }}">{{ $key->center_name }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="col-sm-4">  
@@ -86,11 +86,11 @@
                    
                     <div class="row" style="margin-bottom: 10px" hidden>
                         <div class="col-sm-4 pull-right">
-                            <a href="<?php echo e(asset('files/employee-import.xlsx')); ?>" class="btn btn-primary" download><i class="fa fa-download"></i> Download Template</a> 
+                            <a href="{{ asset('files/employee-import.xlsx') }}" class="btn btn-primary" download><i class="fa fa-download"></i> Download Template</a> 
                         </div>
                     </div>
                     <form id="import_milk_form"  enctype="multipart/form-data">
-                        <?php echo csrf_field(); ?>
+                        @csrf
                         
                         <div class="form-group">
                             <input type="file" name="csv_file" class="form-control" required>
@@ -108,9 +108,9 @@
     </div>
 </div>
 
-<?php $__env->stopSection(); ?>
+@endsection
 
-<?php $__env->startSection('javascript'); ?>
+@section('javascript')
 <script>
     $(document).on('change','#center_id',function(){
        $("#milk_details").hide();
@@ -119,7 +119,7 @@
             $("#milk_collection_table tbody").empty();
             
             $.ajax({
-                url: "/milkCollection/center-farmers/"+id,
+                url: "/staff/center-farmers/"+id,
                 method: 'GET',
                 data: {},
                 dataType: 'json',
@@ -193,7 +193,7 @@
                     // Close the modal
                     //$('#edit_modal').modal('hide');
                     //window.location.reload();
-                    window.location.href = "<?php echo e(route('milk-collection.index')); ?>";
+                    window.location.href = "{{ url('staff/index-milk') }}";
                     toastr.success(response.message, 'Success');
                 },
                 error: function (xhr, status, error) {
@@ -211,7 +211,7 @@
 
         if (centerId) {
             $.ajax({
-                url: "/milkCollection/center-farmers/" + centerId,
+                url: "/staff/center-farmers/" + centerId,
                 method: 'GET',
                 dataType: 'json',
                 success: function(response) {
@@ -260,7 +260,7 @@
         var formData = new FormData(form);
     
         $.ajax({
-            url: '<?php echo e(url('milkCollection/store-import-milk')); ?>',
+            url: '{{ url('milkCollection/store-import-milk') }}',
             method: 'POST',
             data: formData,
             contentType: false, 
@@ -288,5 +288,4 @@
 });
 
 </script>
-<?php $__env->stopSection(); ?>
-<?php echo $__env->make('layout.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\comaziwa\resources\views/companies/milkcollection/addcollection.blade.php ENDPATH**/ ?>
+@endsection

@@ -196,13 +196,6 @@ $(document).ready(function(){
             ajax: {
                 url : "{{url('payments/all-payments')}}",
                 data: function(d){
-                    // Access the start and end dates from the date range picker
-                // var startDate = $('#daterange').data('daterangepicker').startDate.format('YYYY-MM-DD');
-                // var endDate = $('#daterange').data('daterangepicker').endDate.format('YYYY-MM-DD');
-                
-                // Add the dates as parameters to the request
-                // d.start_date = startDate;
-                // d.end_date = endDate;
                 d.pay_period = $("#pay_period").val();
                 d.center_id = $("#center_id").val();
                 d.farmer_id = $("#farmer_id").val();

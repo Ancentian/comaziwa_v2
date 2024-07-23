@@ -21,7 +21,7 @@ return new class extends Migration
             $table->float('evening')->nullable();
             $table->float('rejected')->nullable();
             $table->float('total');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->timestamps();
             
             $table->foreign('tenant_id')->references('id')->on('users')->onDelete('cascade');

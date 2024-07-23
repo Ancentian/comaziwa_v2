@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Package;
+use App\Models\Employee;
 use Flash;
 use Hash;
 use DB;

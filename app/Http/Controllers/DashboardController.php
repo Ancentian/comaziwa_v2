@@ -7,11 +7,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Subscription;
 use App\Models\Package;
+use Carbon\Carbon;
 use Yajra\DataTables\Facades\DataTables;
 
 class DashboardController extends Controller
 {
     //
+    
     public function index(){
         $data = array();
         $company = company()->mycompany();
@@ -19,6 +21,39 @@ class DashboardController extends Controller
             return redirect('company/profile');
         }
         return view('dashboard.index', compact('data'));
+    }
+
+    public function milk_analysis()
+    {
+        $endDate = Carbon::now();
+        $startDate = $endDate->copy()->subMonths(4);
+
+        $milkData = DB::table('milk_collections')
+            ->select([DB::raw("MONTH(collection_date) as month"), 
+                    DB::raw("SUM(morning) as total_morning"),
+                    DB::raw("SUM(evening) as total_evening"),
+                    DB::raw("SUM(rejected) as total_rejected"),
+                    DB::raw("SUM(total) as total_milk")])
+            ->whereBetween('collection_date', [$startDate, $endDate])
+            ->groupBy(DB::raw("MONTH(collection_date)"))
+            ->get();
+        return response()->json($milkData);
+    }
+
+    //Pie Chart
+    public function monthly_milk_analysis()
+    {
+        $endDate = Carbon::now();
+        $startDate = $endDate->copy()->subMonths(3);
+
+        $milkData = DB::table('milk_collections')
+            ->select(DB::raw("MONTH(collection_date) as month"), 
+                    DB::raw("SUM(total) as total_milk"))
+            ->whereBetween('collection_date', [$startDate, $endDate])
+            ->groupBy(DB::raw("MONTH(collection_date)"))
+            ->get();
+        // logger($milkData);
+        return response()->json($milkData);
     }
 
     public function tryPlan($plan_id){
