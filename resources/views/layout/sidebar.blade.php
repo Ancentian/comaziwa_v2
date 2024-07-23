@@ -9,7 +9,7 @@
     }
     
     $user = \App\Models\User::find($userId);
-    logger($userId);
+
     $userType = $user->type;
     
     if ($userType === 'client') {

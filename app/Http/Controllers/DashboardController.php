@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Subscription;
 use App\Models\Package;
+use App\Models\MilkCollection;
 use Carbon\Carbon;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -40,21 +41,43 @@ class DashboardController extends Controller
         return response()->json($milkData);
     }
 
-    //Pie Chart
+    //Pie Chart & Line Chart
     public function monthly_milk_analysis()
     {
         $endDate = Carbon::now();
-        $startDate = $endDate->copy()->subMonths(3);
+        $startDate = $endDate->copy()->subMonths(4);
 
         $milkData = DB::table('milk_collections')
-            ->select(DB::raw("MONTH(collection_date) as month"), 
+            ->select(DB::raw("MONTH(collection_date) as month"),
+                    DB::raw("SUM(morning) as total_morning"),
+                    DB::raw("SUM(evening) as total_evening"),
+                    DB::raw("SUM(rejected) as total_rejected"), 
                     DB::raw("SUM(total) as total_milk"))
             ->whereBetween('collection_date', [$startDate, $endDate])
             ->groupBy(DB::raw("MONTH(collection_date)"))
             ->get();
-        // logger($milkData);
         return response()->json($milkData);
     }
+
+    public function collection_center_analysis()
+    {
+        $endDate = Carbon::now();
+        $startDate = $endDate->copy()->subMonths(4);
+        $tenant_id = auth()->user()->id;
+        $milkData = DB::table('milk_collections')
+            ->join('collection_centers', 'collection_centers.id', 'milk_collections.center_id')
+            ->where('milk_collections.tenant_id', $tenant_id)
+            ->select(
+                DB::raw("MONTH(milk_collections.collection_date) as month"),
+                DB::raw("SUM(milk_collections.total) as total_milk"),
+                DB::raw("collection_centers.center_name")
+            )
+            ->whereBetween('milk_collections.collection_date', [$startDate, $endDate])
+            ->groupBy(DB::raw("MONTH(milk_collections.collection_date)"), 'collection_centers.center_name')
+            ->get();
+        return response()->json($milkData);
+    }
+
 
     public function tryPlan($plan_id){
         
@@ -68,6 +91,90 @@ class DashboardController extends Controller
         } catch (\Exception $e) {
             
             return response()->json(['message' => 'Failed.Please try again.'], 500);
+        }
+    }
+
+    public function center_statistics()
+    {
+        if (request()->ajax()) {
+
+            $tenant_id = auth()->user()->id;
+            $milk = MilkCollection::join('collection_centers', 'collection_centers.id', '=', 'milk_collections.center_id')
+                    ->where('milk_collections.tenant_id', $tenant_id)
+                    ->groupBy('collection_centers.center_name')
+                    ->select([
+                        DB::raw('SUM(milk_collections.total) as total_milk'),
+                        'collection_centers.center_name',
+                    ])
+                    ->orderBy('total_milk', 'desc')
+                    ->limit(5)
+                    ->get();
+               logger("Ancenter");     
+            return DataTables::of($milk)
+                ->addColumn(
+                    'action',
+                    function ($row) {
+                        $html = '<div class="btn-group">
+                        <button type="button" class="badge btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item edit-button" data-action="'.url('milkCollection/edit-milk-collection',[$row->id]).'" href="#" ><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                        <a class="dropdown-item delete-button" data-action="'.url('milkCollection/delete-milk-collection',[$row->id]).'" href="#" ><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                        </div>
+                    </div>';
+                        return $html;
+                    }
+                )
+                ->editColumn('total_milk', function ($row) {
+                    $html = num_format($row->total_milk);
+                    return $html;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+    }
+
+    public function farmer_statistics()
+    {
+        if (request()->ajax()) {
+
+            $tenant_id = auth()->user()->id;
+            $farmer = MilkCollection::join('farmers', 'farmers.id', '=', 'milk_collections.farmer_id')
+                    ->where('milk_collections.tenant_id', $tenant_id)
+                    ->groupBy('milk_collections.farmer_id')
+                    ->select([
+                        DB::raw('SUM(milk_collections.total) as total_milk'),
+                        'farmers.fname',
+                        'farmers.lname',
+                        'farmers.farmerID'
+                    ])
+                    ->orderBy('total_milk', 'desc')
+                    ->limit(5)
+                    ->get();
+               logger("Ancenter");     
+            return DataTables::of($farmer)
+                ->addColumn(
+                    'action',
+                    function ($row) {
+                        $html = '<div class="btn-group">
+                        <button type="button" class="badge btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item edit-button" data-action="'.url('milkCollection/edit-milk-collection',[$row->id]).'" href="#" ><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                        <a class="dropdown-item delete-button" data-action="'.url('milkCollection/delete-milk-collection',[$row->id]).'" href="#" ><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                        </div>
+                    </div>';
+                        return $html;
+                    }
+                )
+                ->editColumn('fullname', function ($row) {
+                    $html = $row->fname.' '.$row->lname.' '.$row->farmerID;
+                    return $html;
+                })
+                ->editColumn('total_milk', function ($row) {
+                    $html = num_format($row->total_milk);
+                    return $html;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
         }
     }
 

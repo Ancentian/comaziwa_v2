@@ -2480,6 +2480,8 @@ $(document).ready(function(){
         });
     });
 
+    
+
     // load Expense Types Data
     $(document).ready(function(){
         expense_types_table = $('#expense_types_table').DataTable({

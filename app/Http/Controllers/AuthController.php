@@ -60,7 +60,6 @@ class AuthController extends Controller
             'type'      => 'required|string|max:255'
         ]);
         
-        logger($request);
         
         $expiry = date('Y-m-d',(time()+env('TRIAL_PERIOD')*86400));
         
