@@ -35,13 +35,6 @@
             ],
             'payroll' => [
                 'Payslips' => 'payslip-reports/paye',
-                'PAYE Tax Returns Report' => 'payslip-reports/paye-tax',
-                'Tier One' => 'payslip-reports/tier-one',
-                'Tier Two' => 'payslip-reports/tier-two',
-                'Allowances Report' => 'payslip-reports/allowances',
-                'Benefits Report' => 'payslip-reports/benefits',
-                'Statutory Deductions' => 'payslip-reports/statutory',
-                'Non Statutory Deductions' => 'payslip-reports/non-statutory',
                 'Net Pay to Bank Report' => 'payslip-reports/bank-net-pay'
             ],
             'expenses' => [
@@ -127,6 +120,7 @@
                         <ul style="display: none;">
                             <li><a href="<?php echo e(url('sales/add-sales')); ?>">Add Sales</a></li>
                             <li><a href="<?php echo e(url('sales/index')); ?>">All Sales</a></li>
+                            <li><a href="<?php echo e(url('sales/all-transactions')); ?>">Transactions</a></li>
                             <li><a href="<?php echo e(url('inventory/all-inventory')); ?>">Inventory List</a></li> 
                             <li><a href="<?php echo e(url('inventory/categories')); ?>">Categories</a></li> 
                             <li><a href="<?php echo e(url('inventory/units')); ?>">Units</a></li>                          
@@ -187,6 +181,12 @@
                         <li class="submenu">
                             <a href="#"><i class="la la-files-o"></i> <span> Reports</span> <span class="menu-arrow"></span></a>
                             <ul style="display: none;">
+                                <li><a href="<?php echo e(url('analysis/collection-center-monthly-report')); ?>"> Collection Report </a></li>
+                                <li><a href="<?php echo e(url('analysis/farmers-monthly-report')); ?>"> Farmers Report </a></li>
+                                <li><a href="<?php echo e(url('analysis/sales-monthly-report')); ?>"> Sales Report </a></li>
+                                <li><a href="<?php echo e(url('analysis/monthly-deductions-report')); ?>"> Deduction Report </a></li>
+                                <li><a href="<?php echo e(url('analysis/payments-report')); ?>"> Payments Report </a></li>
+                                
                                 <?php $__currentLoopData = $moduleUrls['payroll']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $moduleName => $moduleUrl): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <li><a href="<?php echo e(url($moduleUrl)); ?>"> <?php echo e(ucfirst($moduleName)); ?> </a></li>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

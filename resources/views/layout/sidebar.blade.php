@@ -35,13 +35,6 @@
             ],
             'payroll' => [
                 'Payslips' => 'payslip-reports/paye',
-                'PAYE Tax Returns Report' => 'payslip-reports/paye-tax',
-                'Tier One' => 'payslip-reports/tier-one',
-                'Tier Two' => 'payslip-reports/tier-two',
-                'Allowances Report' => 'payslip-reports/allowances',
-                'Benefits Report' => 'payslip-reports/benefits',
-                'Statutory Deductions' => 'payslip-reports/statutory',
-                'Non Statutory Deductions' => 'payslip-reports/non-statutory',
                 'Net Pay to Bank Report' => 'payslip-reports/bank-net-pay'
             ],
             'expenses' => [
@@ -127,6 +120,7 @@
                         <ul style="display: none;">
                             <li><a href="{{url('sales/add-sales')}}">Add Sales</a></li>
                             <li><a href="{{url('sales/index')}}">All Sales</a></li>
+                            <li><a href="{{url('sales/all-transactions')}}">Transactions</a></li>
                             <li><a href="{{url('inventory/all-inventory')}}">Inventory List</a></li> 
                             <li><a href="{{url('inventory/categories')}}">Categories</a></li> 
                             <li><a href="{{url('inventory/units')}}">Units</a></li>                          
@@ -187,6 +181,12 @@
                         <li class="submenu">
                             <a href="#"><i class="la la-files-o"></i> <span> Reports</span> <span class="menu-arrow"></span></a>
                             <ul style="display: none;">
+                                <li><a href="{{url('analysis/collection-center-monthly-report')}}"> Collection Report </a></li>
+                                <li><a href="{{url('analysis/farmers-monthly-report')}}"> Farmers Report </a></li>
+                                <li><a href="{{url('analysis/sales-monthly-report')}}"> Sales Report </a></li>
+                                <li><a href="{{url('analysis/monthly-deductions-report')}}"> Deduction Report </a></li>
+                                <li><a href="{{url('analysis/payments-report')}}"> Payments Report </a></li>
+                                
                                 @foreach ($moduleUrls['payroll'] as $moduleName => $moduleUrl)
                                     <li><a href="{{ url($moduleUrl) }}"> {{ ucfirst($moduleName) }} </a></li>
                                 @endforeach

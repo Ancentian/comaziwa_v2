@@ -57,7 +57,7 @@ class DeductionsController extends Controller
                     $html = '<div class="btn-group">
                     <button type="button" class="badge btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
                     <div class="dropdown-menu dropdown-menu-right">
-                      <a class="dropdown-item edit-button" data-action="'.url('deductions/edit-deduction',[$row->id]).'" href="#" ><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                      <a class="dropdown-item edit-button" data-action="'.url('deductions/edit-deduction',[$row->id]).'" href="#" hidden><i class="fa fa-pencil m-r-5"></i> Edit</a>
                       <a class="dropdown-item delete-button" data-action="'.url('deductions/delete-deduction',[$row->id]).'" href="#" ><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                     </div>
                   </div>';

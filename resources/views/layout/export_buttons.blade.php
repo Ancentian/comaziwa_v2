@@ -2,7 +2,7 @@ dom: '<"top"lfB>rt<"bottom"ip><"clear">',
 buttons: [
     {
         extend: 'copyHtml5',
-        text: '<i class="fa fa-copy"></i> Copy to Clipboard',
+        text: '<i class="fa fa-copy"></i> Copy ',
         className: 'btn btn-sm btn-default',
         exportOptions: {
             columns: function ( idx, data, node ) {
@@ -14,7 +14,7 @@ buttons: [
     
     {
         extend: 'excelHtml5',
-        text: '<i class="fa fa-file-excel-o"></i> Export to Excel',
+        text: '<i class="fa fa-file-excel-o"></i> Excel',
         className: 'btn btn-sm btn-default',
         exportOptions: {
             columns: function ( idx, data, node ) {
@@ -25,7 +25,7 @@ buttons: [
     },
     {
         extend: 'csvHtml5',
-        text: '<i class="fa fa-file"></i> Export to CSV',
+        text: '<i class="fa fa-file"></i> CSV',
         className: 'btn btn-sm btn-default',
         exportOptions: {
             columns: function ( idx, data, node ) {
