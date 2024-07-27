@@ -91,6 +91,8 @@
 
     $stores = App\Models\StoreSale::where('tenant_id', '=', $tenant_id)->sum('total_cost');
     $deductions = App\Models\Deduction::where('tenant_id', '=', $tenant_id)->sum('amount');
+    $gross = App\Models\Payment::where('tenant_id', '=', $tenant_id)->sum('gross_pay');
+    $nett = $gross - $deductions;
     // $milk = App\Models\PAyment::where('tenant_id', '=', $tenant_id)->sum('total_milk');
     
 ?>
@@ -156,13 +158,13 @@
                         <div class="col-md-3 col-3 text-center">
                             <div class="stats-box mb-4" >
                                 <p>Gross</p>
-                                <h3><?php echo e(0.00); ?></h3>
+                                <h3><?php echo e(num_format($gross)); ?></h3>
                             </div>
                         </div>
                         <div class="col-md-3 col-3 text-center">
                             <div class="stats-box mb-4" >
                                 <p>Nett</p>
-                                <h3><?php echo e(0.00); ?></h3>
+                                <h3><?php echo e(num_format($nett)); ?></h3>
                             </div>
                         </div>
                     </div>
@@ -207,18 +209,17 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-6 text-center">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Sales Overview</h3>
+                        <canvas id="lineChartSales"></canvas>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
-
-
-<?php
-   $total_leaves = App\Models\Leave::count();
-   $today_leaves =  $total_leaves > 0 ? App\Models\Leave::where('tenant_id',auth()->user()->id)->whereDate('created_at',date('Y-m-d'))->count() : 0;
-   $month_leaves = $total_leaves > 0 ? App\Models\Leave::where('tenant_id',auth()->user()->id)->whereRaw('DATE_FORMAT(created_at, "%Y-%m") = ?', [date('Y-m')])->count() : 0;
-   $year_leaves = $total_leaves > 0 ? App\Models\Leave::where('tenant_id',auth()->user()->id)->whereRaw('DATE_FORMAT(created_at, "%Y") = ?', [date('Y')])->count() : 0;
-?>
 
 <div class="row">
     <div class="col-md-12 col-lg-12 col-xl-6 d-flex">
@@ -348,93 +349,150 @@
     
     //Line Chart
    
-
-    
     $(document).ready(function() {
-    $.ajax({
-        url: '/monthly-milk-analysis', // Adjust the route as needed
-        method: 'GET',
-        success: function(data) {
-            var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            var labels = [];
-            var totals = [];
-            var morning = [];
-            var evening = [];
-            var rejected = [];
+        $.ajax({
+            url: '/monthly-milk-analysis', // Adjust the route as needed
+            method: 'GET',
+            success: function(data) {
+                var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                var labels = [];
+                var totals = [];
+                var morning = [];
+                var evening = [];
+                var rejected = [];
 
-            data.forEach(function(item) {
-                labels.push(monthNames[item.month - 1]); // Subtract 1 because JavaScript uses 0-based indexing
-                totals.push(item.total_milk);
-                morning.push(item.total_morning);
-                evening.push(item.total_evening);
-                rejected.push(item.total_rejected);
-            });
+                data.forEach(function(item) {
+                    labels.push(monthNames[item.month - 1]); // Subtract 1 because JavaScript uses 0-based indexing
+                    totals.push(item.total_milk);
+                    morning.push(item.total_morning);
+                    evening.push(item.total_evening);
+                    rejected.push(item.total_rejected);
+                });
 
-            // Get the context of the canvas element we want to select
-            var ctx = document.getElementById("lineChart").getContext('2d');
-            var lineChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Total ',
-                        data: totals,
-                        fill: false,
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Morning ',
-                        data: morning,
-                        fill: false,
-                        borderColor: 'rgba(255, 99, 132, 1)',
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Evening ',
-                        data: evening,
-                        fill: false,
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Rejected ',
-                        data: evening,
-                        fill: false,
-                        borderColor: 'rgba(154, 162, 235, 1)',
-                        borderWidth: 1
-                    }
-                ]
-                },
-                options: {
-                    responsive: true,
-                    legend: {
-                        display: true
-                    },
-                    scales: {
-                        x: {
-                            display: true,
-                            title: {
-                                display: true,
-                                text: 'Month'
-                            }
+                // Get the context of the canvas element we want to select
+                var ctx = document.getElementById("lineChart").getContext('2d');
+                var lineChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Total ',
+                            data: totals,
+                            fill: false,
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
                         },
-                        y: {
-                            display: true,
-                            title: {
+                        {
+                            label: 'Morning ',
+                            data: morning,
+                            fill: false,
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Evening ',
+                            data: evening,
+                            fill: false,
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Rejected ',
+                            data: evening,
+                            fill: false,
+                            borderColor: 'rgba(154, 162, 235, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                    },
+                    options: {
+                        responsive: true,
+                        legend: {
+                            display: true
+                        },
+                        scales: {
+                            x: {
                                 display: true,
-                                text: 'Liters'
+                                title: {
+                                    display: true,
+                                    text: 'Month'
+                                }
+                            },
+                            y: {
+                                display: true,
+                                title: {
+                                    display: true,
+                                    text: 'Liters'
+                                }
                             }
                         }
                     }
-                }
-            });
-        },
-        error: function(xhr, status, error) {
-            console.error("AJAX request failed:", status, error);
-        }
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX request failed:", status, error);
+            }
+        });
     });
-});
+
+    $(document).ready(function() {
+        $.ajax({
+            url: '/monthly-sales-analysis', // Adjust the route as needed
+            method: 'GET',
+            success: function(data) {
+                var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                var labels = [];
+                var totals = [];
+
+                data.forEach(function(item) {
+                    labels.push(monthNames[item.month - 1]); // Subtract 1 because JavaScript uses 0-based indexing
+                    totals.push(item.total_gross);
+                });
+
+                // Get the context of the canvas element we want to select
+                var ctx = document.getElementById("lineChartSales").getContext('2d');
+                var lineChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Total Sales',
+                            data: totals,
+                            fill: false,
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                    },
+                    options: {
+                        responsive: true,
+                        legend: {
+                            display: true
+                        },
+                        scales: {
+                            x: {
+                                display: true,
+                                title: {
+                                    display: true,
+                                    text: 'Month'
+                                }
+                            },
+                            y: {
+                                display: true,
+                                title: {
+                                    display: true,
+                                    text: 'Amount'
+                                }
+                            }
+                        }
+                    }
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX request failed:", status, error);
+            }
+        });
+    });
 
     
 

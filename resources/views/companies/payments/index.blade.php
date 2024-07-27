@@ -47,16 +47,24 @@
             <option value="">Choose one</option>
         </select>
     </div>
+    <div class="form-group col-sm-4">
+        <label for="center_id">Select Bank</label>
+        <select class="form-control select" name="center_id" id="bank_id" required>
+            <option value="">Choose one</option>
+            @foreach($banks as $bank)
+                <option value="{{ $bank->id }}">{{ $bank->bank_name }}</option>
+            @endforeach
+        </select>
+    </div>
     <div class="col-md-12">
         <div class="table-responsive">	
-            <table class="table table-striped custom-table" id="all_payments_table">
+            <table class="table table-striped custom-table table-hover" id="all_payments_table">
                 <thead>
                     <tr>
-                        <th class="text-left no-sort">Action</th>
+                        <th class="text-left no-sort notexport">Action</th>
                         <th>Farmer</th>
                         <th>Center</th>
                         <th>Bank</th>
-                        {{-- <th>Pay Period</th> --}}
                         <th>Total Milk</th>
                         <th>Milk Rate</th>
                         <th>Store Deductions</th>
@@ -76,46 +84,6 @@
             </table>
         </div>
     </div>
-</div>
-
-
-
-<div id="import" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Import Employee</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-               
-                   
-                    <div class="row" style="margin-bottom: 10px">
-                        <div class="col-sm-4 pull-right">
-                            <a href="{{ asset('files/employee-import.xlsx') }}" class="btn btn-primary" download><i class="fa fa-download"></i> Download Template</a>
-                        </div>
-                    </div>
-                    <form id="import_employee_form"  enctype="multipart/form-data">
-                        @csrf
-                        
-                        <div class="form-group">
-                            <input type="file" name="csv_file" class="form-control" required>
-                        </div>
-                       
-                        <div class="form-group mb-0">
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-primary"><span id="btn_employee_import">Import</span> <i class="fa fa-download"></i></button>
-                            </div>
-                        </div>
-                    </form>
-                
-            </div>
-        </div>
-    </div>
-</div>
-
 </div>
 
 @endsection
@@ -178,60 +146,63 @@ $(document).ready(function(){
 
 
 $(document).ready(function(){
-    // $('#daterange').daterangepicker({
-    //     opens: 'bottom',
-    //     ranges: ranges
-    // }, function(start, end, label) {
-    //     all_payments_table.ajax.reload();
-    // });
 
-    $(document).on('change', '#pay_period, #center_id, #farmer_id', function () {
-        all_payments_table.ajax.reload();
-    })
+    $(document).on('change', '#pay_period, #center_id, #farmer_id, #bank_id', function () {
+            all_payments_table.ajax.reload();
+        })
 
-    all_payments_table = $('#all_payments_table').DataTable({
+        var all_payments_table = $('#all_payments_table').DataTable({
             @include('layout.export_buttons')
             processing: true,
-            serverSide: false,
+            serverSide: true,
             ajax: {
-                url : "{{url('payments/all-payments')}}",
-                data: function(d){
-                d.pay_period = $("#pay_period").val();
-                d.center_id = $("#center_id").val();
-                d.farmer_id = $("#farmer_id").val();
-                    
+                url: "{{ url('payments/all-payments') }}",
+                data: function(d) {
+                    d.pay_period = $("#pay_period").val();
+                    d.center_id = $("#center_id").val();
+                    d.farmer_id = $("#farmer_id").val();
+                    d.bank_id = $("#bank_id").val();
                 }
             },
-            columnDefs:[{
+            columnDefs: [
+                {
                     "targets": 1,
                     "orderable": false,
                     "searchable": false
-                }],
-                
-                
-            columns: [
-                {data: 'action', name: 'action',className: 'text-left'}, 
-                {data: 'fullname', name: 'fullname'},
-                {data: 'center_name', name: 'center_name'},
-                {data: 'bank', name: 'bank'},
-                {data: 'total_milk', name: 'total_milk'},
-                {data: 'milk_rate', name: 'milk_rate'},
-                {data: 'store_deductions', name: 'store_deductions'},
-                {data: 'individual_deductions', name: 'individual_deductions'},
-                {data: 'general_deductions', name: 'general_deductions'},
-                {data: 'shares_contribution', name: 'shares_contribution'},
-                {data: 'total_deductions', name: 'total_deductions'},
-                
-                {data: 'previous_dues', name: 'previous_dues'},
-                {data: 'gross_pay', name: 'gross_pay'},
-                {data: 'net_pay', name: 'net_pay'},
-                {data: 'created_on', name: 'created_on'},              
+                }
             ],
-            createdRow: function( row, data, dataIndex ) {
+            columns: [
+                { data: 'action', name: 'action', className: 'text-left' },
+                { data: 'fullname', name: 'fullname' },
+                { data: 'center_name', name: 'center_name' },
+                { data: 'bank', name: 'bank' },
+                { data: 'total_milk', name: 'total_milk' },
+                { data: 'milk_rate', name: 'milk_rate' },
+                { data: 'store_deductions', name: 'store_deductions' },
+                { data: 'individual_deductions', name: 'individual_deductions' },
+                { data: 'general_deductions', name: 'general_deductions' },
+                { data: 'shares_contribution', name: 'shares_contribution' },
+                { data: 'total_deductions', name: 'total_deductions' },
+                { data: 'previous_dues', name: 'previous_dues' },
+                { data: 'gross_pay', name: 'gross_pay' },
+                { data: 'net_pay', name: 'net_pay' },
+                { data: 'created_on', name: 'created_on' }
+            ],
+            drawCallback: function(settings) {
+                var api = this.api();
+                api.rows().every(function() {
+                    var row = $(api.row(this).node());
+                    var data = this.data();
+
+                    // Add table-danger class if net_pay <= 0
+                    if (parseFloat(data.net_pay) <= 0) {
+                        row.addClass('table-danger');
+                    }
+                });
             }
         });
-
     });
+
 
     $(document).ready(function() {
     $('#center_id').on('change', function() {
@@ -284,7 +255,36 @@ $(document).ready(function(){
     });
 });
 
-    
+$(document).ready(function() {
+    $('#all_payments_table').on('click', '.print-payslip', function() {
+        var pay_period = $('#pay_period').val();
+        var farmer_id = $(this).data('farmer-id'); // Get the farmer ID from the button's data attribute
+        var record_id = $(this).data('record-id');
+
+        $.ajax({
+            url: '/payments/print-payslip', // Adjust this URL to your route
+            type: 'POST',
+            data: {
+                pay_period: pay_period,
+                farmer_id: farmer_id,
+                record_id: record_id,
+                _token: '{{ csrf_token() }}' // Include CSRF token for Laravel
+            },
+            success: function(response) {
+                // Handle the response from the server
+                if (response.pdfUrl) {
+                    window.open(response.pdfUrl, '_blank'); // Open the PDF in a new tab
+                } else {
+                    alert('Failed to print payslip');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', status, error);
+            }
+        });
+    });
+});
+
 </script>
 
 @endsection

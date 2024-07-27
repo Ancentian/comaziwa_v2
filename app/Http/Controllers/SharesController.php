@@ -40,7 +40,9 @@ class SharesController extends Controller
                         'farmers.lname', 
                         'farmers.farmerID',
                         'collection_centers.center_name',
-                    ])->get();
+                    ])
+                    ->orderBy('share_contributions.id', 'desc')
+                    ->get();
 
             return DataTables::of($shares)
             ->addColumn(

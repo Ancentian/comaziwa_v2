@@ -46,7 +46,7 @@
             <table class="table table-striped custom-table" id="collected_milk_table">
                 <thead>
                     <tr>
-                        <th class="text-left no-sort">Action</th>
+                        <th class="text-left no-sort notexport">Action</th>
                         <th class="text-center">Code</th>
                         <th>Center</th>
                         <th>Col. Date</th>

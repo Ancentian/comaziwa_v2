@@ -216,8 +216,9 @@ Route::prefix('sales')->middleware(['auth:web,employee'])->group(function () {
     Route::post('store-sales', [SalesController::class, 'store_sales']);
 
     Route::get('all-transactions', [SalesController::class, 'all_transactions']);
-    Route::get('get-sales-details/{id}', [SalesController::class, 'get_sales_details']);
-    Route::get('print-invoice/{id}', [SalesController::class, 'print_invoice']);
+    Route::get('view-transation/{id}', [SalesController::class, 'view_transaction_details']);
+    Route::get('transaction-details/{id}', [SalesController::class, 'transaction_details']);
+    Route::post('print-invoice', [SalesController::class, 'print_invoice']);
 });
 
 Route::prefix('deductions')->middleware(['auth:web,employee'])->group(function () {
@@ -295,6 +296,9 @@ Route::prefix('payments')->middleware(['auth:web,employee'])->group(function () 
     Route::get('/all-payments', [PaymentsController::class, 'all_payments']);
     Route::get('/generate-payments', [PaymentsController::class, 'generate_payments'])->name('payments.generate-payments');
     Route::post('/store-payments', [PaymentsController::class, 'store_payments']);
+
+    Route::post('/print-payslip', [PaymentsController::class, 'print_payslip'])->name('payments.print-payslip');
+    Route::get('/bank-list', [PaymentsController::class, 'bank_list']);
 });
 
 Route::prefix('profile')->middleware(['auth:web,employee'])->group(function () {
@@ -317,6 +321,8 @@ Route::prefix('analysis')->middleware(['auth:web,employee'])->group(function () 
 
     //Payments
     Route::get('payments-report', [AnalysisController::class, 'payments_report']);
+    //Shares
+    Route::get('shares-contribution-report', [AnalysisController::class, 'shares_contribution_report']);
 });
 
 Route::prefix('contracts')->middleware(['auth:web,employee'])->group(function () {
@@ -543,6 +549,10 @@ Route::get('/monthly-milk-analysis', [DashboardController::class, 'monthly_milk_
 Route::get('/collection-center-analysis', [DashboardController::class, 'collection_center_analysis']);
 Route::get('/center-statistics', [DashboardController::class, 'center_statistics']);
 Route::get('/farmer-statistics', [DashboardController::class, 'farmer_statistics']);
+
+Route::get('/monthly-sales-analysis', [DashboardController::class, 'monthly_sales_analysis']);
+
+Route::get('/payment-analysis', [DashboardController::class, 'payment_analysis']);
     
 
 

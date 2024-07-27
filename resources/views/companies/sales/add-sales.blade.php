@@ -112,27 +112,58 @@
                                         <input class="form-control text-right" type="text" id="grand_total" name="" value="Ksh. 0.00" readonly>
                                     </td>
                                     <td></td>
+                                    <td></td>
                                 </tr>
                             </tfoot>
                         </table>
                     </div>
+                    &nbsp;
                     <div class="table-responsive">
                         <table class="table table-hover table-white">
                             <tbody>
                                 <tr>
-                                    <td>
-                                    <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Payment Mode <span class="text-danger"></span></label>
-                                                <select name="payment_mode" class="select" required>
+                                                <label for="payment_mode">Mode of Payment <span class="text-danger"></span></label>
+                                                <select name="payment_mode" id="payment_mode" class="form-control select" required>
                                                     <option value="">Select Payment Mode</option>
                                                     <option value="1">Pay by Milk</option>
                                                     <option value="2">Pay Cash/Mpesa</option>
                                                 </select>
                                             </div>
                                         </div>
-                                    </td>
+                                    </div>
                                 </tr>
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Collected By <span class="text-danger"></span></label>
+                                            <input type="text" class="form-control" name="collected_by">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>ID No. <span class="text-danger"></span></label>
+                                            <input type="text" class="form-control" name="id_number">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Vehicle No <span class="text-danger"></span></label>
+                                            <input type="text" class="form-control" name="vehicle_no">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">  
+                                        <div class="form-group">
+                                            <label class="col-form-label">Collection Date <span class="text-danger">*</span></label>
+                                            <div class="cal-icon">
+                                                <input class="form-control datetimepicker" name="collection_on" type="text" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </tbody>
                         </table>                               
                     </div>

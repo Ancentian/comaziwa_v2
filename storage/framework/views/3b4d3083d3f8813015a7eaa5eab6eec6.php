@@ -36,6 +36,11 @@
                 padding-top: 2px !important;
                 padding-bottom: 2px !important;
             }
+
+            .table-danger {
+                background-color: #F5C6CB !important; /* Light red background */
+                 /* Dark red text */
+            }
         </style>
     </head>
 

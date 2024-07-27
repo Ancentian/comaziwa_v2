@@ -174,6 +174,7 @@
                         <ul style="display: none;">
                             <li><a href="{{url('payments/index')}}"> Payments List </a></li>
                             <li><a href="{{url('payments/generate-payments')}}"> Generate Payments </a></li>
+                            <li><a href="{{url('payments/bank-list')}}"> Bank List </a></li>
                         </ul>
                     </li>
                     
@@ -186,10 +187,7 @@
                                 <li><a href="{{url('analysis/sales-monthly-report')}}"> Sales Report </a></li>
                                 <li><a href="{{url('analysis/monthly-deductions-report')}}"> Deduction Report </a></li>
                                 <li><a href="{{url('analysis/payments-report')}}"> Payments Report </a></li>
-                                
-                                @foreach ($moduleUrls['payroll'] as $moduleName => $moduleUrl)
-                                    <li><a href="{{ url($moduleUrl) }}"> {{ ucfirst($moduleName) }} </a></li>
-                                @endforeach
+                                <li><a href="{{url('analysis/shares-contribution-report')}}"> Shares Report </a></li>
                             </ul>
                         </li>
                     @endif

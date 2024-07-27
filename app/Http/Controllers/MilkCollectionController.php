@@ -43,7 +43,7 @@ class MilkCollectionController extends Controller
                         'farmers.farmerID',
                         'farmers.fname',
                         'farmers.lname',
-                    ]);
+                    ])->orderBy('milk_collections.id', 'desc');
 
             if(!empty($start_date) && !empty($end_date)){
                 $milk->whereDate('milk_collections.collection_date','>=',$start_date);
@@ -59,19 +59,24 @@ class MilkCollectionController extends Controller
             }
 
             return DataTables::of($milk->get())
-                ->addColumn(
-                    'action',
-                    function ($row) {
-                        $html = '<div class="btn-group">
-                        <button type="button" class="badge btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item edit-button" data-action="'.url('milkCollection/edit-milk-collection',[$row->id]).'" href="#" ><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                        <a class="dropdown-item delete-button" data-action="'.url('milkCollection/delete-milk-collection',[$row->id]).'" href="#" ><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                        </div>
-                    </div>';
-                        return $html;
-                    }
-                )
+            ->addColumn('action', function ($row) {
+                $html = '<div class="btn-group">
+                            <button type="button" class="badge btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
+                            <div class="dropdown-menu dropdown-menu-right">';
+            
+                if ($row->payment_status != 1) {
+                    $html .= '<a class="dropdown-item edit-button" data-action="'.url('milkCollection/edit-milk-collection',[$row->id]).'" href="#" ><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                              <a class="dropdown-item delete-button" data-action="'.url('milkCollection/delete-milk-collection',[$row->id]).'" href="#" ><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
+                } else {
+                    $html .= '<a class="dropdown-item disabled" href="#" ><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                              <a class="dropdown-item disabled" href="#" ><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
+                }
+            
+                $html .= '</div>
+                          </div>';    
+                return $html;
+            })
+            
                 ->addColumn('fullname', function ($row) {
                     return $row->farmerID.' - '.$row->fname.' '.$row->lname;
                 })

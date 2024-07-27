@@ -314,7 +314,6 @@ class DeductionsController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        logger($request->all());
         DB::beginTransaction();
         try {
             $tenant_id = auth()->user()->id;
@@ -339,7 +338,6 @@ class DeductionsController extends Controller
             DB::commit();
             return response()->json(['message' => 'Deduction Added Successfully']);
         } catch (\Exception $e) {
-            logger($e);
             DB::rollback();
             return response()->json(['message' => 'Data saving failed. Please try again.'], 500);
         }

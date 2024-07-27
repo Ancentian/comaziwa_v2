@@ -10,10 +10,6 @@
                 <li class="breadcrumb-item active"> Payments Report</li>
             </ul>
         </div>
-        <div class="col-auto float-right ml-auto">
-            <a href="{{route('payments.generate-payments')}}" class="btn btn-info" ><i class="fa fa-plus"></i> Generate Payment</a> &nbsp;
-            <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#import" hidden><i class="fa fa-download"></i> Import</a> &nbsp;
-        </div>
     </div>
 </div>
 <!-- /Page Header -->
@@ -52,7 +48,7 @@
             <table class="table table-striped custom-table" id="all_payments_table">
                 <thead>
                     <tr>
-                        <th class="text-left no-sort">Action</th>
+                        <th class="text-left no-sort notexport">Action</th>
                         <th>Farmer</th>
                         <th>Center</th>
                         <th>Bank</th>

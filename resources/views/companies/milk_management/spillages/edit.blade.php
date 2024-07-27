@@ -24,8 +24,8 @@
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label>Description <span class="text-danger">*</span></label>
-                            <textarea class="form-control" rows="3" name="description">{{ $spill->description }}</textarea>
+                            <label>Comments <span class="text-danger">*</span></label>
+                            <textarea class="form-control" rows="3" name="comments">{{ $spill->comments }}</textarea>
                         </div>
                     </div>
                 </div>
