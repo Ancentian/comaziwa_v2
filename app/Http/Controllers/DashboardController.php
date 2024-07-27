@@ -109,18 +109,12 @@ class DashboardController extends Controller
                     ->orderBy('total_milk', 'desc')
                     ->limit(5)
                     ->get();
-               logger("Ancenter");     
+                  
             return DataTables::of($milk)
                 ->addColumn(
                     'action',
                     function ($row) {
-                        $html = '<div class="btn-group">
-                        <button type="button" class="badge btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item edit-button" data-action="'.url('milkCollection/edit-milk-collection',[$row->id]).'" href="#" ><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                        <a class="dropdown-item delete-button" data-action="'.url('milkCollection/delete-milk-collection',[$row->id]).'" href="#" ><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                        </div>
-                    </div>';
+                        $html = '<a class="btn btn-success " href="'.url('milkCollection/edit-milk-collection',[$row->id]).'" ><i class="fa fa-eye m-r-5"></i></a>';
                         return $html;
                     }
                 )
@@ -147,21 +141,16 @@ class DashboardController extends Controller
                         'farmers.lname',
                         'farmers.farmerID'
                     ])
+                    ->groupBy('fname', 'lname', 'farmerID')
                     ->orderBy('total_milk', 'desc')
                     ->limit(5)
                     ->get();
-               logger("Ancenter");     
+                    
             return DataTables::of($farmer)
                 ->addColumn(
                     'action',
                     function ($row) {
-                        $html = '<div class="btn-group">
-                        <button type="button" class="badge btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item edit-button" data-action="'.url('milkCollection/edit-milk-collection',[$row->id]).'" href="#" ><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                        <a class="dropdown-item delete-button" data-action="'.url('milkCollection/delete-milk-collection',[$row->id]).'" href="#" ><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                        </div>
-                    </div>';
+                        $html = '<a class="btn btn-success " href="'.url('milkCollection/edit-milk-collection',[$row->id]).'" ><i class="fa fa-eye m-r-5"></i></a>';
                         return $html;
                     }
                 )

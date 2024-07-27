@@ -7,13 +7,10 @@
         <div class="col">
             <ul class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                <li class="breadcrumb-item active"> Sales</li>
+                <li class="breadcrumb-item active"> Sales Report</li>
             </ul>
         </div>
-        <div class="col-auto float-right ml-auto">
-            <a href="{{url('milkCollection/add-collection')}}" class="btn btn-info" ><i class="fa fa-plus"></i> Add Milk Collection</a> &nbsp;
-            <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#import"><i class="fa fa-download"></i> Import</a> &nbsp;
-        </div>
+        
     </div>
 </div>
 <!-- /Page Header -->
@@ -22,7 +19,7 @@
     <div class="col-md-4">
         <div class="form-group">
             <label>Date Range <span class="text-danger">*</span></label>
-            <input type="text" readonly id="daterange" class="form-control" value="{{date('m/01/Y')}} - {{date('m/t/Y')}}" />
+            <input type="text" readonly id="daterange" class="form-control" value="{{ date('m/01/Y') }} - {{ date('m/t/Y') }}" />
         </div>
     </div>
     <div class="form-group col-sm-4">
@@ -34,38 +31,68 @@
             @endforeach
         </select>
     </div>
-    
     <div class="form-group col-sm-4">
         <label for="farmer_id">Select Farmer</label>
         <select class="form-control select" name="farmer_id" id="farmer_id" required>
             <option value="">Choose one</option>
         </select>
     </div>
-    <div class="col-md-12">
-        <div class="table-responsive">	
-            <table class="table table-striped custom-table" id="all_sales_table">
-                <thead>
-                    <tr>
-                        <th class="text-left no-sort">Action</th>
-                        {{-- <th class="text-center">Code</th> --}}
-                        <th>Name</th>
-                        <th>Center</th>
-                        <th>Product</th>
-                        <th>Qty</th>
-                        <th>Cost</th>
-                        <th>Total Cost</th>
-                        <th>Date</th>					
-                        {{-- <th>Recorded By</th> --}}
-                        <th>Created at</th>
-                    </tr> 
-                </thead>
-                <tbody>
-                    
-                </tbody>
-            </table>
+</div>
+
+<ul class="nav nav-tabs nav-tabs-solid">
+    <li class="nav-item"><a class="nav-link active" href="#all_sales" data-toggle="tab">All Sales</a></li>
+    <li class="nav-item"><a class="nav-link" href="#transactions" data-toggle="tab">Transactions</a></li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane show active" id="all_sales">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table" id="all_sales_table">
+                    <thead>
+                        <tr>
+                            <th class="text-left no-sort">Action</th>
+                            {{-- <th class="text-center">Code</th> --}}
+                            <th>Name</th>
+                            <th>Center</th>
+                            <th>Product</th>
+                            <th>Qty</th>
+                            <th>Cost</th>
+                            <th>Total Cost</th>
+                            <th>Date</th>
+                            {{-- <th>Recorded By</th> --}}
+                            <th>Created at</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Sales data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane" id="transactions">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table" id="all_transactions_table">
+                    <thead>
+                        <tr>
+                            <th class="text-left no-sort">Action</th>
+                            <th>Transaction</th>
+                            <th>Center</th>
+                            <th>Total Cost</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Transaction data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
+
 
 
 
@@ -220,6 +247,44 @@ $(document).ready(function(){
             }
         });
 
+    });
+
+    all_transactions_table = $('#all_transactions_table').DataTable({
+        @include('layout.export_buttons')
+        processing: true,
+        serverSide: false,
+        ajax: {
+            url : "{{url('sales/all-transctions')}}",
+            data: function(d){
+                // Access the start and end dates from the date range picker
+            var startDate = $('#daterange').data('daterangepicker').startDate.format('YYYY-MM-DD');
+            var endDate = $('#daterange').data('daterangepicker').endDate.format('YYYY-MM-DD');
+            
+            // Add the dates as parameters to the request
+            d.start_date = startDate;
+            d.end_date = endDate;
+            d.center_id = $("#center_id").val();
+            d.farmer_id = $("#farmer_id").val();
+                
+            }
+        },
+        columnDefs:[{
+                "targets": 1,
+                "orderable": false,
+                "searchable": false
+            }],
+            
+        columns: [
+            {data: 'action', name: 'action',className: 'text-left'}, 
+            {data: 'transaction_id', name: 'transaction_id'},
+            {data: 'fullname', name: 'fullname'},
+            {data: 'center_name', name: 'center_name'},
+            {data: 'total_cost', name: 'total_cost'},
+            {data: 'order_date', name: 'order_date'},
+            {data: 'created_on', name: 'created_on'},            
+        ],
+        createdRow: function( row, data, dataIndex ) {
+        }
     });
 
     $(document).ready(function() {

@@ -36,6 +36,7 @@ use App\Http\Controllers\MilkManagementController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\Crons;
 use App\Http\Controllers\StaffMilkController;
+use App\Http\Controllers\AnalysisController;
 
 
 /*
@@ -213,6 +214,10 @@ Route::prefix('sales')->middleware(['auth:web,employee'])->group(function () {
     Route::get('/get-product-details/{itemId}', [SalesController::class, 'getproductdetails']);
 
     Route::post('store-sales', [SalesController::class, 'store_sales']);
+
+    Route::get('all-transactions', [SalesController::class, 'all_transactions']);
+    Route::get('get-sales-details/{id}', [SalesController::class, 'get_sales_details']);
+    Route::get('print-invoice/{id}', [SalesController::class, 'print_invoice']);
 });
 
 Route::prefix('deductions')->middleware(['auth:web,employee'])->group(function () {
@@ -297,6 +302,21 @@ Route::prefix('profile')->middleware(['auth:web,employee'])->group(function () {
     Route::get('/staff-profile', [ProfilesController::class, 'staffProfile']);
     Route::post('/update-profile', [ProfilesController::class, 'updateProfile']);
     Route::post('/update-staff-profile', [ProfilesController::class, 'update_staffProfile']);
+});
+
+Route::prefix('analysis')->middleware(['auth:web,employee'])->group(function () {
+    Route::get('/index', [AnalysisController::class, 'index']);
+    Route::get('/collection-center-monthly-report', [AnalysisController::class, 'collection_center_monthly_report']);
+    Route::get('/collection-center-report/{id}', [AnalysisController::class, 'report_by_center']);
+    Route::get('/farmers-monthly-report', [AnalysisController::class, 'farmers_monthly_report']);
+    Route::get('/farmers-report/{id}', [AnalysisController::class, 'report_by_farmer']);
+    Route::get('sales-monthly-report', [AnalysisController::class, 'sales_monthly_report']);
+    Route::get('farmer-sales-report/{id}', [AnalysisController::class, 'farmer_sales_report']);
+    Route::get('monthly-deductions-report', [AnalysisController::class, 'monthly_deductions_report']);
+    Route::get('farmers-deductions-report/{id}', [AnalysisController::class, 'farmers_deductions_report']);
+
+    //Payments
+    Route::get('payments-report', [AnalysisController::class, 'payments_report']);
 });
 
 Route::prefix('contracts')->middleware(['auth:web,employee'])->group(function () {

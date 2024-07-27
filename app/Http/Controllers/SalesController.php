@@ -20,6 +20,10 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 
+use PDF;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\File;
+
 class SalesController extends Controller
 {
     public function index()
@@ -100,6 +104,83 @@ class SalesController extends Controller
         return view('companies.sales.index', compact('centers'));
     }
 
+    public function all_transactions()
+    {
+        $tanant_id = auth()->user()->id;
+        $centers = CollectionCenter::where('tenant_id', $tanant_id)->get();
+        if (request()->ajax()) {
+            $start_date = request()->start_date;
+            $end_date = request()->end_date;
+        
+            $tenant_id = auth()->user()->id;
+            $sales = StoreSale::join('farmers', 'farmers.id', '=', 'store_sales.farmer_id')
+                ->join('collection_centers', 'collection_centers.id', '=', 'store_sales.center_id')
+                ->join('inventories', 'inventories.id', '=', 'store_sales.item_id')
+                ->join('categories', 'categories.id', '=', 'store_sales.category_id')
+                ->where('store_sales.tenant_id', $tenant_id)
+                ->select([
+                    'store_sales.transaction_id',
+                    'store_sales.order_date',
+                    DB::raw('SUM(store_sales.total_cost) as total_cost'),
+                    DB::raw('COUNT(store_sales.transaction_id) as item_count'),
+                    'collection_centers.center_name',
+                    'farmers.farmerID',
+                    'farmers.fname',
+                    'farmers.lname',
+                ])
+                ->groupBy('store_sales.transaction_id', 'store_sales.order_date', 'collection_centers.center_name', 'farmers.farmerID', 'farmers.fname', 'farmers.lname');
+        
+            if (!empty($start_date) && !empty($end_date)) {
+                $sales->whereDate('store_sales.order_date', '>=', $start_date);
+                $sales->whereDate('store_sales.order_date', '<=', $end_date);
+            }
+        
+            if (!empty(request()->center_id)) {
+                $sales->where('store_sales.center_id', '=', request()->center_id);
+            }
+        
+            if (!empty(request()->farmer_id)) {
+                $sales->where('store_sales.farmer_id', '=', request()->farmer_id);
+            }
+        
+            return DataTables::of($sales->get())
+                ->addColumn('action', function ($row) {
+                    $html = '
+                            <a class="btn btn-secondary edit-button" data-action="' . url('sales/edit-milk-collection', [$row->id]) . '" href="#"><i class="fa fa-eye m-r-5"></i></a>
+                            <a class="btn btn-primary" href="'. url('sales/print-invoice', [$row->transaction_id]) .'" target="_blank">
+                                <i class="fa fa-print m-r-5"></i>
+                            </a>
+                    </div>';
+                    return $html;
+                })
+                ->addColumn('fullname', function ($row) {
+                    return $row->farmerID . ' - ' . $row->fname . ' ' . $row->lname;
+                })
+                ->editColumn('order_date', function ($row) {
+                    return format_date($row->order_date);
+                })
+                ->editColumn('unit_cost', function ($row) {
+                    return num_format($row->unit_cost);
+                })
+                ->editColumn('total_cost', function ($row) {
+                    return num_format($row->total_cost);
+                })
+                ->editColumn('created_on', function ($row) {
+                    return format_date($row->created_at);
+                })
+                ->rawColumns(['action', 'fullname', 'order_date', 'created_on', 'unit_cost', 'total_cost'])
+                ->make(true);
+        }
+        
+        return view('companies.sales.all-transactions', compact('centers'));
+    }
+
+    public function view_transaction($id)
+    {
+        $transaction = StoreSale::findorFail($id);
+        return view('companies.sales.view-transaction', compact('transaction'));
+    }
+
     public function add_sales()
     {
         $tenant_id = auth()->user()->id;
@@ -161,7 +242,9 @@ class SalesController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        $transaction_id = substr(mt_rand(1000000, 9999999), 0, 8);
         $sales = $request->all();
+
         $tenant_id = auth()->user()->id;
         $user_id = auth()->user()->id;
         $center_id = $sales['center_id'];
@@ -187,6 +270,7 @@ class SalesController extends Controller
                 'payment_mode' => $payment_mode,
                 'description' => $description,
                 'user_id' => $user_id,
+                'transaction_id' => $transaction_id
             ]);
 
             // Update inventory quantity
@@ -199,5 +283,87 @@ class SalesController extends Controller
         return redirect()->back()->with('message', 'Sales added successfully');
     }
 
+    public function print_invoice($id)
+    {
+        $items = StoreSale::join('inventories', 'inventories.id', '=', 'store_sales.item_id')
+            ->join('categories', 'categories.id', '=', 'store_sales.category_id')
+            ->join('farmers', 'farmers.id', '=', 'store_sales.farmer_id')
+            ->join('collection_centers', 'collection_centers.id', '=', 'store_sales.center_id')
+            ->where('store_sales.transaction_id', $id)
+            ->select([
+                'store_sales.*',
+                'inventories.name as item_name',
+                'farmers.fname',
+                'farmers.lname',
+                'farmers.contact1',
+                'collection_centers.center_name',
+            ])->get();
+
+        $sale_details = StoreSale::where('transaction_id', $id)
+            ->select([
+                'store_sales.transaction_id',
+                'store_sales.order_date',
+            ])->first();
+
+        $farmer = StoreSale::join('farmers', 'farmers.id', '=', 'store_sales.farmer_id')
+            ->join('collection_centers', 'collection_centers.id', '=', 'store_sales.center_id')
+            ->where('store_sales.transaction_id', $id)
+            ->select([
+                'farmers.fname',
+                'farmers.lname',
+                'farmers.contact1',
+                'farmers.farmerID',
+                'collection_centers.center_name',
+            ])->first();
+        $company = company()->mycompany();
+
+        $data = [
+            'items' => $items,
+            'sale_details' => $sale_details,
+            'company' => $company,
+            'farmer' => $farmer
+        ];
+
+        return view('companies.sales.print-invoice', compact('items', 'company', 'farmer', 'sale_details'));
+    }
+
+    public function printPayslip($id, $action)
+    {
+        $payslip = PaySlips::join('employees', 'employees.id', '=', 'pay_slips.employee_id')
+            ->where('pay_slips.id', $id)
+            ->select([
+                'employees.*',
+                'pay_slips.*',
+            ])
+            ->first();
+
+        $emp_name = $payslip->name;
+        $pay_period = date('M,Y', strtotime($payslip->pay_period));
+        
+        $nethistory = PaySlips::where('employee_id',$payslip->employee_id)
+                                ->where('pay_period', 'LIKE', date('Y', strtotime($payslip->pay_period)) . '-%')
+                                ->sum('net_pay');
+        
+        $company = company()->mycompany();
+        $data = [
+            'payslip' => $payslip,
+            'company' => $company,
+            'pay_period' => $pay_period,
+            'nethistory' => $nethistory
+        ];
+ 
+        if ($action === 'download') {
+            $pdf = PDF::loadView('reports.print_payslip', $data);
+            $pdf->setPaper('a4', 'portrait');
+            $filename = $payslip->id."#".$emp_name.date('MY',strtotime($payslip->pay_period)) . "Payslip.pdf";
+            $pdf->save(storage_path('app/public/exports/' . $filename)); // Save the PDF to a storage location
+            $pdfUrl = url('payslip-exports/download-pdfs',[$filename]); // Get the URL of the saved PDF
+            
+            return Response::json(['pdfUrl' => $pdfUrl]);
+
+        } elseif ($action === 'print') {       
+            return view('reports.print_payslip', compact('payslip', 'pay_period', 'company','action'));
+        }
+    }
 
 }
