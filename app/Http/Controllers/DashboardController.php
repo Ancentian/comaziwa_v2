@@ -78,6 +78,33 @@ class DashboardController extends Controller
         return response()->json($milkData);
     }
 
+    public function monthly_sales_analysis()
+{
+    $endDate = Carbon::now();
+    $startDate = $endDate->copy()->subMonths(4);
+    $start = $startDate->format('Y-m-d');
+    $end = $endDate->format('Y-m-d');
+
+    $tenant_id = auth()->user()->id;
+
+    // Ensure proper joining of tables and grouping by month
+    $milkData = DB::table('payments')
+        ->where('payments.tenant_id', $tenant_id)
+        ->whereBetween('payments.pay_period', [$start, $end])
+        ->select(
+            DB::raw("DATE_FORMAT(payments.pay_period, '%Y-%m') as month"),
+            DB::raw("SUM(payments.gross_pay) as total_gross")
+        )
+        ->groupBy(DB::raw("DATE_FORMAT(payments.pay_period, '%Y-%m')"))
+        ->orderBy(DB::raw("DATE_FORMAT(payments.pay_period, '%Y-%m')"))
+        ->get();
+            logger($milkData);
+    return response()->json($milkData);
+}
+
+    
+
+
 
     public function tryPlan($plan_id){
         

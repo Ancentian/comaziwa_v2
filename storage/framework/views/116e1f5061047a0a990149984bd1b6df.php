@@ -174,6 +174,7 @@
                         <ul style="display: none;">
                             <li><a href="<?php echo e(url('payments/index')); ?>"> Payments List </a></li>
                             <li><a href="<?php echo e(url('payments/generate-payments')); ?>"> Generate Payments </a></li>
+                            <li><a href="<?php echo e(url('payments/bank-list')); ?>"> Bank List </a></li>
                         </ul>
                     </li>
                     
@@ -186,10 +187,7 @@
                                 <li><a href="<?php echo e(url('analysis/sales-monthly-report')); ?>"> Sales Report </a></li>
                                 <li><a href="<?php echo e(url('analysis/monthly-deductions-report')); ?>"> Deduction Report </a></li>
                                 <li><a href="<?php echo e(url('analysis/payments-report')); ?>"> Payments Report </a></li>
-                                
-                                <?php $__currentLoopData = $moduleUrls['payroll']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $moduleName => $moduleUrl): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <li><a href="<?php echo e(url($moduleUrl)); ?>"> <?php echo e(ucfirst($moduleName)); ?> </a></li>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <li><a href="<?php echo e(url('analysis/shares-contribution-report')); ?>"> Shares Report </a></li>
                             </ul>
                         </li>
                     <?php endif; ?>

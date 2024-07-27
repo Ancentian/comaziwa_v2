@@ -78,10 +78,13 @@
                     <thead>
                         <tr>
                             <th class="text-left no-sort">Action</th>
-                            <th>Transaction</th>
+                            <th>Transaction ID</th>
+                            <th>Farmer</th>
                             <th>Center</th>
+                            <th>Items</th>
                             <th>Total Cost</th>
                             <th>Date</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -249,43 +252,7 @@ $(document).ready(function(){
 
     });
 
-    all_transactions_table = $('#all_transactions_table').DataTable({
-        @include('layout.export_buttons')
-        processing: true,
-        serverSide: false,
-        ajax: {
-            url : "{{url('sales/all-transctions')}}",
-            data: function(d){
-                // Access the start and end dates from the date range picker
-            var startDate = $('#daterange').data('daterangepicker').startDate.format('YYYY-MM-DD');
-            var endDate = $('#daterange').data('daterangepicker').endDate.format('YYYY-MM-DD');
-            
-            // Add the dates as parameters to the request
-            d.start_date = startDate;
-            d.end_date = endDate;
-            d.center_id = $("#center_id").val();
-            d.farmer_id = $("#farmer_id").val();
-                
-            }
-        },
-        columnDefs:[{
-                "targets": 1,
-                "orderable": false,
-                "searchable": false
-            }],
-            
-        columns: [
-            {data: 'action', name: 'action',className: 'text-left'}, 
-            {data: 'transaction_id', name: 'transaction_id'},
-            {data: 'fullname', name: 'fullname'},
-            {data: 'center_name', name: 'center_name'},
-            {data: 'total_cost', name: 'total_cost'},
-            {data: 'order_date', name: 'order_date'},
-            {data: 'created_on', name: 'created_on'},            
-        ],
-        createdRow: function( row, data, dataIndex ) {
-        }
-    });
+    
 
     $(document).ready(function() {
     $('#center_id').on('change', function() {
@@ -335,6 +302,78 @@ $(document).ready(function(){
             $('#farmer_id').val('');
             $('#farmer_name').val('');
         }
+    });
+});
+
+$(document).ready(function() {
+    $('#daterange').daterangepicker({
+        opens: 'bottom',
+        ranges: ranges
+    }, function(start, end, label) {
+        all_transactions_table.ajax.reload();
+    });
+    var all_transactions_table = $('#all_transactions_table').DataTable({
+        @include('layout.export_buttons')
+        processing: true,
+        serverSide: false,
+        ajax: {
+            url: "{{ url('sales/all-transactions') }}",
+            data: function(d) {
+                // Access the start and end dates from the date range picker
+                var startDate = $('#daterange').data('daterangepicker').startDate.format('YYYY-MM-DD');
+                var endDate = $('#daterange').data('daterangepicker').endDate.format('YYYY-MM-DD');
+                
+                // Add the dates as parameters to the request
+                d.start_date = startDate;
+                d.end_date = endDate;
+                d.center_id = $("#center_id").val();
+                d.farmer_id = $("#farmer_id").val();
+            }
+        },
+        columnDefs: [{
+            "targets": 1,
+            "orderable": false,
+            "searchable": false
+        }],
+        columns: [
+            {data: 'action', name: 'action', className: 'text-left'}, 
+            {data: 'transaction_id', name: 'transaction_id'},
+            {data: 'fullname', name: 'fullname'},
+            {data: 'center_name', name: 'center_name'},
+            {data: 'item_count', name: 'item_count'},
+            {data: 'total_cost', name: 'total_cost'},
+            {data: 'order_date', name: 'order_date'},
+        ],
+        createdRow: function(row, data, dataIndex) {
+            // Custom row creation logic
+        }
+    });
+});
+
+$(document).ready(function() {
+    $('#all_transactions_table').on('click', '.print-invoice', function() {
+        var transaction_id = $(this).data('transaction-id'); 
+       
+        $.ajax({
+            url: '/sales/print-invoice', 
+            type: 'POST',
+            data: {
+
+                transaction_id: transaction_id,
+                _token: '{{ csrf_token() }}' 
+            },
+            success: function(response) {
+                // Handle the response from the server
+                if (response.pdfUrl) {
+                    window.open(response.pdfUrl, '_blank'); // Open the PDF in a new tab
+                } else {
+                    alert('Failed to print payslip');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', status, error);
+            }
+        });
     });
 });
 

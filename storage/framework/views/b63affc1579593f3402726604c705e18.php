@@ -10,10 +10,6 @@
                 <li class="breadcrumb-item active"> Payments Report</li>
             </ul>
         </div>
-        <div class="col-auto float-right ml-auto">
-            <a href="<?php echo e(route('payments.generate-payments')); ?>" class="btn btn-info" ><i class="fa fa-plus"></i> Generate Payment</a> &nbsp;
-            <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#import" hidden><i class="fa fa-download"></i> Import</a> &nbsp;
-        </div>
     </div>
 </div>
 <!-- /Page Header -->

@@ -26,10 +26,26 @@
             text-align: justify;
         }
 
-        .inv_info tr th td {
+        /* .inv_info tr th td {
             padding-right: 10pt;
             border: 1px solid #dddddd;
             text-align: left;
+        } */
+
+        .inv_info {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+
+        .inv_info th, .inv_info td {
+            padding: 4px 6px;
+            text-align: left;
+            word-wrap: break-word;
+        }
+
+        .inv_info th {
+            background-color: #f9f9f9;
         }
 
         .product_row {
@@ -55,7 +71,8 @@
 <div id='printbox'>
     <h3 style="margin-top:0" class="text-center">R E C E I P T<br><b style="font-size: 10px;"></b></h3>
     <h3 style="margin-top:0" class="text-center"><?php echo e($company->name); ?> Cooperative<br><b style="font-size: 10px;"> <?php echo e($farmer->center_name); ?> Center<br>Meru, Kenya.</b></h3>
-    <b style="font-size: 10px;">TEL: 0795 974 284<br>Email: info@cowango.org</b></h3>
+    <p style="font-size: 10px; text-align: center; !important">TEL: 0795 974 284<br>Email: info@cowango.org</p></h3>
+    &nbsp;
 
     <table class="inv_info">
         <tr>
@@ -95,8 +112,8 @@
                     <td style="width: 5%;"><?php echo e(++$key); ?></td>
                     <td style="width: 35%;"><?php echo e($item['item_name']); ?></td>
                     <td style="width: 10%;"><?php echo e($item['qty']); ?></td>
-                    <td style="width: 25%;"><?php echo e($item['unit_cost']); ?></td>
-                    <td style="width: 25%;"><?php echo e($item['total_cost']); ?></td>
+                    <td style="width: 20%;" class="text-right"><?php echo e(num_format($item['unit_cost'])); ?></td>
+                    <td style="width: 30%;" class="text-right"><?php echo e(num_format($item['total_cost'])); ?></td>
                 </tr>
                 <?php $totalCost += $item['total_cost']; ?>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

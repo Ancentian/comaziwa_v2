@@ -11,6 +11,8 @@ use App\Models\StoreSale;
 use App\Models\Deduction;
 use App\Models\Employee;
 use App\Models\Payment;
+use App\Models\Expense;
+use App\Models\ShareContribution;
 
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
@@ -655,5 +657,66 @@ class AnalysisController extends Controller
                 ->make(true);
         }
         return view('companies.reports.payment-report', compact('centers'));
+    }
+
+    public function shares_contribution_report()
+    {
+        $tenant_id = auth()->user()->id;
+        $centers = CollectionCenter::where('tenant_id', $tenant_id)->get();
+        if (request()->ajax()) {
+            $tenant_id = Auth::user()->id;
+            $shares = ShareContribution::join('farmers', 'farmers.id', '=', 'share_contributions.farmer_id')
+                    ->leftJoin('collection_centers', 'collection_centers.id', '=', 'share_contributions.center_id')
+                    ->where('share_contributions.tenant_id', $tenant_id)
+                    ->select([
+                        'share_contributions.farmer_id',
+                        'share_contributions.center_id',
+                        'farmers.fname', 
+                        'farmers.lname', 
+                        'farmers.farmerID',
+                        'collection_centers.center_name',
+                        DB::raw('SUM(share_contributions.share_value) as total_shares'),
+                    ])
+                    ->groupBy('share_contributions.farmer_id', 'share_contributions.center_id', 'farmers.fname', 'farmers.lname', 'farmers.farmerID', 'collection_centers.center_name');
+
+                    if (!empty(request()->center_id)) {
+                        $shares->where('share_contributions.center_id', '=', request()->center_id);
+                    }
+                
+                    if (!empty(request()->farmer_id)) {
+                        $shares->where('share_contributions.farmer_id', '=', request()->farmer_id);
+                    }
+
+            return DataTables::of($shares->get())
+            ->addColumn(
+                'action',
+                function ($row) {
+                    $html = '<div class="btn-group">
+                    <button type="button" class="badge btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
+                    <div class="dropdown-menu dropdown-menu-right">
+                      <a class="dropdown-item edit-button" data-action="'.url('shares/edit-shares',[$row->id]).'" href="#" ><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                      <a class="dropdown-item delete-button" data-action="'.url('shares/delete-shares',[$row->id]).'" href="#" ><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                    </div>
+                  </div>';
+
+                  return $html;
+                }
+            )
+            ->editColumn('fullname', function ($row) {
+                $html = $row->farmerID.' - '.$row->fname.' '.$row->lname;
+                return $html;
+            })
+            ->editColumn('total_shares', function ($row) {
+                $html = num_format($row->total_shares);
+                return $html;
+            })
+            ->editColumn('center_name', function ($row) {
+                $html = $row->center_name;
+                return $html;
+            })
+            ->rawColumns(['action', 'fullname'])
+            ->make(true);
+        }
+        return view('companies.reports.shares-contribution-report', compact('centers'));
     }
 }

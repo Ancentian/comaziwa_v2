@@ -11,6 +11,7 @@ use App\Models\Category;
 use App\Models\Inventory;
 use App\Models\ProductUnit;
 use App\Models\StoreSale;
+use App\Models\StoreCollection;
 
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -145,12 +146,10 @@ class SalesController extends Controller
         
             return DataTables::of($sales->get())
                 ->addColumn('action', function ($row) {
-                    $html = '
-                            <a class="btn btn-secondary edit-button" data-action="' . url('sales/edit-milk-collection', [$row->id]) . '" href="#"><i class="fa fa-eye m-r-5"></i></a>
-                            <a class="btn btn-primary" href="'. url('sales/print-invoice', [$row->transaction_id]) .'" target="_blank">
+                    $html = '<a class="btn btn-success view-transaction-details" data-transaction-id="' . $row->transaction_id . '" href="#"><i class="fa fa-eye m-r-5"></i></a>
+                            <a class="btn btn-info print-invoice" data-transaction-id="' . $row->transaction_id . '">
                                 <i class="fa fa-print m-r-5"></i>
-                            </a>
-                    </div>';
+                            </a>';
                     return $html;
                 })
                 ->addColumn('fullname', function ($row) {
@@ -175,10 +174,33 @@ class SalesController extends Controller
         return view('companies.sales.all-transactions', compact('centers'));
     }
 
-    public function view_transaction($id)
+    public function view_transaction_details($id)
     {
-        $transaction = StoreSale::findorFail($id);
-        return view('companies.sales.view-transaction', compact('transaction'));
+        return view('companies.sales.view-transaction');
+    }
+
+    public function transaction_details($id)
+    {
+        if (request()->ajax()) {
+            $tenant_id = auth()->user()->id;
+            $details = StoreSale::join('inventories', 'inventories.id', '=', 'store_sales.item_id')
+                ->where('store_sales.tenant_id', $tenant_id)
+                ->where('store_sales.transaction_id', $id)
+                ->select([
+                    'store_sales.transaction_id',
+                    'store_sales.order_date',
+                    'store_sales.unit_cost',
+                    'store_sales.qty',
+                    'store_sales.total_cost',
+                    'inventories.name as item_name',
+                ])
+                ->get();
+
+            return response()->json($details);
+        }
+
+        // If not AJAX request, just return the view
+        //return view('companies.sales.view-transaction');
     }
 
     public function add_sales()
@@ -236,6 +258,11 @@ class SalesController extends Controller
             'total_cost' => 'required|array',
             'payment_mode' => 'required',
             'description' => 'nullable|string',
+            'collected_by' => 'required',
+            'collected_on' => '',
+            'id_number' => '',
+            'phone_number' => '',
+            'vehicle_no' => ''
         ]);
 
         if ($validator->fails()) {
@@ -280,16 +307,28 @@ class SalesController extends Controller
                 $inventory->save();
             }
         }
+
+        $collection = StoreCollection::create([
+            'tenant_id' => $tenant_id,
+            'transaction_id' => $transaction_id,
+            'collected_by' => $request->collected_by,
+            'id_number' => $request->id_number,
+            'collection_on' => $request->collection_on,
+            'vehicle_no' => $request->vehicle_no
+        ]);
         return redirect()->back()->with('message', 'Sales added successfully');
     }
 
-    public function print_invoice($id)
+    public function print_invoice(Request $request)
     {
+        $tenant_id = auth()->user()->id;
+        $id = $request->input('transaction_id');
         $items = StoreSale::join('inventories', 'inventories.id', '=', 'store_sales.item_id')
             ->join('categories', 'categories.id', '=', 'store_sales.category_id')
             ->join('farmers', 'farmers.id', '=', 'store_sales.farmer_id')
             ->join('collection_centers', 'collection_centers.id', '=', 'store_sales.center_id')
             ->where('store_sales.transaction_id', $id)
+            ->where('store_sales.tenant_id', $tenant_id)
             ->select([
                 'store_sales.*',
                 'inventories.name as item_name',
@@ -324,7 +363,22 @@ class SalesController extends Controller
             'farmer' => $farmer
         ];
 
-        return view('companies.sales.print-invoice', compact('items', 'company', 'farmer', 'sale_details'));
+        // Generate the PDF
+        $pdf = PDF::loadView('companies.sales.print-invoice', $data);
+        $pdf->setPaper([0, 0, 204, 650], 'portrait'); // Adjust size for thermal printer
+
+        $uniqueId = time(); 
+        $fullname = $farmer->fname."-".$farmer->lname;
+        $filename = "{$fullname}-{$id}-{$uniqueId}.pdf";
+        $pdfPath = storage_path("app/public/sales_invoice/{$filename}");
+
+        // Save the PDF to storage
+        $pdf->save($pdfPath);
+
+        // Return the URL to the generated PDF
+        return response()->json(['pdfUrl' => asset("storage/sales_invoice/{$filename}")]);
+
+        //return view('companies.sales.print-invoice', compact('items', 'company', 'farmer', 'sale_details'));
     }
 
     public function printPayslip($id, $action)

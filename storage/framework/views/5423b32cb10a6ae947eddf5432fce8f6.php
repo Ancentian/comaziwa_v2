@@ -69,7 +69,38 @@
 
 
 
+</div>
 
+<div id="ViewTransactionDetails" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Transaction Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <table class="table table-striped custom-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Item Name</th>
+                                <th>Order Date</th>
+                                <th>Unit Cost</th>
+                                <th>Quantity</th>
+                                <th>Total Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionDetailsBody">
+                            <!-- Details will be appended here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <?php $__env->stopSection(); ?>
@@ -175,53 +206,79 @@ $(document).ready(function() {
     });
 });
 
-$(document).on('click', '.print-report', function (e) {
-            e.preventDefault();
+$(document).ready(function() {
+    $('#all_transactions_table').on('click', '.print-invoice', function() {
+        var transaction_id = $(this).data('transaction-id'); 
+       
+        $.ajax({
+            url: '/sales/print-invoice', 
+            type: 'POST',
+            data: {
 
-            var url = $(this).data('href');
-            var action = $(this).data('string');
-            console.log(url);
-            $.ajax({
-                url: url, 
-                method: 'GET', 
-                dataType: 'html',           
-                success: function (response) {
-                
-                    if(action == 'print'){
-                        // $("#print_content").html(response);
-                        // $('#print_content').show().printThis({
-                        //     importCSS: true,
-                        //     afterPrint: function() {
-                        //         $('#print_content').hide();
-                        //     }
-                        // });
-                        var pdfUrl = JSON.parse(response).pdfUrl;
-                        console.log(pdfUrl);
-                        $("#pdfViewer").attr("src", pdfUrl);
-
-                        // Show the embed once the PDF is loaded
-                        $("#pdfViewer").on("load", function() {
-                            $(this).show();
-                
-                            // Trigger the print function once the PDF is loaded
-                            window.frames['pdfViewer'].focus();
-                            window.frames['pdfViewer'].print();
-                        });
-
-                    }else{
-                        var pdfUrl = JSON.parse(response).pdfUrl;
-                        window.open(pdfUrl, '_blank');
-                    }
-                    
-
-                },
-                error: function (xhr, status, error) {
-                    // Handle error response
-                    console.error(error);
+                transaction_id: transaction_id,
+                _token: '<?php echo e(csrf_token()); ?>' 
+            },
+            success: function(response) {
+                // Handle the response from the server
+                if (response.pdfUrl) {
+                    window.open(response.pdfUrl, '_blank'); // Open the PDF in a new tab
+                } else {
+                    alert('Failed to print payslip');
                 }
-            });
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', status, error);
+            }
         });
-   
+    });
+});
+
+$(document).ready(function() {
+    $(document).on('click', '.view-transaction-details', function(e) {
+        e.preventDefault();
+        console.log("clicked");
+        var transactionId = $(this).data('transaction-id');
+
+        $.ajax({
+            url: '/sales/transaction-details/' + transactionId,
+            method: 'GET',
+            success: function(response) {
+                // Clear previous details
+                $('#transactionDetailsBody').empty();
+
+                // Initialize index variable
+                var index = 1;
+
+                // Append new details
+                $.each(response, function(i, detail) {
+                    $('#transactionDetailsBody').append('<tr>' +
+                        '<td>' + index++ + '</td>' +
+                        '<td>' + detail.item_name + '</td>' +
+                        '<td>' + detail.order_date + '</td>' +
+                        '<td>' + detail.unit_cost + '</td>' +
+                        '<td>' + detail.qty + '</td>' +
+                        '<td>' + detail.total_cost + '</td>' +
+                    '</tr>');
+                });
+
+                // Show the modal
+                $('#ViewTransactionDetails').modal('show');
+            },
+            error: function(response) {
+                console.log(response);
+                alert('Error fetching details.');
+            }
+        });
+    });
+
+    // Optional: Handle print invoice button click
+    $(document).on('click', '.print-invoice', function(e) {
+        e.preventDefault();
+        var transactionId = $(this).data('transaction-id');
+        window.location.href = '/sales/print-invoice/' + transactionId;
+    });
+});
+
 </script>
 
 <?php $__env->stopSection(); ?>

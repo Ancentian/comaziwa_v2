@@ -3,7 +3,7 @@
 				
     <!-- Account Logo -->
     <div class="account-logo">
-        <a href="#"><img src="<?php echo e(asset('img/logo.png')); ?>" alt="Code Sniper Developers"></a>
+        <a href="#" class="float-center"><img src="<?php echo e(asset('img/logo.png')); ?>" alt="Code Sniper Developers"></a>
     </div>
     <!-- /Account Logo -->
 
