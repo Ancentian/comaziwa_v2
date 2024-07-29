@@ -78,33 +78,49 @@ class DashboardController extends Controller
         return response()->json($milkData);
     }
 
+//     public function monthly_sales_analysis()
+// {
+//     $endDate = Carbon::now();
+//     $startDate = $endDate->copy()->subMonths(4);
+//     $start = $startDate->format('Y-m-d');
+//     $end = $endDate->format('Y-m-d');
+
+//     $tenant_id = auth()->user()->id;
+
+//     // Ensure proper joining of tables and grouping by month
+//     $milkData = DB::table('payments')
+//         ->where('payments.tenant_id', $tenant_id)
+//         ->whereBetween('payments.pay_period', [$start, $end])
+//         ->select(
+//             DB::raw("DATE_FORMAT(payments.pay_period, '%Y-%m') as month"),
+//             DB::raw("SUM(payments.gross_pay) as total_gross")
+//         )
+//         ->groupBy(DB::raw("DATE_FORMAT(payments.pay_period, '%Y-%m')"))
+//         ->orderBy(DB::raw("DATE_FORMAT(payments.pay_period, '%Y-%m')"))
+//         ->get();
+//             logger($milkData);
+//     return response()->json($milkData);
+// }
+
     public function monthly_sales_analysis()
-{
-    $endDate = Carbon::now();
-    $startDate = $endDate->copy()->subMonths(4);
-    $start = $startDate->format('Y-m-d');
-    $end = $endDate->format('Y-m-d');
+    {
+        $endDate = Carbon::now();
+        $startDate = $endDate->copy()->subMonths(4);
+        $end = $endDate->format('Y-m'); // Use 'Y-m' format
+        $start = $startDate->format('Y-m'); // Use 'Y-m' format
 
-    $tenant_id = auth()->user()->id;
+        // Convert string to date format within the query
+        $milkData = DB::table('payments')
+            ->select([
+                DB::raw("pay_period as month"),
+                DB::raw("SUM(gross_pay) as total_sales")
+            ])
+            ->whereBetween(DB::raw("CONCAT(pay_period, '-01')"), [$start . '-01', $end . '-01'])
+            ->groupBy('pay_period')
+            ->get();
 
-    // Ensure proper joining of tables and grouping by month
-    $milkData = DB::table('payments')
-        ->where('payments.tenant_id', $tenant_id)
-        ->whereBetween('payments.pay_period', [$start, $end])
-        ->select(
-            DB::raw("DATE_FORMAT(payments.pay_period, '%Y-%m') as month"),
-            DB::raw("SUM(payments.gross_pay) as total_gross")
-        )
-        ->groupBy(DB::raw("DATE_FORMAT(payments.pay_period, '%Y-%m')"))
-        ->orderBy(DB::raw("DATE_FORMAT(payments.pay_period, '%Y-%m')"))
-        ->get();
-            logger($milkData);
-    return response()->json($milkData);
-}
-
-    
-
-
+        return response()->json($milkData);
+    }
 
     public function tryPlan($plan_id){
         

@@ -190,6 +190,7 @@ class MilkCollectionController extends Controller
     public function store_import_milk(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'collection_date' => 'required|date',
             'csv_file' => 'required|mimes:csv,txt,xls,xlsx',
         ]);
         
@@ -286,12 +287,12 @@ class MilkCollectionController extends Controller
                     'evening' => $evening,
                     'rejected' => $rejected,
                     'total' => $total_milk,
-                    'collection_date' => date('Y-m-d'),
-                    'user_id' => "180"
+                    'collection_date' => $request->collection_date,
+                    'user_id' => null
                     
 
                 ];
-                logger($data);
+                
                 $milk = MilkCollection::create($data);               
             }
     
@@ -300,7 +301,7 @@ class MilkCollectionController extends Controller
             return response()->json(['message' => 'Milk imported Successfully']);
         } catch (\Exception $e) {
             logger($e);
-            // DB::rollback();
+            DB::rollback();
     
             return response()->json(['message' => 'Failed to Import Milk. Please try again.'], 500);
         }
