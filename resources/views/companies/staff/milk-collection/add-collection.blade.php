@@ -92,8 +92,21 @@
                     <form id="import_milk_form"  enctype="multipart/form-data">
                         @csrf
                         
-                        <div class="form-group">
-                            <input type="file" name="csv_file" class="form-control" required>
+                        <div class="row">
+                            <div class="col-sm-4">  
+                                <div class="form-group">
+                                    <label class="col-form-label">Collection Date <span class="text-danger">*</span></label>
+                                    <div class="cal-icon">
+                                        <input class="form-control datetimepicker" name="collection_date" type="text" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label class="col-form-label">Upload File <span class="text-danger">*</span></label>
+                                    <input type="file" name="csv_file" class="form-control" required>
+                                </div>
+                            </div>
                         </div>
                        
                         <div class="form-group mb-0">

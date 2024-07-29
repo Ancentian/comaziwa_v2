@@ -215,7 +215,8 @@
                 <div class="card">
                     <div class="card-body">
                         <h3 class="card-title">Sales Overview</h3>
-                        <canvas id="lineChartSales"></canvas>
+                        {{-- <canvas id="lineChartSales"></canvas> --}}
+                        <div id="ba-charts"></div>
                     </div>
                 </div>
             </div>
@@ -316,6 +317,50 @@
             }
         });
     });
+
+
+    
+$(document).ready(function() {
+    $.ajax({
+        url: '/monthly-sales-analysis', // Adjust the route as needed
+        method: 'GET',
+        success: function(data) {
+            var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            var chartData = [];
+
+            data.forEach(function(item) {
+                var monthIndex = parseInt(item.month.split('-')[1]) - 1; // Get the month part and convert to 0-based index
+                var monthName = monthNames[monthIndex]; // Get the month name
+                chartData.push({
+                    y: monthName, // Only the month name
+                    sales: item.total_sales, // Use total_sales instead of total_gross
+                });
+            });
+
+            // Create Morris.Bar chart for Total Sales
+            new Morris.Bar({
+                element: 'ba-charts',
+                data: chartData,
+                xkey: 'y',
+                ykeys: ['sales'],
+                labels: ['Total Sales'],
+                barColors: ['#3498db'],
+                resize: true,
+                xLabelAngle: 45, // Rotate x-axis labels for better visibility
+                hoverCallback: function(index, options, content, row) {
+                    return  "Total Sales :" + row.sales;
+                }
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error("AJAX request failed:", status, error);
+        }
+    });
+});
+
+
+
+
 
     //Pie Chart
     $(document).ready(function() {

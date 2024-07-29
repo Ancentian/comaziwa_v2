@@ -190,6 +190,7 @@ class StaffMilkController extends Controller
     public function store_import_milk(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'collection_date' => 'required|date',
             'csv_file' => 'required|mimes:csv,txt,xls,xlsx',
         ]);
         
@@ -276,6 +277,7 @@ class StaffMilkController extends Controller
                 
                 $total_milk = $morning + $evening - $rejected;
                 $tenant_id = optional(auth()->guard('employee')->user())->tenant_id;
+                $user_id = optional(auth()->guard('employee')->user())->id;
                 $data = [
                     'tenant_id' => $tenant_id,
                     'farmer_id' => $farmer_id,	
@@ -286,12 +288,12 @@ class StaffMilkController extends Controller
                     'evening' => $evening,
                     'rejected' => $rejected,
                     'total' => $total_milk,
-                    'collection_date' => date('Y-m-d'),
-                    'user_id' => "180"
+                    'collection_date' => $request->collection_date,
+                    'user_id' => $user_id
                     
 
                 ];
-                logger($data);
+                
                 $milk = MilkCollection::create($data);               
             }
     
