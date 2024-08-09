@@ -297,7 +297,7 @@ class SuperAdminUsersController extends Controller
 
             CompanyProfile::create($data);
             
-            $build_data = ['name' => $user['name'], 'email' => $user['email'], 'password' => $user['password'], 'to_phone' => $user['phone_number'], 'to_email' => $user['email']];
+            $build_data = ['name' => $user['name'], 'email' => $user['email'], 'password' => $request['password'], 'to_phone' => $user['phone_number'], 'to_email' => $user['email']];
             $emaildata = \App\Models\TransactionalEmails::buildMsg('new_signup', $build_data);
     
             DB::commit();

@@ -151,30 +151,38 @@ class InventoryController extends Controller
 
     public function store_category(Request $request)
     {
+        $tenant_id = auth()->user()->id;
+
         $validator = Validator::make($request->all(), [
-            'cat_name'    => 'required|unique:categories,cat_name',
-            'description' => '',
+            'cat_name' => [
+                'required',
+                Rule::unique('categories')->where(function ($query) use ($tenant_id) {
+                    return $query->where('tenant_id', $tenant_id);
+                }),
+            ],
+            'description' => 'nullable',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
+
         DB::beginTransaction();
         try {
-        $tenant_id = auth()->user()->id;
             Category::create([
-                'tenant_id'  => $tenant_id,
-                'cat_name'    => $request->cat_name, 
+                'tenant_id' => $tenant_id,
+                'cat_name' => $request->cat_name,
                 'description' => $request->description
             ]);
-        
-        DB::commit();
-        return response()->json(['message' => 'Category Added Successfully']);
+
+            DB::commit();
+            return response()->json(['message' => 'Category Added Successfully']);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['message' => 'Data saving failed. Please try again.'], 500);
         }
     }
+
 
     public function store_unit(Request $request)
     {

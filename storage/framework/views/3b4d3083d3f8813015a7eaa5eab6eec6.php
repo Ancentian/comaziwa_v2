@@ -1,11 +1,11 @@
-@php
+<?php
     $is_admin_configured = optional(auth()->guard('employee')->user())->is_admin_configured;
     $tenant_id = null;
     if ($is_admin_configured == 1 ) {
         $employee_id = optional(auth()->guard('employee')->user())->id;
         $tenant_id = optional(auth()->guard('employee')->user())->tenant_id;
     }
-@endphp
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -15,9 +15,9 @@
 		<meta name="keywords" content="">
         <meta name="author" content="">
         <meta name="robots" content="noindex, nofollow">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>{{ config('app.name') }}</title>	
-        @include('layout.header')
+        <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
+        <title><?php echo e(config('app.name')); ?></title>	
+        <?php echo $__env->make('layout.header', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
         <style>
             .table{
@@ -76,35 +76,35 @@
 		<!-- Main Wrapper -->
         <div class="main-wrapper">
             
-        @if(session('is_admin') == 1)
-            @include('companies.staff.layout.navbar')
-            @include('companies.staff.layout.sidebar')
-        @else
-            @include('layout.navbar')
-            @include('layout.sidebar')
-        @endif
+        <?php if(session('is_admin') == 1): ?>
+            <?php echo $__env->make('companies.staff.layout.navbar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+            <?php echo $__env->make('companies.staff.layout.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+        <?php else: ?>
+            <?php echo $__env->make('layout.navbar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+            <?php echo $__env->make('layout.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+        <?php endif; ?>
             
 								
 			<!-- Page Wrapper -->
             <div class="page-wrapper">
                 
 
-                @php
+                <?php
                     $package = \App\Models\Package::find(auth()->user()->package_id);
                     $pp = !empty($package) ?  $package->price : 0;        
-                @endphp
+                ?>
 			
 				<!-- Page Content -->
                 <div class="content container-fluid">
-                    @if(((strtotime(auth()->user()->expiry_date) - time()) <= (env('ALERT_DAYS')*86400) && (strtotime(auth()->user()->expiry_date) - time()) > 0) && auth()->user()->type == 'client' && $pp > 0)
+                    <?php if(((strtotime(auth()->user()->expiry_date) - time()) <= (env('ALERT_DAYS')*86400) && (strtotime(auth()->user()->expiry_date) - time()) > 0) && auth()->user()->type == 'client' && $pp > 0): ?>
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            Your subscription ends on {{date('d/m/Y H:i',strtotime(auth()->user()->expiry_date))}} ! <a href="#" class="renew_subscription">Click here to renew</a>
+                            Your subscription ends on <?php echo e(date('d/m/Y H:i',strtotime(auth()->user()->expiry_date))); ?> ! <a href="#" class="renew_subscription">Click here to renew</a>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
-                    @endif
-					@yield('content')
+                    <?php endif; ?>
+					<?php echo $__env->yieldContent('content'); ?>
 				
 				</div>
 				<!-- /Page Content -->
@@ -115,38 +115,38 @@
         </div>
 		<!-- /Main Wrapper -->
 
-        @include('layout.footer')
-        @include('layout.components');
-        @include('layout.scripts')
+        <?php echo $__env->make('layout.footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+        <?php echo $__env->make('layout.components', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>;
+        <?php echo $__env->make('layout.scripts', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     
-        @if (!auth()->user()->package_id && auth()->user()->type == 'client' && empty($tenant_id))
-            @if($pp > 0 && empty($is_sub))
+        <?php if(!auth()->user()->package_id && auth()->user()->type == 'client' && empty($tenant_id)): ?>
+            <?php if($pp > 0 && empty($is_sub)): ?>
                 <script>
                     $(document).ready(function() {
-                        window.location.href = "{{url('dashboard/subscriptions')}}";
+                        window.location.href = "<?php echo e(url('dashboard/subscriptions')); ?>";
                     });
                 </script>
-            @endif       
-        @endif
+            <?php endif; ?>       
+        <?php endif; ?>
 
-        @if ((strtotime(auth()->user()->expiry_date) - time()) <= 0 && auth()->user()->type == 'client'  && empty($tenant_id))
-            @if($pp > 0 && empty($is_sub))
+        <?php if((strtotime(auth()->user()->expiry_date) - time()) <= 0 && auth()->user()->type == 'client'  && empty($tenant_id)): ?>
+            <?php if($pp > 0 && empty($is_sub)): ?>
             <script>
                 $(document).ready(function() {
                     $(document).ready(function() {
-                        window.location.href = "{{url('dashboard/subscriptions')}}";
+                        window.location.href = "<?php echo e(url('dashboard/subscriptions')); ?>";
                     });
                 });
             </script>
-            @endif
-        @endif
+            <?php endif; ?>
+        <?php endif; ?>
         
         <script>
             $('.renew_subscription').on('click', function () {
                 $("#renew_modal").modal('show');
             });
         </script>
-        @yield('javascript')
+        <?php echo $__env->yieldContent('javascript'); ?>
 				
     </body>
-</html>
+</html><?php /**PATH C:\laragon\www\comaziwa\resources\views/layout/app.blade.php ENDPATH**/ ?>

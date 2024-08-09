@@ -174,43 +174,42 @@
 </div>
 
 <script>
-    $(document).ready(function(){
-            
-        $('#edit_client_form').on('submit', function (e) {
-            e.preventDefault();
-            
-            $(".submit-btn").html("Please wait...").prop('disabled', true);
-            var form = $(this);
-            var frm = this;
-            var formData = form.serialize();
-            var url = form.attr('action');
-    
-            console.log(formData)
-    
-            $.ajax({
-                url: url,
-                method: 'POST',
-                data: formData,
-                success: function (response) {
-                    // Handle success response
-                    console.log(response);
-                    frm.reset();
-                    
-                    // Close the modal
-                    $('#edit_modal').modal('hide');
-                    clients_table.ajax.reload();
-                    toastr.success(response.message, 'Success');
-                    $(".submit-btn").prop('disabled', false); 
-                    $(".submit-btn").html("Submit");
-                },
-                error: function (xhr, status, error) {
-                    // Handle error response
-                    toastr.error('Something Went Wrong!, Try again!','Error');
-                    console.error(error);
-                }
+$(document).ready(function() {
+    $('#edit_client_form').on('submit', function(e) {
+        e.preventDefault();
+        
+        $(".submit-btn").html("Please wait...").prop('disabled', true);
+        var form = $(this);
+        var frm = this;
+        var formData = form.serialize();
+        var url = form.attr('action');
+
+        
+
+        $.ajax({
+            url: url,
+            method: 'POST',
+            data: formData,
+            success: function(response) {
+                // Handle success response
+                console.log(response);
+                frm.reset();
+                
+                // Close the modal
+                $('#edit_modal').modal('hide');
+                clients_table.ajax.reload();
+                toastr.success(response.message, 'Success');
                 $(".submit-btn").prop('disabled', false); 
-                    $(".submit-btn").html("Submit");
-            });
+                $(".submit-btn").html("Submit");
+            },
+            error: function(xhr, status, error) {
+                // Handle error response
+                toastr.error('Something Went Wrong!, Try again!','Error');
+                console.error(error);
+                $(".submit-btn").prop('disabled', false); 
+                $(".submit-btn").html("Submit");
+            }
         });
     });
-    </script>
+});
+</script>

@@ -1,29 +1,29 @@
 		
 <!-- Bootstrap Core JS -->
-<script src="{{ asset('js/popper.min.js') }}"></script>
-<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+<script src="<?php echo e(asset('js/popper.min.js')); ?>"></script>
+<script src="<?php echo e(asset('js/bootstrap.min.js')); ?>"></script>
 
 <!-- Slimscroll JS -->
-<script src="{{ asset('js/jquery.slimscroll.min.js') }}"></script>
+<script src="<?php echo e(asset('js/jquery.slimscroll.min.js')); ?>"></script>
 
 <!-- Chart JS -->
-<script src="{{ asset('plugins/morris/morris.min.js') }}"></script>
-<script src="{{ asset('plugins/raphael/raphael.min.js') }}"></script>
-<script src="{{ asset('js/Chart.min.js') }}"></script>
-{{-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> --}}
+<script src="<?php echo e(asset('plugins/morris/morris.min.js')); ?>"></script>
+<script src="<?php echo e(asset('plugins/raphael/raphael.min.js')); ?>"></script>
+<script src="<?php echo e(asset('js/Chart.min.js')); ?>"></script>
+
 
 
 <!-- Select2 JS -->
-<script src="{{ asset('js/select2.min.js') }}"></script>
+<script src="<?php echo e(asset('js/select2.min.js')); ?>"></script>
 
 <!-- Datetimepicker JS -->
-<script src="{{ asset('js/moment.min.js') }}"></script>
-<script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}"></script>
+<script src="<?php echo e(asset('js/moment.min.js')); ?>"></script>
+<script src="<?php echo e(asset('js/bootstrap-datetimepicker.min.js')); ?>"></script>
 
 <!-- Calendar JS -->
-{{-- <script src="{{ asset('js/jquery-ui.min.js') }}"></script> --}}
-<script src="{{ asset('js/fullcalendar.min.js') }}"></script>
-<script src="{{ asset('js/jquery.fullcalendar.js') }}"></script>
+
+<script src="<?php echo e(asset('js/fullcalendar.min.js')); ?>"></script>
+<script src="<?php echo e(asset('js/jquery.fullcalendar.js')); ?>"></script>
 
 
 
@@ -37,16 +37,16 @@
 <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
 
 <!-- Summernote JS -->
-<script src="{{asset('plugins/summernote/dist/summernote-bs4.min.js')}}"></script>
+<script src="<?php echo e(asset('plugins/summernote/dist/summernote-bs4.min.js')); ?>"></script>
    
 <!-- Sweet Alert JS -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.9/dist/sweetalert2.min.js"></script>
 
-{{-- Toastr --}}
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 <!-- Custom JS -->
-<script src="{{ asset('js/app.js') }}"></script>
+<script src="<?php echo e(asset('js/app.js')); ?>"></script>
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 
@@ -161,3 +161,4 @@ $(document).ready(function() {
 
 </script>
 
+<?php /**PATH C:\laragon\www\comaziwa\resources\views/layout/footer.blade.php ENDPATH**/ ?>

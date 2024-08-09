@@ -1,6 +1,6 @@
-@extends('layout.app')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 <!-- Page Header -->
 <div class="page-header">
     <div class="row align-items-center">
@@ -11,7 +11,7 @@
             </ul>
         </div>
         <div class="col-auto float-right ml-auto">
-            <a href="{{route('payments.generate-payments')}}" class="btn btn-info" ><i class="fa fa-plus"></i> Generate Payment</a> &nbsp;
+            <a href="<?php echo e(route('payments.generate-payments')); ?>" class="btn btn-info" ><i class="fa fa-plus"></i> Generate Payment</a> &nbsp;
             <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#import" hidden><i class="fa fa-download"></i> Import</a> &nbsp;
         </div>
     </div>
@@ -22,22 +22,17 @@
     <div class="col-sm-4">
         <div class="form-group">
             <label>Pay Period <span class="text-danger">*</span></label>
-            <input class="form-control" type="month" name="pay_period" value="{{ date('Y-m') }}" id="pay_period">
+            <input class="form-control" type="month" name="pay_period" value="<?php echo e(date('Y-m')); ?>" id="pay_period">
         </div>
     </div> 
-    {{-- <div class="col-md-4">
-        <div class="form-group">
-            <label>Date Range <span class="text-danger">*</span></label>
-            <input type="text" readonly id="daterange" class="form-control" value="{{date('m/01/Y')}} - {{date('m/t/Y')}}" />
-        </div>
-    </div> --}}
+    
     <div class="form-group col-sm-4">
         <label for="center_id">Select Center</label>
         <select class="form-control select" name="center_id" id="center_id" required>
             <option value="">Choose one</option>
-            @foreach($centers as $center)
-                <option value="{{ $center->id }}">{{ $center->center_name }}</option>
-            @endforeach
+            <?php $__currentLoopData = $centers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $center): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <option value="<?php echo e($center->id); ?>"><?php echo e($center->center_name); ?></option>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </select>
     </div>
     
@@ -51,9 +46,9 @@
         <label for="center_id">Select Bank</label>
         <select class="form-control select" name="center_id" id="bank_id" required>
             <option value="">Choose one</option>
-            @foreach($banks as $bank)
-                <option value="{{ $bank->id }}">{{ $bank->bank_name }}</option>
-            @endforeach
+            <?php $__currentLoopData = $banks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $bank): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <option value="<?php echo e($bank->id); ?>"><?php echo e($bank->bank_name); ?></option>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </select>
     </div>
     <div class="col-md-12">
@@ -86,16 +81,16 @@
     </div>
 </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('javascript')
+<?php $__env->startSection('javascript'); ?>
 <script>
 $(document).ready(function(){
     $(".warning").hide();
     $(".submit-btn").show();
     
     $(document).on('click', '#add_employee_btn', function () {
-        var actionuRL = "{{url('/employees/create')}}";
+        var actionuRL = "<?php echo e(url('/employees/create')); ?>";
         $('#add_employee').load(actionuRL, function() {
             $(this).modal('show');
         });
@@ -152,11 +147,11 @@ $(document).ready(function(){
         })
 
         var all_payments_table = $('#all_payments_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{{ url('payments/all-payments') }}",
+                url: "<?php echo e(url('payments/all-payments')); ?>",
                 data: function(d) {
                     d.pay_period = $("#pay_period").val();
                     d.center_id = $("#center_id").val();
@@ -268,7 +263,7 @@ $(document).ready(function() {
                 pay_period: pay_period,
                 farmer_id: farmer_id,
                 record_id: record_id,
-                _token: '{{ csrf_token() }}' // Include CSRF token for Laravel
+                _token: '<?php echo e(csrf_token()); ?>' // Include CSRF token for Laravel
             },
             success: function(response) {
                 console.log(response);
@@ -289,4 +284,5 @@ $(document).ready(function() {
 
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\comaziwa\resources\views/companies/payments/index.blade.php ENDPATH**/ ?>

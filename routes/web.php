@@ -37,6 +37,8 @@ use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\Crons;
 use App\Http\Controllers\StaffMilkController;
 use App\Http\Controllers\AnalysisController;
+use App\Http\Controllers\InternetStatusController;
+use App\Http\Controllers\AccountingController;
 
 
 /*
@@ -52,6 +54,7 @@ use App\Http\Controllers\AnalysisController;
 
 //Route::get('/', [AuthController::class, 'index'])->name('home');
 Route::get('/', [AuthController::class, 'login']);
+Route::get('/check-internet', [InternetStatusController::class, 'checkInternet']);
 
 Route::prefix('superadmin')->middleware(['auth:web,employee'])->group(function () {
     Route::get('/dashboard', [SuperAdminController::class, 'dashboard']);
@@ -289,6 +292,25 @@ Route::prefix('milk-management')->middleware(['auth:web,employee'])->group(funct
 
     //Comment
     Route::get('/view-comment/{id}', [MilkManagementController::class, 'view_comments']);
+
+    //Distribution or Consumption
+    Route::get('/add-consumption', [MilkManagementController::class, 'add_consumption'])->name('add-consumption');
+    Route::get('/consumption-list', [MilkManagementController::class, 'consumption_list'])->name('consumption-list');
+    Route::get('/all-consumptions', [MilkManagementController::class, 'all_consumptions']);
+    Route::get('/daily-production', [MilkManagementController::class, 'daily_production']);
+    Route::get('/consumer-categories', [MilkManagementController::class, 'consumer_categories']);
+    Route::get('/consumers-calendar', [MilkManagementController::class, 'consumers_calendar']);
+    Route::get('/milk-distributions', [MilkManagementController::class, 'milk_distributions']);
+
+    Route::post('/store-category', [MilkManagementController::class, 'store_consumer_category']);
+    Route::post('/store-consumption', [MilkManagementController::class, 'store_milk_consumptions'])->name('store-consumption');
+
+    Route::get('/edit-distribution/{id}', [MilkManagementController::class, 'edit_distribution']);
+    Route::get('/edit-consumer-category/{id}', [MilkManagementController::class, 'edit_consumer_category']);
+    Route::post('/update-distribution/{id}', [MilkManagementController::class, 'update_distribution']);
+    Route::post('/update-consumer-category/{id}', [MilkManagementController::class, 'update_consumer_category']);
+    Route::delete('/delete-distribution/{id}', [MilkManagementController::class, 'delete_distribution']);
+    Route::delete('/delete-consumer-category/{id}', [MilkManagementController::class, 'delete_consumer_category']);
 });
 
 Route::prefix('payments')->middleware(['auth:web,employee'])->group(function () {
@@ -534,6 +556,14 @@ Route::prefix('expenses')->middleware(['auth:web,employee'])->group(function () 
     Route::delete('/delete-expense-type/{id}', [ExpensesController::class, 'delete_expense_type']);
     Route::delete('/delete-expense/{id}', [ExpensesController::class, 'delete_expense']);
     Route::delete('/delete-staff-expense/{id}', [ExpensesController::class, 'delete_staff_expense']);
+});
+
+Route::prefix('accounting')->middleware(['auth:web,employee'])->group(function () {
+    Route::get('/balance-sheet', [AccountingController::class, 'balance_sheet']);
+    Route::get('/balance-sheet-data', [AccountingController::class, 'balance_sheet_data'])->name('accounting.balance-sheet');
+    Route::get('/income-statement', [AccountingController::class, 'income_statement']);
+    Route::get('/profit-loss', [AccountingController::class, 'profit_and_loss']);
+    Route::get('/accounting-reports', [AccountingController::class, 'accounting_reports']);    
 });
 
 Route::get('/staff/login', [StaffController::class, 'login']);

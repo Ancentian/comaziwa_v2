@@ -170,6 +170,15 @@
                     </li>
 
                     <li class="submenu">
+                        <a href="#"><i class="la la-space-shuttle"></i> <span> Consumers </span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+                            <li><a href="{{url('milk-management/consumption-list')}}"> List </a></li>
+                            <li><a href="{{url('milk-management/consumers-calendar')}}"> Calender </a></li>
+                            <li><a href="{{url('milk-management/consumer-categories')}}"> Categories </a></li>
+                        </ul>
+                    </li>
+
+                    <li class="submenu">
                         <a href="#"><i class="la la-money"></i> <span> Payroll </span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li><a href="{{url('payments/index')}}"> Payments List </a></li>
@@ -191,6 +200,16 @@
                             </ul>
                         </li>
                     @endif
+
+                    <li class="submenu">
+                        <a href="#"><i class="la la-money"></i> <span> Accounting </span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+                            <li><a href="{{url('accounting/balance-sheet')}}"> Balance Sheet </a></li>
+                            <li><a href="{{url('accounting/profit-loss')}}"> Profit & Loss </a></li>
+                            <li><a href="{{url('accounting/accounting-reports')}}"> Accounting Reports </a></li>
+                            <li><a href="{{url('accounting/income-statement')}}"> Income Statement </a></li>
+                        </ul>
+                    </li>
                     
                     @if (in_array('expenses', $subscribedModules))
                     <li class="submenu">

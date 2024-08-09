@@ -56,7 +56,7 @@ class CooperativeController extends Controller
             $centers = CollectionCenter::where('collection_centers.tenant_id', $tenant_id)
                 ->leftJoin('farmers', 'collection_centers.id', '=', 'farmers.center_id')
                 ->select('collection_centers.*', DB::raw('COUNT(farmers.id) as farmer_count'))
-                ->groupBy('collection_centers.id')
+                ->groupBy('collection_centers.id', 'collection_centers.tenant_id', 'collection_centers.center_name', 'collection_centers.grader_id', 'collection_centers.created_at', 'collection_centers.updated_at')
                 ->get();
 
             return DataTables::of($centers)
