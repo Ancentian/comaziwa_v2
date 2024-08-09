@@ -311,7 +311,7 @@ class EmployeesController extends Controller
         $tenant_id = auth()->user()->id;
         $employeeGroup = EmployeeGroup::where('tenant_id',$tenant_id)->get();
         $salary = SalaryType::where('tenant_id',$tenant_id)->get();
-        $contracts = ContractType::where('tenant_id',$tenant_id)->get();
+        $contracts = ContractType::all();
 
         return view('employees.create',compact('employeeGroup','salary','contracts'));
     }
@@ -338,7 +338,7 @@ class EmployeesController extends Controller
         $tenant_id = optional(auth()->guard('employee')->user())->tenant_id;
         $employeeGroup = EmployeeGroup::where('tenant_id',$tenant_id)->get();
         $salary = SalaryType::where('tenant_id',$tenant_id)->get();
-        $contracts = ContractType::where('tenant_id',$tenant_id)->get();
+        $contracts = ContractType::all();
 
         return view('employees.edit',compact('employeeGroup','salary','contracts','employee'));
     }

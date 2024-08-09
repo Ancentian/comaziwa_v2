@@ -13,7 +13,8 @@ return array(
     */
     'show_warnings' => false,   // Throw an Exception on warnings from dompdf
 
-    'public_path' => null,  // Override the public path if needed
+    //'public_path' => null,  // Override the public path if needed
+    'public_path' => '/home/cowangoo/public_html/merucomaziwa.co.ke/storage/payslips/',
 
     /*
      * Dejavu Sans font is missing glyphs for converted entities, turn it off if you need to show € and £.

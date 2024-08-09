@@ -1,16 +1,14 @@
-@extends('layout.app')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <!-- Page Header -->
 <div class="page-header">
     <div class="row">
         <div class="col-sm-12">
             
-            @if(session('is_admin') == 1 && optional(auth()->guard('employee')->user())->is_admin_configured == 1)
-                <h3 class="page-title">Welcome {{ optional(auth()->guard('employee')->user())->name }}!</h3>
-            @else
-                <h3 class="page-title">Welcome {{ auth()->user()->name }}!</h3>
-            @endif
+            <?php if(session('is_admin') == 1 && optional(auth()->guard('employee')->user())->is_admin_configured == 1): ?>
+                <h3 class="page-title">Welcome <?php echo e(optional(auth()->guard('employee')->user())->name); ?>!</h3>
+            <?php else: ?>
+                <h3 class="page-title">Welcome <?php echo e(auth()->user()->name); ?>!</h3>
+            <?php endif; ?>
 
             
             <ul class="breadcrumb">
@@ -27,7 +25,7 @@
             <div class="card-body">
                 <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
                 <div class="dash-widget-info">
-                    <h3>{{App\Models\Employee::where('tenant_id',auth()->user()->id)->count()}}</h3>
+                    <h3><?php echo e(App\Models\Employee::where('tenant_id',auth()->user()->id)->count()); ?></h3>
                     <span>Employees</span>
                 </div>
             </div>
@@ -39,7 +37,7 @@
             <div class="card-body">
                 <span class="dash-widget-icon"><i class="fa fa-cubes"></i></span>
                 <div class="dash-widget-info">
-                    <h3>{{App\Models\Project::where('tenant_id',auth()->user()->id)->count()}}</h3>
+                    <h3><?php echo e(App\Models\Project::where('tenant_id',auth()->user()->id)->count()); ?></h3>
                     <span>Projects</span>
                 </div>
             </div>
@@ -51,7 +49,7 @@
             <div class="card-body">
                 <span class="dash-widget-icon"><i class="fa fa-diamond"></i></span>
                 <div class="dash-widget-info">
-                    <h3>{{App\Models\Farmer::where('tenant_id',auth()->user()->id)->count()}}</h3>
+                    <h3><?php echo e(App\Models\Farmer::where('tenant_id',auth()->user()->id)->count()); ?></h3>
                     <span>Farmers</span>
                 </div>
             </div>
@@ -63,7 +61,7 @@
             <div class="card-body">
                 <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
                 <div class="dash-widget-info">
-                    <h3>{{App\Models\Leave::where('tenant_id',auth()->user()->id)->where('status',0)->count()}}</h3>
+                    <h3><?php echo e(App\Models\Leave::where('tenant_id',auth()->user()->id)->where('status',0)->count()); ?></h3>
                     <span>Pending Leaves</span>
                 </div>
             </div>
@@ -72,7 +70,7 @@
 
 </div>
 
-@php
+<?php
     use Carbon\Carbon;
     if(session('is_admin') == 1)
     {
@@ -97,7 +95,7 @@
     $nett = $gross - $deductions;
     // $milk = App\Models\PAyment::where('tenant_id', '=', $tenant_id)->sum('total_milk');
     
-@endphp
+?>
 
 
 <div class="row">
@@ -110,25 +108,25 @@
                         <div class="col-md-3 col-3 text-center">
                             <div class="stats-box mb-4" >
                                 <p>Total Milk</p>
-                                <h3>{{num_format($total)}}</h3>
+                                <h3><?php echo e(num_format($total)); ?></h3>
                             </div>
                         </div>
                         <div class="col-md-3 col-3 text-center">
                             <div class="stats-box mb-4" >
                                 <p>Morning</p>
-                                <h3>{{num_format($morning)}}</h3>
+                                <h3><?php echo e(num_format($morning)); ?></h3>
                             </div>
                         </div>
                         <div class="col-md-3 col-3 text-center">
                             <div class="stats-box mb-4" >
                                 <p>Evening</p>
-                                <h3>{{num_format($evening)}}</h3>
+                                <h3><?php echo e(num_format($evening)); ?></h3>
                             </div>
                         </div>
                         <div class="col-md-3 col-3 text-center">
                             <div class="stats-box mb-4" >
                                 <p>Rejected</p>
-                                <h3>{{num_format($rejected)}}</h3>
+                                <h3><?php echo e(num_format($rejected)); ?></h3>
                             </div>
                         </div>
                     </div>
@@ -148,25 +146,25 @@
                         <div class="col-md-3 col-3 text-center">
                             <div class="stats-box mb-4" >
                                 <p>Stores</p>
-                                <h3>{{num_format($stores)}}</h3>
+                                <h3><?php echo e(num_format($stores)); ?></h3>
                             </div>
                         </div>
                         <div class="col-md-3 col-3 text-center">
                             <div class="stats-box mb-4" >
                                 <p>Deductions</p>
-                                <h3>{{num_format($deductions)}}</h3>
+                                <h3><?php echo e(num_format($deductions)); ?></h3>
                             </div>
                         </div>
                         <div class="col-md-3 col-3 text-center">
                             <div class="stats-box mb-4" >
                                 <p>Gross</p>
-                                <h3>{{ num_format($gross)}}</h3>
+                                <h3><?php echo e(num_format($gross)); ?></h3>
                             </div>
                         </div>
                         <div class="col-md-3 col-3 text-center">
                             <div class="stats-box mb-4" >
                                 <p>Nett</p>
-                                <h3>{{ num_format($nett) }}</h3>
+                                <h3><?php echo e(num_format($nett)); ?></h3>
                             </div>
                         </div>
                     </div>
@@ -215,7 +213,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h3 class="card-title">Sales Overview</h3>
-                        {{-- <canvas id="lineChartSales"></canvas> --}}
+                        
                         <div id="ba-charts"></div>
                     </div>
                 </div>
@@ -271,9 +269,9 @@
     </div> 
 </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('javascript')
+<?php $__env->startSection('javascript'); ?>
 <script>
 $(document).ready(function() {
     $.ajax({
@@ -580,11 +578,11 @@ function getRandomColor() {
 
 $(document).ready(function(){
         center_statistics_table = $('#center_statistics_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('center-statistics')}}",
+                url : "<?php echo e(url('center-statistics')); ?>",
                 data: function(d){
                     
                 }
@@ -606,11 +604,11 @@ $(document).ready(function(){
 
     $(document).ready(function(){
         farmer_statistics_table = $('#farmer_statistics_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('farmer-statistics')}}",
+                url : "<?php echo e(url('farmer-statistics')); ?>",
                 data: function(d){
                     
                 }
@@ -632,4 +630,5 @@ $(document).ready(function(){
  
 </script>
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\comaziwa\resources\views/dashboard/index.blade.php ENDPATH**/ ?>

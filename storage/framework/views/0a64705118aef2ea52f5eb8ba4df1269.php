@@ -2,8 +2,8 @@
     function paysubscription(amount,plan,type){
             
             let handler = PaystackPop.setup({
-                key: "{{env('PAYSTACK_KEY')}}", // Replace with your public key
-                email: "{{auth()->user()->email}}",
+                key: "<?php echo e(env('PAYSTACK_KEY')); ?>", // Replace with your public key
+                email: "<?php echo e(auth()->user()->email); ?>",
                 amount: amount * 100,
                 currency: 'GHS',
                 ref: ''+Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
@@ -15,7 +15,7 @@
                     console.log(response);
                     var token = $('meta[name="csrf-token"]').attr('content');
                     $.ajax({
-                        url: "{{url('dashboard/confirm-payment')}}/"+response.reference+"/"+plan, 
+                        url: "<?php echo e(url('dashboard/confirm-payment')); ?>/"+response.reference+"/"+plan, 
                         method: 'GET',
                         data: {type},
                         headers: {
@@ -49,7 +49,7 @@
         var formData = $(this).serialize();
 
         $.ajax({
-            url: '{{ url('salaries/store_salaryType') }}',
+            url: '<?php echo e(url('salaries/store_salaryType')); ?>',
             method: 'POST',
             data: formData,
             success: function (response) {
@@ -98,7 +98,7 @@
         var formData = $(this).serialize();
 
         $.ajax({
-            url: '{{ url('allowances/store_allowance') }}',
+            url: '<?php echo e(url('allowances/store_allowance')); ?>',
             method: 'POST',
             data: formData,
             success: function (response) {
@@ -148,7 +148,7 @@
         var formData = $(this).serialize();
 
         $.ajax({
-            url: '{{ url('departments/store') }}',
+            url: '<?php echo e(url('departments/store')); ?>',
             method: 'POST',
             data: formData,
             success: function (response) {
@@ -199,7 +199,7 @@
         var formData = $(this).serialize();
 
         $.ajax({
-            url: '{{ url('deductions/store_deduction') }}',
+            url: '<?php echo e(url('deductions/store_deduction')); ?>',
             method: 'POST',
             data: formData,
             success: function (response) {
@@ -248,7 +248,7 @@
         var formData = $(this).serialize();
 
         $.ajax({
-            url: '{{ url('centers/store-collection-center') }}',
+            url: '<?php echo e(url('centers/store-collection-center')); ?>',
             method: 'POST',
             data: formData,
             success: function (response) {
@@ -299,7 +299,7 @@
         var formData = $(this).serialize();
 
         $.ajax({
-            url: '{{ url('cooperative/store-banks') }}',
+            url: '<?php echo e(url('cooperative/store-banks')); ?>',
             method: 'POST',
             data: formData,
             success: function (response) {
@@ -347,7 +347,7 @@
         var formData = $(this).serialize();
 
         $.ajax({
-            url: '{{ url('leave-types/store') }}',
+            url: '<?php echo e(url('leave-types/store')); ?>',
             method: 'POST',
             data: formData,
             success: function (response) {
@@ -398,7 +398,7 @@
         var formData = $(this).serialize();
 
         $.ajax({
-            url: '{{ url('deductions/store_statutoryDeduction') }}',
+            url: '<?php echo e(url('deductions/store_statutoryDeduction')); ?>',
             method: 'POST',
             data: formData,
             success: function (response) {
@@ -449,7 +449,7 @@
         var formData = $(this).serialize();
 
         $.ajax({
-            url: '{{ url('deductions/store_nonStatutoryDeduction') }}',
+            url: '<?php echo e(url('deductions/store_nonStatutoryDeduction')); ?>',
             method: 'POST',
             data: formData,
             success: function (response) {
@@ -500,7 +500,7 @@
         var formData = $(this).serialize();
 
         $.ajax({
-            url: '{{ url('employees/store_employeesGroup') }}',
+            url: '<?php echo e(url('employees/store_employeesGroup')); ?>',
             method: 'POST',
             data: formData,
             success: function (response) {
@@ -551,7 +551,7 @@
     var formData = $(this).serialize();
 
     $.ajax({
-        url: '{{ url('packages/store') }}',
+        url: '<?php echo e(url('packages/store')); ?>',
         method: 'POST',
         data: formData,
         success: function (response) {
@@ -601,7 +601,7 @@
         var formData = $(this).serialize();
 
         $.ajax({
-            url: '{{ url('superadmin/store') }}',
+            url: '<?php echo e(url('superadmin/store')); ?>',
             method: 'POST',
             data: formData,
             success: function (response) {
@@ -653,7 +653,7 @@
     var formData = $(this).serialize();
 
     $.ajax({
-        url: '{{ url('leaves/store') }}',
+        url: '<?php echo e(url('leaves/store')); ?>',
         method: 'POST',
         data: formData,
         success: function (response) {
@@ -702,7 +702,7 @@ $('#add_staff_leave_form').on('submit', function (e) {
     var formData = $(this).serialize();
 
     $.ajax({
-        url: '{{ url('staff/store-staff-leave') }}',
+        url: '<?php echo e(url('staff/store-staff-leave')); ?>',
         method: 'POST',
         data: formData,
         success: function (response) {
@@ -761,7 +761,7 @@ $('#add_emp_leave_form').on('submit', function (e) {
     }
 
     $.ajax({
-        url: '{{ url('staff/storeLeave') }}',
+        url: '<?php echo e(url('staff/storeLeave')); ?>',
         method: 'POST',
         data: formData,
         success: function (response) {
@@ -815,7 +815,7 @@ $('#upload_contract_file').on('submit', function (e) {
     var formData = new FormData(form);
 
     $.ajax({
-        url: '{{ url('contracts/storeContract') }}',
+        url: '<?php echo e(url('contracts/storeContract')); ?>',
         method: 'POST',
         data: formData,
         processData: false,
@@ -865,7 +865,7 @@ $('#send_mail_form').on('submit', function (e) {
         var formData = $(this).serialize();
 
         $.ajax({
-            url: '{{ url('communications/sendMail') }}',
+            url: '<?php echo e(url('communications/sendMail')); ?>',
             method: 'POST',
             data: formData,
             success: function (response) {
@@ -913,7 +913,7 @@ $('#staff_send_mail_form').on('submit', function (e) {
         var formData = $(this).serialize();
 
         $.ajax({
-            url: '{{ url('staff/sendMail') }}',
+            url: '<?php echo e(url('staff/sendMail')); ?>',
             method: 'POST',
             data: formData,
             success: function (response) {
@@ -961,7 +961,7 @@ $('#staff_send_mail_form').on('submit', function (e) {
         var formData = new FormData(form); // Create a FormData object to handle file uploads
     
         $.ajax({
-            url: '{{ url('communications/send_bulkyEmails') }}',
+            url: '<?php echo e(url('communications/send_bulkyEmails')); ?>',
             method: 'POST',
             data: formData,
             contentType: false, // Set contentType to false to allow proper handling of the FormData
@@ -1011,7 +1011,7 @@ $('#staff_send_mail_form').on('submit', function (e) {
         var formData = new FormData(form); // Create a FormData object to handle file uploads
     
         $.ajax({
-            url: '{{ url('communications/send_bulkyEmails') }}',
+            url: '<?php echo e(url('communications/send_bulkyEmails')); ?>',
             method: 'POST',
             data: formData,
             contentType: false, // Set contentType to false to allow proper handling of the FormData
@@ -1062,7 +1062,7 @@ $('#add_clients').on('submit', function (e) {
     var formData = $(this).serialize();
 
     $.ajax({
-        url: '{{ url('superadmin/create-users') }}',
+        url: '<?php echo e(url('superadmin/create-users')); ?>',
         method: 'POST',
         data: formData,
         success: function (response) {
@@ -1109,7 +1109,7 @@ $('#add_admin').on('submit', function (e) {
     var formData = $(this).serialize();
 
     $.ajax({
-        url: '{{ url('superadmin/create-admin') }}',
+        url: '<?php echo e(url('superadmin/create-admin')); ?>',
         method: 'POST',
         data: formData,
         success: function (response) {
@@ -1155,7 +1155,7 @@ $('#add_role').on('submit', function (e) {
     var formData = $(this).serialize();
 
     $.ajax({
-        url: '{{ url('superadmin/create-role') }}',
+        url: '<?php echo e(url('superadmin/create-role')); ?>',
         method: 'POST',
         data: formData,
         success: function (response) {
@@ -1201,7 +1201,7 @@ $('#expense_type_form').on('submit', function (e) {
     var formData = $(this).serialize();
 
     $.ajax({
-        url: '{{ url('expenses/store-expenses-type') }}',
+        url: '<?php echo e(url('expenses/store-expenses-type')); ?>',
         method: 'POST',
         data: formData,
         success: function (response) {
@@ -1248,7 +1248,7 @@ $('#add_expense_form').on('submit', function (e) {
     var formData = $(this).serialize();
 
     $.ajax({
-        url: '{{ url('expenses/store-staffExpenseRequest') }}',
+        url: '<?php echo e(url('expenses/store-staffExpenseRequest')); ?>',
         method: 'POST',
         data: formData,
         success: function (response) {
@@ -1296,7 +1296,7 @@ $('#create_template_form').on('submit', function (e) {
     var formData = $(this).serialize();
 
     $.ajax({
-        url: '{{ url('communications/create-email-template') }}',
+        url: '<?php echo e(url('communications/create-email-template')); ?>',
         method: 'POST',
         data: formData,
         success: function (response) {
@@ -1343,7 +1343,7 @@ $('#staff_create_template_form').on('submit', function (e) {
     var formData = $(this).serialize();
 
     $.ajax({
-        url: '{{ url('staff/create-email-template') }}',
+        url: '<?php echo e(url('staff/create-email-template')); ?>',
         method: 'POST',
         data: formData,
         success: function (response) {
@@ -1653,12 +1653,12 @@ $('#staff_create_template_form').on('submit', function (e) {
 $(document).ready(function(){
     
         contract_types_table = $('#contract_types_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                 
                 processing: true,
                 serverSide: false,
                 ajax: {
-                    url : "{{url('departments/list')}}",
+                    url : "<?php echo e(url('departments/list')); ?>",
                     data: function(d){
                         
                     }
@@ -1680,12 +1680,12 @@ $(document).ready(function(){
     // load Salary types table
     $(document).ready(function(){
         salary_types_table = $('#salary_types_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('salaries/list')}}",
+                url : "<?php echo e(url('salaries/list')); ?>",
                 data: function(d){
                     
                 }
@@ -1707,11 +1707,11 @@ $(document).ready(function(){
     // load Allowances Data
     $(document).ready(function(){
         allowances_table = $('#allowances_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('allowances/list')}}",
+                url : "<?php echo e(url('allowances/list')); ?>",
                 data: function(d){
                     
                 }
@@ -1735,11 +1735,11 @@ $(document).ready(function(){
     // load Collection Centers Data
     $(document).ready(function(){
         collection_centers_table = $('#collection_centers_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('centers/collection-centers')}}",
+                url : "<?php echo e(url('centers/collection-centers')); ?>",
                 data: function(d){
                     
                 }
@@ -1762,11 +1762,11 @@ $(document).ready(function(){
     // load Bank Data
     $(document).ready(function(){
         banks_table = $('#banks_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('cooperative/banks')}}",
+                url : "<?php echo e(url('cooperative/banks')); ?>",
                 data: function(d){
                     
                 }
@@ -1788,11 +1788,11 @@ $(document).ready(function(){
     // load Benefit in Kind Data
     $(document).ready(function(){
         benefits_in_kind_table = $('#benefit_in_kind_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('benefits/list')}}",
+                url : "<?php echo e(url('benefits/list')); ?>",
                 data: function(d){
                     
                 }
@@ -1813,11 +1813,11 @@ $(document).ready(function(){
         });
         
         leave_types_table = $('#leave_types_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('leave-types/list')}}",
+                url : "<?php echo e(url('leave-types/list')); ?>",
                 data: function(d){
                     
                 }
@@ -1840,11 +1840,11 @@ $(document).ready(function(){
     // load Statutory Deductions Data
     $(document).ready(function(){
         statutory_table = $('#statutory_deductions_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('deductions/statutory_deductions')}}",
+                url : "<?php echo e(url('deductions/statutory_deductions')); ?>",
                 data: function(d){
                     
                 }
@@ -1868,11 +1868,11 @@ $(document).ready(function(){
     // load Non Statutory Deductions Data
     $(document).ready(function(){
         non_statutory_table = $('#non_statutory_deductions_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('deductions/non_statutory_deductions')}}",
+                url : "<?php echo e(url('deductions/non_statutory_deductions')); ?>",
                 data: function(d){
                     
                 }
@@ -1896,11 +1896,11 @@ $(document).ready(function(){
     // load Employee Groups Data
     $(document).ready(function(){
         employees_group_table = $('#employees_group_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('employees/list-groups')}}",
+                url : "<?php echo e(url('employees/list-groups')); ?>",
                 data: function(d){
                     
                 }
@@ -1924,11 +1924,11 @@ $(document).ready(function(){
     // load Packages Data
     $(document).ready(function(){
         packages_table = $('#packages_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('packages/list')}}",
+                url : "<?php echo e(url('packages/list')); ?>",
                 data: function(d){
                     
                 }
@@ -1952,11 +1952,11 @@ $(document).ready(function(){
     // load Subscription Data
     $(document).ready(function(){
         subscriptions_table = $('#subscriptions_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('superadmin/subscription-plans')}}",
+                url : "<?php echo e(url('superadmin/subscription-plans')); ?>",
                 data: function(d){
                     
                 }
@@ -1979,11 +1979,11 @@ $(document).ready(function(){
         });
 
         my_subscriptions_table = $('#my_subscriptions_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('dashboard/subscriptions')}}",
+                url : "<?php echo e(url('dashboard/subscriptions')); ?>",
                 data: function(d){
                     
                 }
@@ -2007,12 +2007,12 @@ $(document).ready(function(){
      // load Users Data
      $(document).ready(function(){
         users_table = $('#users_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('superadmin/list/users')}}",
+                url : "<?php echo e(url('superadmin/list/users')); ?>",
                 data: function(d){
                     
                 }
@@ -2034,11 +2034,11 @@ $(document).ready(function(){
         });
 
         roles_table = $('#roles_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('superadmin/list/roles')}}",
+                url : "<?php echo e(url('superadmin/list/roles')); ?>",
                 data: function(d){
                     
                 }
@@ -2060,11 +2060,11 @@ $(document).ready(function(){
     // load Clients Data
     $(document).ready(function(){
         clients_table = $('#clients_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('superadmin/list/clients')}}",
+                url : "<?php echo e(url('superadmin/list/clients')); ?>",
                 data: function(d){
                     
                 }
@@ -2093,11 +2093,11 @@ $(document).ready(function(){
     // load Projects Data
     $(document).ready(function(){
         projects_table = $('#projects_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('projects/list')}}",
+                url : "<?php echo e(url('projects/list')); ?>",
                 data: function(d){
                     
                 }
@@ -2125,11 +2125,11 @@ $(document).ready(function(){
     //All Staff Projects
     $(document).ready(function(){
         all_staff_projects_table = $('#all_staff_projects_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('staff/all-staff-projects')}}",
+                url : "<?php echo e(url('staff/all-staff-projects')); ?>",
                 data: function(d){
                     
                 }
@@ -2158,11 +2158,11 @@ $(document).ready(function(){
     // load Projects Data
     $(document).ready(function(){
         employee_projects_table = $('#employee_projects_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('staff/projects')}}",
+                url : "<?php echo e(url('staff/projects')); ?>",
                 data: function(d){
                     
                 }
@@ -2190,11 +2190,11 @@ $(document).ready(function(){
     // load Leaves Data
     $(document).ready(function(){
         leaves_table = $('#leaves_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('leaves/list')}}",
+                url : "<?php echo e(url('leaves/list')); ?>",
                 data: function(d){
                     
                 }
@@ -2226,11 +2226,11 @@ $(document).ready(function(){
         });
         
         pending_leaves_table = $('#pending_leaves_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('leaves/pendingLeaves')}}",
+                url : "<?php echo e(url('leaves/pendingLeaves')); ?>",
                 data: function(d){
                     // Access the start and end dates from the date range picker
                     var startDate = $('#daterange').data('daterangepicker').startDate.format('YYYY-MM-DD');
@@ -2275,11 +2275,11 @@ $(document).ready(function(){
         });
 
         leaves_table = $('#all_leaves_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('leaves/all-leaves')}}",
+                url : "<?php echo e(url('leaves/all-leaves')); ?>",
                 data: function(d){
                     // Access the start and end dates from the date range picker
                     var startDate = $('#daterange').data('daterangepicker').startDate.format('YYYY-MM-DD');
@@ -2327,11 +2327,11 @@ $(document).ready(function(){
         });
         
         emp_leaves_table = $('#emp_leaves_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('staff/leaves')}}",
+                url : "<?php echo e(url('staff/leaves')); ?>",
                 data: function(d){
                     
                     // Access the start and end dates from the date range picker
@@ -2370,11 +2370,11 @@ $(document).ready(function(){
 
     $(document).ready(function(){
         staff_leaves_table = $('#staff_leaves_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('staff/allLeaves')}}",
+                url : "<?php echo e(url('staff/allLeaves')); ?>",
                 data: function(d){
                     
                 }
@@ -2401,11 +2401,11 @@ $(document).ready(function(){
     // load Projects Data
     $(document).ready(function(){
         employee_attendance_table = $('#employee_attendance_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('attendance/staffAttendance')}}",
+                url : "<?php echo e(url('attendance/staffAttendance')); ?>",
                 data: function(d){
                     
                 }
@@ -2428,11 +2428,11 @@ $(document).ready(function(){
     // load Employees Admin Attendance Data
     $(document).ready(function(){
         subscriptions_table = $('#emp_attendances_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('attendance/list')}}",
+                url : "<?php echo e(url('attendance/list')); ?>",
                 data: function(d){
                     
                 }
@@ -2458,11 +2458,11 @@ $(document).ready(function(){
     // load Emails Data
     $(document).ready(function(){
         outbox_table = $('#outbox_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('communications/emails')}}",
+                url : "<?php echo e(url('communications/emails')); ?>",
                 data: function(d){
                     
                 }
@@ -2489,11 +2489,11 @@ $(document).ready(function(){
     // load Expense Types Data
     $(document).ready(function(){
         expense_types_table = $('#expense_types_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('expenses/expense-types')}}",
+                url : "<?php echo e(url('expenses/expense-types')); ?>",
                 data: function(d){
                     
                 }
@@ -2515,11 +2515,11 @@ $(document).ready(function(){
     // load Staff Expenses Data
     $(document).ready(function(){
         staff_expenses_table = $('#staff_expenses_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('expenses/staff-expenses')}}",
+                url : "<?php echo e(url('expenses/staff-expenses')); ?>",
                 data: function(d){
                     
                 }
@@ -2547,11 +2547,11 @@ $(document).ready(function(){
     // load All Expenses Data
     $(document).ready(function(){
         all_expenses_table = $('#all_expenses_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('expenses/list')}}",
+                url : "<?php echo e(url('expenses/list')); ?>",
                 data: function(d){
                     
                 }
@@ -2579,11 +2579,11 @@ $(document).ready(function(){
     //All Staff Expenses
     $(document).ready(function(){
         companies_expenses_table = $('#companies_expenses_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('expenses/all-staff-expenses')}}",
+                url : "<?php echo e(url('expenses/all-staff-expenses')); ?>",
                 data: function(d){
                     
                 }
@@ -2611,11 +2611,11 @@ $(document).ready(function(){
       // load Trainings Data
       $(document).ready(function(){
         trainings_table = $('#trainings_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('trainings/list')}}",
+                url : "<?php echo e(url('trainings/list')); ?>",
                 data: function(d){
                     
                 }
@@ -2641,11 +2641,11 @@ $(document).ready(function(){
         });
 
         pending_trainings_table = $('#pending_trainings_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('trainings/list-pending')}}",
+                url : "<?php echo e(url('trainings/list-pending')); ?>",
                 data: function(d){
                     
                 }
@@ -2667,11 +2667,11 @@ $(document).ready(function(){
         });
 
         list_trainings_table = $('#list_trainings_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('trainings/list-requests')}}",
+                url : "<?php echo e(url('trainings/list-requests')); ?>",
                 data: function(d){
                     
                 }
@@ -2696,11 +2696,11 @@ $(document).ready(function(){
         });
 
         staff_list_trainings_table = $('#staff_list_trainings_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('staff/list-requests')}}",
+                url : "<?php echo e(url('staff/list-requests')); ?>",
                 data: function(d){
                     
                 }
@@ -2725,11 +2725,11 @@ $(document).ready(function(){
         });
         
         staff_invited_trainings_table = $('#staff_invited_trainings_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('staff/list-invites')}}",
+                url : "<?php echo e(url('staff/list-invites')); ?>",
                 data: function(d){
                     
                 }
@@ -2757,11 +2757,11 @@ $(document).ready(function(){
     //All Staff Trainings
     $(document).ready(function(){
         all_staff_trainings_table = $('#all_staff_trainings_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('staff/all-staff-trainings')}}",
+                url : "<?php echo e(url('staff/all-staff-trainings')); ?>",
                 data: function(d){
                     
                 }
@@ -2791,11 +2791,11 @@ $(document).ready(function(){
     // load Staff Trainings Data
     $(document).ready(function(){
         staff_trainings_table = $('#staff_trainings_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('staff/trainings')}}",
+                url : "<?php echo e(url('staff/trainings')); ?>",
                 data: function(d){
                     
                 }
@@ -2825,11 +2825,11 @@ $(document).ready(function(){
     // load Employee Trainings Data
     $(document).ready(function(){
         employee_trainings_table = $('#employee_trainings_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('staff/trainings')}}",
+                url : "<?php echo e(url('staff/trainings')); ?>",
                 data: function(d){
                     
                 }
@@ -2858,11 +2858,11 @@ $(document).ready(function(){
         // load Agents Data
     $(document).ready(function(){
         agents_table = $('#agents_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('superadmin/list/agents')}}",
+                url : "<?php echo e(url('superadmin/list/agents')); ?>",
                 data: function(d){
                     
                 }
@@ -2890,11 +2890,11 @@ $(document).ready(function(){
 
     $(document).ready(function(){
         agent_payments_table = $('#agent_payments_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                //url : "{{url('superadmin/agent-payments/')}}"  + "/"+response.id,
+                //url : "<?php echo e(url('superadmin/agent-payments/')); ?>"  + "/"+response.id,
                 data: function(d){
                     
                 }
@@ -2916,11 +2916,11 @@ $(document).ready(function(){
 
     $(document).ready(function(){
         templates_table = $('#templates_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('communications/email-templates')}}",
+                url : "<?php echo e(url('communications/email-templates')); ?>",
                 data: function(d){
                     
                 }
@@ -2942,11 +2942,11 @@ $(document).ready(function(){
 
     $(document).ready(function(){
         staff_templates_table = $('#staff_templates_table').DataTable({
-            @include('layout.export_buttons')
+            <?php echo $__env->make('layout.export_buttons', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             processing: true,
             serverSide: false,
             ajax: {
-                url : "{{url('staff/email-templates')}}",
+                url : "<?php echo e(url('staff/email-templates')); ?>",
                 data: function(d){
                     
                 }
@@ -3233,13 +3233,13 @@ $(document).ready(function(){
     
 
 
-    @if(session('success'))
-        toastr.success('{{ session('success') }}', 'Success');
-    @endif
+    <?php if(session('success')): ?>
+        toastr.success('<?php echo e(session('success')); ?>', 'Success');
+    <?php endif; ?>
     
-    @if(session('error'))
-        toastr.error('{{ session('error') }}', 'Error');
-    @endif
+    <?php if(session('error')): ?>
+        toastr.error('<?php echo e(session('error')); ?>', 'Error');
+    <?php endif; ?>
 
     // Toastr Initialization
         toastr.options = {
@@ -3258,4 +3258,4 @@ $(document).ready(function(){
         };
    
    
-</script>
+</script><?php /**PATH C:\laragon\www\comaziwa\resources\views/layout/scripts.blade.php ENDPATH**/ ?>

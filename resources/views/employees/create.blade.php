@@ -54,7 +54,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Staff No.</label>
-                                <input class="form-control" id="staff_no" type="text" value="{{substr(mt_rand(1000000, 9999999), 0, 7)}}" name="staff_no" required>
+                                <input class="form-control" id="staff_no" type="text" value="{{substr(mt_rand(1000000, 9999999), 0, 7)}}" name="staff_no" required readonly>
                                 <span class="modal-error invalid-feedback" role="alert"></span>
                             </div>
                         </div>
@@ -88,7 +88,7 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Sort Code</label>
+                                <label>Short Code</label>
                                 <input class="form-control" type="text" name="branch_shortcode" required>
                                 <span class="modal-error invalid-feedback" role="alert"></span>
                             </div>
@@ -133,7 +133,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Department.</label>
-                                <select name="contract_type" class="select form-control select2" required>
+                                <select name="contract_type" class="select form-control" required>
                                     <option value="">Select one</option>
                                     @foreach($contracts as $one)
                                         <option value="{{$one->id}}">{{$one->name}}</option>

@@ -695,20 +695,33 @@ class PaymentsController extends Controller
             'shares' => $shares
         ];
 
-        // Generate the PDF
+        
+        try {
+        // Ensure the DomPDF public path configuration is correct
+        config(['dompdf.public_path' => '/home/cowangoo/public_html/merucomaziwa.co.ke/storage']);
+    
+        // Load the view into PDF
         $pdf = PDF::loadView('companies.payments.print-payslip', $data);
         $pdf->setPaper([0, 0, 204, 650], 'portrait'); // Adjust size for thermal printer
-
+    
         $uniqueId = time(); 
-        $fullname = $payment->fname."-".$payment->lname;
+        $fullname = $payment->fname . "-" . $payment->lname;
         $filename = "{$fullname}-{$pay_period}-{$uniqueId}.pdf";
         $pdfPath = storage_path("app/public/payslips/{$filename}");
+    
+        if (!file_exists(dirname($pdfPath))) {
+            mkdir(dirname($pdfPath), 0755, true);
+        }
+    
+            $pdf->save($pdfPath);
+            $pdfUrl = asset("storage/payslips/{$filename}");
+        
+            return response()->json(['pdfUrl' => $pdfUrl]);
+        } catch (\Exception $e) {
+        return response()->json(['error' => 'Error generating PDF. Please check logs for details.'], 500);
+    }
+        
 
-        // Save the PDF to storage
-        $pdf->save($pdfPath);
-
-        // Return the URL to the generated PDF
-        return response()->json(['pdfUrl' => asset("storage/payslips/{$filename}")]);
     }
 
     public function printPayslip($id, $action)

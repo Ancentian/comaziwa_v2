@@ -21,12 +21,14 @@
     <p>
         Dear <b>{{$data['name']}}</b>,
         <br>
-            Thank you for choosing {{env('APP_NAME')}} for your ERP needs. We're excited to have you on board! Your account has been successfully created, and you can start managing your business processes immediately.
+            Thank you for choosing {{env('APP_NAME')}} for your ERP needs. We're excited to have you on board! Your account has been successfully created, and you can start managing your operations immediately.
             Here are your login details:
         <br>
             Username: <b>{{$data['email']}}</b>
         <br>
-            Please click the link below to access your ERP dashboard:
+            Password: <b>{{$data['password']}}</b>
+        <br>
+            Please click the link below to access your Comaziwa dashboard:
         <br>
             <a href="{{url('auth/login')}}">Get started</a>
         <br>

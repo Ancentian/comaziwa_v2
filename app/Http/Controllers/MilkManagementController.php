@@ -7,12 +7,16 @@ use App\Models\Employee;
 use App\Models\Farmer;
 use App\Models\MilkCollection;
 use App\Models\MilkSpillage;
+use App\Models\ConsumerCategory;
+use App\Models\MilkConsumption;
 
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Excel;
 
 class MilkManagementController extends Controller
@@ -29,9 +33,42 @@ class MilkManagementController extends Controller
         return view('companies.milk_management.spillages.index', compact('centers'));
     }
 
-    public function milk_analysis()
+    public function consumers_calendar()
     {
-        
+        return view('companies.milk_management.consumers.consumers-calendar');
+    }
+
+    public function consumer_categories()
+    {
+        if (request()->ajax()) {
+            $tenant_id = auth()->user()->id;
+            $categories = ConsumerCategory::where('tenant_id', $tenant_id)->get();
+
+            return DataTables::of($categories)
+                ->addColumn(
+                    'action',
+                    function ($row) {
+                        $html = '<div class="btn-group">
+                        <button type="button" class="badge btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item edit-button" data-action="'.url('milk-management/edit-consumer-category',[$row->id]).'" href="#" ><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                        <a class="dropdown-item delete-button" data-action="'.url('milk-management/delete-consumer-category',[$row->id]).'" href="#" ><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                        </div>
+                    </div>';
+                        return $html;
+                    }
+                )
+                ->editColumn('status', function ($row) {
+                    if ($row->status == 1) {
+                        return '<span class="badge badge-success">Active</span>';
+                    } else {
+                        return '<span class="badge badge-danger">Inactive</span>';
+                    }
+                })
+                ->rawColumns(['action', 'status'])	
+                ->make(true);
+        }
+        return view('companies.milk_management.consumers.categories');
     }
 
     public function milk_spillages()
@@ -112,6 +149,77 @@ class MilkManagementController extends Controller
         }
     }
 
+    public function add_consumption()
+    {
+        $tenant_id = Auth::user()->id;
+        $consumers = ConsumerCategory::where('tenant_id', $tenant_id)->where('status', '1')->get();
+        return view('companies.milk_management.consumers.add-consumption', compact('consumers'));
+    }
+
+    public function consumption_list()
+    {
+        $tenant_id = Auth::user()->id;
+        $consumers = ConsumerCategory::where('tenant_id', $tenant_id)->where('status', '1')->get();
+        return view('companies.milk_management.consumers.consumption-list', compact('consumers'));
+    }
+
+    public function all_consumptions()
+    {
+        if (request()->ajax()) {
+            $tenant_id = auth()->user()->id;
+            $consumptions = MilkConsumption::join('consumer_categories', 'milk_consumptions.category_id', '=', 'consumer_categories.id')
+                    ->where('milk_consumptions.tenant_id', $tenant_id)
+                    ->select([
+                        'milk_consumptions.*',
+                        'consumer_categories.name as consumer_name',
+                    ])
+                    ->get();
+
+            return DataTables::of($consumptions)
+                ->addColumn(
+                    'action',
+                    function ($row) {
+                        $html = '<div class="btn-group">
+                        <button type="button" class="badge btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item edit-button" data-action="'.url('milk-management/edit-consumer-category',[$row->id]).'" href="#" ><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                        <a class="dropdown-item delete-button" data-action="'.url('milk-management/delete-consumer-category',[$row->id]).'" href="#" ><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                        </div>
+                    </div>';
+                        return $html;
+                    }
+                )
+                ->editColumn('date', function ($row) {
+                    return format_date($row->date);
+                })
+                ->editColumn('quantity', function ($row) {
+                    $html = num_format($row->quantity);
+                    return $html;
+                })
+                ->editColumn('created_on', function ($row) {
+                    return format_date($row->created_at);
+                })
+                ->editColumn('total', function ($row) {
+                    $total = $row->quantity * $row->rate;
+                    return num_format($total);
+                })
+                ->rawColumns(['action', 'status'])	
+                ->make(true);
+        }
+    }
+
+    public function daily_production()
+    {
+        $tenant_id = Auth::user()->id;
+        $date = $request()->selected_date;
+        $total_milk = MilkCollection::where('tenant_id', $tenant_id)
+            ->where('collection_date', $date)
+            ->select([
+                DB::raw('SUM(total) as total_milk'),
+            ])->get();
+        return response()->json($milkData);
+    }
+
     public function store_spillages(Request $request)
     {
         $request->merge(['is_cooperative' => $request->has('is_cooperative') ? 1 : 0]);
@@ -167,6 +275,92 @@ class MilkManagementController extends Controller
         }
     }
 
+    public function store_consumer_category(Request $request)
+    {
+        $tenant_id = Auth::user()->id;
+        
+        $validator = Validator::make($request->all(), [
+            'name' => [
+                'required',
+                Rule::unique('consumer_categories')->where(function ($query) use ($tenant_id) {
+                    return $query->where('tenant_id', $tenant_id);
+                }),
+            ],
+            'status' => 'required',
+            'description' => 'nullable', // This ensures description is optional
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+        
+        DB::beginTransaction();
+        try {
+            ConsumerCategory::create([
+                'tenant_id' => $tenant_id,
+                'name' => $request->name,
+                'status' => $request->status,
+                'description' => $request->description,
+            ]);
+
+            DB::commit();
+            return response()->json(['message' => 'Category Added Successfully']);
+        } catch (\Exception $e) {
+            logger($e);
+            DB::rollback();
+            return response()->json(['message' => 'Data saving failed. Please try again.'], 500);
+        }
+    }
+
+    public function store_milk_consumptions(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'date' => 'required|date',
+            'category_id' => 'required|array',
+            'quantity' => 'required|array',
+            'rate' => 'required|array',
+            'comments' => 'nullable|array',
+        ]);
+        logger($request->all());
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $transaction_id = substr(mt_rand(1000000, 9999999), 0, 8);
+            $consumptions = $request->all();
+
+            $tenant_id = auth()->user()->id;
+            $order_date = $consumptions['date'];
+
+            foreach ($consumptions['category_id'] as $key => $category_id) {
+                // Create sale record
+                MilkConsumption::create([
+                    'tenant_id' => $tenant_id,
+                    'category_id' => $category_id,
+                    'date' => $request->date,
+                    'quantity' => $consumptions['quantity'][$key],
+                    'rate' => $consumptions['rate'][$key],
+                    'total_cost' => $consumptions['quantity'][$key] * $consumptions['rate'][$key],
+                    'comments' => $consumptions['comments'][$key] ?? null,
+                    //'user_id' => $tenant_id, // Assuming user_id is tenant_id
+                    'transaction_id' => $transaction_id
+                ]);
+            }
+
+            DB::commit();
+            return response()->json(['message' => 'Consumption Added successfully']);
+        } catch (\Exception $e) {
+            logger($e);
+            DB::rollback();
+            return response()->json(['message' => 'Data saving failed. Please try again.'], 500);
+        }
+    }
+
+
     public function view_comments($id)
     {
         $tenant_id = auth()->user()->id;
@@ -183,6 +377,13 @@ class MilkManagementController extends Controller
         $centers = CollectionCenter::where('tenant_id', $tenant_id)->get();
         $spill = MilkSpillage::findorFail($id);
         return view('companies.milk_management.spillages.edit', compact('spill', 'centers'));
+    }
+
+    public function edit_consumer_category($id)
+    {
+        $tenant_id = auth()->user()->id;
+        $category = ConsumerCategory::findorFail($id);
+        return view('companies.milk_management.consumers.edit-category', compact('category'));
     }
 
     public function update_spillage(Request $request, $id)
@@ -214,6 +415,34 @@ class MilkManagementController extends Controller
         }
     }
 
+    public function update_consumer_category(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:consumer_categories,name,' . $id,
+            'status' => 'required',
+            'description' => 'nullable', // This ensures description is optional
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        DB::beginTransaction();
+        try {
+            $category = ConsumerCategory::findOrFail($id);
+            $category->name = $request->name;
+            $category->status = $request->status;
+            $category->description = $request->status;
+            $category->save();
+
+            DB::commit();
+            return response()->json(['message' => 'Data Updated successfully']);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => 'Data saving failed. Please try again.'], 500);
+        }
+    }
+
     public function delete_spillage($id)
     {
         DB::beginTransaction();
@@ -223,6 +452,21 @@ class MilkManagementController extends Controller
 
         DB::commit();
             return response()->json(['message' => 'Spillage Deleted Successfully']);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => 'Failed to delete Spillage. Please try again.'], 500);
+        }
+    }
+
+    public function delete_consumer_category($id)
+    {
+        DB::beginTransaction();
+        try {
+        $category = ConsumerCategory::findOrFail($id);
+        $category->delete();
+
+        DB::commit();
+            return response()->json(['message' => 'Category Deleted Successfully']);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['message' => 'Failed to delete Spillage. Please try again.'], 500);

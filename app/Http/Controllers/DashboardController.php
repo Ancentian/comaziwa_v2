@@ -26,6 +26,7 @@ class DashboardController extends Controller
 
     public function milk_analysis()
     {
+        $tenant_id = auth()->user()->id;
         $endDate = Carbon::now();
         $startDate = $endDate->copy()->subMonths(4);
 
@@ -36,6 +37,7 @@ class DashboardController extends Controller
                     DB::raw("SUM(rejected) as total_rejected"),
                     DB::raw("SUM(total) as total_milk")])
             ->whereBetween('collection_date', [$startDate, $endDate])
+            ->where('tenant_id', $tenant_id)
             ->groupBy(DB::raw("MONTH(collection_date)"))
             ->get();
         return response()->json($milkData);
@@ -44,6 +46,7 @@ class DashboardController extends Controller
     //Pie Chart & Line Chart
     public function monthly_milk_analysis()
     {
+        $tenant_id = auth()->user()->id;
         $endDate = Carbon::now();
         $startDate = $endDate->copy()->subMonths(4);
 
@@ -54,6 +57,7 @@ class DashboardController extends Controller
                     DB::raw("SUM(rejected) as total_rejected"), 
                     DB::raw("SUM(total) as total_milk"))
             ->whereBetween('collection_date', [$startDate, $endDate])
+            ->where('tenant_id', $tenant_id)
             ->groupBy(DB::raw("MONTH(collection_date)"))
             ->get();
         return response()->json($milkData);
@@ -61,6 +65,7 @@ class DashboardController extends Controller
 
     public function collection_center_analysis()
     {
+        $tenant_id = auth()->user()->id;
         $endDate = Carbon::now();
         $startDate = $endDate->copy()->subMonths(4);
         $tenant_id = auth()->user()->id;
@@ -73,6 +78,7 @@ class DashboardController extends Controller
                 DB::raw("collection_centers.center_name")
             )
             ->whereBetween('milk_collections.collection_date', [$startDate, $endDate])
+            ->where('milk_collections.tenant_id', $tenant_id)
             ->groupBy(DB::raw("MONTH(milk_collections.collection_date)"), 'collection_centers.center_name')
             ->get();
         return response()->json($milkData);
@@ -104,6 +110,7 @@ class DashboardController extends Controller
 
     public function monthly_sales_analysis()
     {
+        $tenant_id = auth()->user()->id;
         $endDate = Carbon::now();
         $startDate = $endDate->copy()->subMonths(4);
         $end = $endDate->format('Y-m'); // Use 'Y-m' format
@@ -116,6 +123,7 @@ class DashboardController extends Controller
                 DB::raw("SUM(gross_pay) as total_sales")
             ])
             ->whereBetween(DB::raw("CONCAT(pay_period, '-01')"), [$start . '-01', $end . '-01'])
+            ->where('payments.tenant_id', $tenant_id)
             ->groupBy('pay_period')
             ->get();
 
